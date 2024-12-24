@@ -27,6 +27,9 @@
     <ClInclude Include="Modules\Module.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Gui\Gui.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">

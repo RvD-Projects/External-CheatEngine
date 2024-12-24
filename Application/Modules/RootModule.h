@@ -15,13 +15,7 @@ class RootModule : public Module
 	ViewMatrix vm = ViewMatrix();
 
 	void _Render() {
-		ImGui::GetBackgroundDrawList()->AddRect(
-			ImVec2(0, 0),
-			ImVec2(1920, 1080),
-			IM_COL32(255, 0, 0, 255),
-			0,
-			0,
-			2);
+		Gui::DrawRectangle({ 0, 0}, { 1920, 1080}, { 255, 0, 0, 255 });
 	}
 
 public:

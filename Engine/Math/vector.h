@@ -36,5 +36,5 @@ struct vec2
 
 struct Dimension
 {
-	float h, w, d;
+	float w, h, d;
 };

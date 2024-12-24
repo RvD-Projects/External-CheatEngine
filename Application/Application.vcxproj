@@ -169,6 +169,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="Gui\Gui.h" />
     <ClInclude Include="Modules\EspModule.h" />
     <ClInclude Include="Modules\Module.h" />
     <ClInclude Include="Modules\RootModule.h" />

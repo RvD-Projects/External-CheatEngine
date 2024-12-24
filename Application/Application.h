@@ -14,3 +14,4 @@
 
 
 const wchar_t* APP_NAME = L"CS2_Overlay";
+
