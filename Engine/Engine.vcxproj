@@ -151,7 +151,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp" />
-    <ClCompile Include="Math\Geo.cpp" />
     <ClCompile Include="GameDumper\memory.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -177,8 +176,9 @@
     <ClInclude Include="GameDumper\Dumps\vphysics2_dll.hpp" />
     <ClInclude Include="GameDumper\Dumps\worldrenderer_dll.hpp" />
     <ClInclude Include="Math\Geo.h" />
-    <ClInclude Include="Math\vector.h" />
+    <ClInclude Include="Math\Vector.h" />
     <ClInclude Include="GameDumper\memory.h" />
+    <ClInclude Include="Math\ViewMatrix.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

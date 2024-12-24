@@ -1,73 +1,27 @@
 #pragma once
 
-#include <Windows.h>
+#include <imgui.h>
 
-#define WIDTH 1920
-#define HEIGHT 1080	
-#define WINDOW_W 1920
-#define WINDOW_H 1080
+#include "../../Math/Vector.h"
 
-namespace Gui
+typedef struct
 {
-	inline MSG msg;
-	inline bool running = true;
+	int R = 0;
+	int G = 0;
+	int B = 0;
+	int A = 255;
+} GuiColor;
 
-	bool init(HWND hwnd);
-	void destroy();
-
-	void frame();
-	void handle_events();
+class Gui
+{
+	void DrawRect(const vec2 &p, const Dimension &d, GuiColor color = {0, 0, 0, 255}, int thickness = 1)
+	{
+		ImGui::GetBackgroundDrawList()->AddRect(
+			ImVec2(p.x, p.y),
+			ImVec2(p.x + d.w, p.y + d.h),
+			Color(color),
+			0,
+			0,
+			thickness);
+	}
 };
-
-namespace Window
-{
-	inline LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
-	{
-		LRESULT Result = 0;
-		switch (message)
-		{
-		case WM_DESTROY:
-		{
-			Gui::running = false;
-			break;
-		}
-		case WM_CLOSE:
-		{
-			Gui::running = false;
-			break;
-		}
-		default:
-		{
-			Result = DefWindowProc(hWnd, message, wParam, lParam);
-			break;
-		}
-
-		}
-
-		return Result;
-	}
-
-	inline HWND InitWindow(HINSTANCE hInstance)
-	{
-		HWND hwnd = NULL;
-
-		WNDCLASS wc = { };
-
-		wc.lpfnWndProc = WinProc;
-		wc.hInstance = hInstance;
-		wc.lpszClassName = L"CS2_Overlay";
-
-		if (!RegisterClass(&wc))
-			return 0;
-
-		hwnd = CreateWindowEx(WS_EX_TOPMOST | WS_EX_TRANSPARENT | WS_EX_LAYERED, wc.lpszClassName, wc.lpszClassName,
-			WS_VISIBLE | WS_POPUP,
-			0, 0, WIDTH, HEIGHT,
-			NULL, NULL, hInstance, NULL);
-
-		SetLayeredWindowAttributes(hwnd, 0, 0, LWA_ALPHA);
-		SetLayeredWindowAttributes(hwnd, 0, RGB(0, 0, 0), LWA_COLORKEY);
-
-		return hwnd;
-	}
-}

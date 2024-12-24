@@ -21,9 +21,6 @@
     <ClCompile Include="Engine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Math\Geo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameDumper\memory.h">
@@ -92,10 +89,13 @@
     <ClInclude Include="GameDumper\Dumps\worldrenderer_dll.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Math\vector.h">
+    <ClInclude Include="Math\Vector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Math\Geo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\ViewMatrix.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

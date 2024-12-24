@@ -1,15 +1,16 @@
 #include "Application.h"
-
-const wchar_t* NAME = L"CS2_Overlay";
+#include "Modules/RootModule.h"
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
-LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
+LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
 	LRESULT Result = 0;
 	if (ImGui_ImplWin32_WndProcHandler(hWnd, message, wParam, lParam))
 		return true;
 
-	switch (message) {
+	switch (message)
+	{
 	case WM_DESTROY:
 	{
 		PostQuitMessage(0);
@@ -29,11 +30,12 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 	return Result;
 }
 
-INT APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
+INT APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+{
 	WNDCLASSEXW wc = {};
 	wc.cbSize = sizeof(WNDCLASSEXW);
 	wc.style = CS_HREDRAW | CS_VREDRAW;
-	wc.lpszClassName = NAME;
+	wc.lpszClassName = APP_NAME;
 	wc.lpfnWndProc = WinProc;
 	wc.hInstance = hInstance;
 	wc.hIcon = NULL;
@@ -42,7 +44,9 @@ INT APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 	const HWND window = CreateWindowExW(WS_EX_TOPMOST | WS_EX_TRANSPARENT | WS_EX_LAYERED, wc.lpszClassName, wc.lpszClassName, WS_POPUP, 0, 0, 1920, 1080, NULL, NULL, hInstance, NULL);
 
-	SetLayeredWindowAttributes(window, RGB(0, 0, 0), 255, LWA_ALPHA);
+	SetLayeredWindowAttributes(window, 0, 0, LWA_ALPHA);
+	SetLayeredWindowAttributes(window, 0, RGB(0, 0, 0), LWA_COLORKEY);
+
 	{
 		RECT client_area;
 		GetClientRect(window, &client_area);
@@ -57,8 +61,7 @@ INT APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 			window_area.left + diff.x,
 			window_area.top + diff.y,
 			client_area.right + diff.x,
-			client_area.bottom + diff.y
-		};
+			client_area.bottom + diff.y};
 
 		DwmExtendFrameIntoClientArea(window, &margins);
 	}
@@ -79,13 +82,12 @@ INT APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	constexpr D3D_FEATURE_LEVEL levels[]{
 		D3D_FEATURE_LEVEL_11_0,
 		D3D_FEATURE_LEVEL_10_1,
-		D3D_FEATURE_LEVEL_10_0
-	};
+		D3D_FEATURE_LEVEL_10_0};
 
-	ID3D11Device* device;
-	ID3D11DeviceContext* context;
-	IDXGISwapChain* swap_chain;
-	ID3D11RenderTargetView* render_target_view;
+	ID3D11Device *device;
+	ID3D11DeviceContext *context;
+	IDXGISwapChain *swap_chain;
+	ID3D11RenderTargetView *render_target_view;
 	D3D_FEATURE_LEVEL level;
 
 	D3D11CreateDeviceAndSwapChain(
@@ -100,13 +102,13 @@ INT APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		&swap_chain,
 		&device,
 		&level,
-		&context
-	);
+		&context);
 
-	ID3D11Texture2D* back_buffer;
+	ID3D11Texture2D *back_buffer;
 	swap_chain->GetBuffer(0, IID_PPV_ARGS(&back_buffer));
 
-	if (!back_buffer) {
+	if (!back_buffer)
+	{
 		return 1;
 	}
 
@@ -122,16 +124,21 @@ INT APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	ImGui_ImplWin32_Init(window);
 	ImGui_ImplDX11_Init(device, context);
 
+	RootModule root_module{};
+	root_module.Init();
 
 	bool running = true;
-	while (running) {
+	while (running)
+	{
 		MSG msg;
 
-		while (PeekMessage(&msg, window, 0, 0, PM_REMOVE)) {
+		while (PeekMessage(&msg, window, 0, 0, PM_REMOVE))
+		{
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 
-			switch (msg.message) {
+			switch (msg.message)
+			{
 			case WM_QUIT:
 				break;
 
@@ -146,13 +153,11 @@ INT APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		ImGui_ImplWin32_NewFrame();
 		ImGui::NewFrame();
 
-
+		root_module.Render();
 
 		ImGui::Render();
 
-
-
-		constexpr FLOAT clear_color[]{ 0.0F, 0.0F, 0.0F, 1.0F };
+		constexpr FLOAT clear_color[]{0.0F, 0.0F, 0.0F, 1.0F};
 		context->OMSetRenderTargets(1U, &render_target_view, NULL);
 		context->ClearRenderTargetView(render_target_view, clear_color);
 
@@ -164,10 +169,14 @@ INT APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	ImGui_ImplWin32_Shutdown();
 	ImGui::DestroyContext();
 
-	if (swap_chain)swap_chain->Release();
-	if (context) context->Release();
-	if (device)device->Release();
-	if (render_target_view) render_target_view->Release();
+	if (swap_chain)
+		swap_chain->Release();
+	if (context)
+		context->Release();
+	if (device)
+		device->Release();
+	if (render_target_view)
+		render_target_view->Release();
 
 	DestroyWindow(window);
 	UnregisterClassW(wc.lpszClassName, wc.hInstance);
