@@ -8,7 +8,7 @@ using namespace cs2_dumper::offsets::client_dll;
 using namespace cs2_dumper::schemas::client_dll;
 using namespace cs2_dumper::schemas::client_dll::C_BaseEntity;
 using namespace cs2_dumper::schemas::client_dll::C_BasePlayerPawn;
-using namespace cs2_dumper::schemas::client_dll::C_BaseModelEntity;
+using namespace cs2_dumper::schemas::client_dll::C_BaseModelEntity;	
 using namespace cs2_dumper::schemas::client_dll::CCSPlayerController;
 
 void Esp::Frame()
