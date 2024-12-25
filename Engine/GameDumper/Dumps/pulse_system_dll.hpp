@@ -1,5 +1,5 @@
 // Generated using https://github.com/a2x/cs2-dumper
-// 2024-12-23 21:20:55.175300600 UTC
+// 2024-12-25 20:41:23.147380300 UTC
 
 #pragma once
 
@@ -619,7 +619,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace PulseGraphExecutionHistoryNodeDesc_t {
-                constexpr std::ptrdiff_t strCellDesc = 0x0; // CBufferString
+                constexpr std::ptrdiff_t strCellDesc = 0x0; // 
                 constexpr std::ptrdiff_t strBindingName = 0x10; // CUtlSymbolLarge
             }
             // Parent: CPulse_ResumePoint

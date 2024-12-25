@@ -6,7 +6,6 @@
 
 namespace Memory
 {
-    //DWORD PID;
     HANDLE gHandle;
 
     // Function to get the PID of a process by name
@@ -79,6 +78,20 @@ namespace Memory
 
     template <typename T>
     bool Write(HMODULE address, T value)
+    {
+        return WriteProcessMemory(gHandle, (LPVOID)address, &value, sizeof(T), nullptr);
+    }
+
+    template <typename T>
+    T Read(uintptr_t address)
+    {
+        T ret;
+        ReadProcessMemory(gHandle, (LPCVOID)address, &ret, sizeof(T), nullptr);
+        return ret;
+    }
+
+    template <typename T>
+    bool Write(uintptr_t address, T value)
     {
         return WriteProcessMemory(gHandle, (LPVOID)address, &value, sizeof(T), nullptr);
     }

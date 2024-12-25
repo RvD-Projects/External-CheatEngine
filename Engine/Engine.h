@@ -9,17 +9,16 @@
 #include "GameDumper/Dumps/client_dll.hpp"
 #include "GameDumper/Dumps/server_dll.hpp"
 
-
 namespace Engine
 {
 	inline DWORD PID;
 	inline HMODULE CLIENT_DLL;
 	inline HMODULE SERVER_DLL;
-	
+
 	BYTE TEAM;
 	ViewMatrix VM;
-	uintptr_t ENTITIES, PLAYER_PAWN, PLAYER_CONTROLLER;
-
+	std::vector<uintptr_t> ENTITIES;
+	uintptr_t ENTITIES_LIST, PLAYER_PAWN, PLAYER_CONTROLLER;
 
 	inline const wchar_t *GAME_EXE = L"cs2.exe";
 	inline const wchar_t *CLIENT_DLL_NAME = L"client.dll";

@@ -2,10 +2,10 @@
 
 class Module
 {
-    virtual void Loop() {};
     virtual void Frame() {};
 
 public:
     virtual void Init() {};
+    virtual void Loop() {};
     virtual void Render() {};
 };

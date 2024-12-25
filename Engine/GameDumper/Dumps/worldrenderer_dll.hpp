@@ -1,5 +1,5 @@
 // Generated using https://github.com/a2x/cs2-dumper
-// 2024-12-23 21:20:55.175300600 UTC
+// 2024-12-25 20:41:23.147380300 UTC
 
 #pragma once
 
@@ -7,10 +7,10 @@
 
 namespace cs2_dumper {
     namespace schemas {
-        // Module: worldGui.dll
+        // Module: worldrenderer.dll
         // Class count: 23
         // Enum count: 1
-        namespace worldGui_dll {
+        namespace worldrenderer_dll {
             // Alignment: 4
             // Member count: 15
             enum class ObjectTypeFlags_t : uint32_t {

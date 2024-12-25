@@ -4,16 +4,17 @@
 
 class Geo
 {
+public:
 	/**
-	 * Transforms a 3D coordinate into a 2D coordinate.
+	 * Transforms a 3D vector into a 2D vector using a transformation matrix and screen dimensions.
 	 *
-	 * @param v3 The 3D coordinate as a vec3.
-	 * @param v2 The resulting 2D coordinate as a vec2.
-	 * @param m A 4x4 transformation matrix represented as a float array of size 16.
-	 * @param d A float array of size 2 representing the dimensions of the 2D space.
-	 * @return True if the transformation is successful and the point is visible on v2, false otherwise.
+	 * @param v3 The input 3D vector to be transformed.
+	 * @param v2 The output 2D vector resulting from the transformation.
+	 * @param m A 4x4 transformation matrix used for the projection.
+	 * @param sd The screen dimensions, defaulting to 1920x1080.
+	 * @return True if the transformation is successful and the vector is within view; false otherwise.
 	 */
-	static bool Get2DVector(const vec3 &v3, vec2 &v2, const float m[16], const float d[2])
+	static bool Get2DVector(const vec3 &v3, vec2 &v2, const float m[16], const Dimension &sd = {1920, 1080})
 	{
 		vec4 clipCoords;
 		clipCoords.x = v3.x * m[0] + v3.y * m[1] + v3.z * m[2] + m[3];
@@ -29,11 +30,11 @@ class Geo
 		coords.y = clipCoords.y / clipCoords.w;
 		coords.z = clipCoords.z / clipCoords.w;
 
-		const float W2 = d[0] / 2;
-		const float H2 = d[1] / 2;
+		const float W2 = sd.w / 2;
+		const float H2 = sd.h / 2;
 
-		v2.x = W2 * coords.x + coords.x + W2;
-		v2.y = -H2 * coords.y + coords.y + H2;
+		v2.x = (W2 * coords.x) + coords.x + W2;
+		v2.y = -(H2 * coords.y) + coords.y + H2;
 
 		return true;
 	}

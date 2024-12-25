@@ -126,11 +126,18 @@ INT APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 	RootModule root_module{};
 	root_module.Init();
+	std::thread read([&]()
+					 { root_module.Loop(); });
 
 	bool running = true;
 	while (running)
 	{
 		MSG msg;
+
+		if (GetAsyncKeyState(VK_F9))
+		{
+			running = false;
+		}
 
 		while (PeekMessage(&msg, window, 0, 0, PM_REMOVE))
 		{

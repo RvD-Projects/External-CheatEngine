@@ -12,6 +12,6 @@ public:
 
 	void Render() override
 	{
-		Gui::DrawCircle({1920 / 2, 1080 / 2}, 8, { 0, 255, 0, 255 }, 12, 2);	
+		Gui::DrawCircle({1920 / 2, 1080 / 2}, 8, {0, 255, 0, 255}, 12, 2);
 	}
 };

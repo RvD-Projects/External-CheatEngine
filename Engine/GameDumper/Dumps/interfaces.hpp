@@ -1,5 +1,5 @@
 // Generated using https://github.com/a2x/cs2-dumper
-// 2024-12-23 21:20:55.175300600 UTC
+// 2024-12-25 20:41:23.147380300 UTC
 
 #pragma once
 
@@ -232,9 +232,9 @@ namespace cs2_dumper {
             constexpr std::ptrdiff_t IVALIDATE001 = 0xABB40;
             constexpr std::ptrdiff_t VEngineCvar002 = 0x69070;
         }
-        // Module: worldGui.dll
-        namespace worldGui_dll {
-            constexpr std::ptrdiff_t WorldGuiMgr001 = 0x161D80;
+        // Module: worldrenderer.dll
+        namespace worldrenderer_dll {
+            constexpr std::ptrdiff_t WorldRendererMgr001 = 0x161D80;
         }
     }
 }

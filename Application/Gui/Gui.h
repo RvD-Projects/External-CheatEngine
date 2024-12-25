@@ -5,7 +5,6 @@
 #include "../../ImGui/imgui.h"
 #include "../../ImGui/imgui.h"
 
-
 typedef struct
 {
 	int R;
@@ -33,7 +32,7 @@ public:
 			thickness);
 	}
 
-	static void DrawFilledRectangle(const vec2& p, const Dimension& d, const GuiColor color = { 255, 255, 255, 255 })
+	static void DrawFilledRectangle(const vec2 &p, const Dimension &d, const GuiColor color = {255, 255, 255, 255})
 	{
 		ImGui::GetBackgroundDrawList()->AddRectFilled(
 			ImVec2(p.x, p.y),
@@ -41,7 +40,7 @@ public:
 			Color(color));
 	}
 
-	static void DrawLine(const vec2& p1, const vec2& p2, const GuiColor color = { 0, 0, 0, 255 }, const int thickness = 1)
+	static void DrawLine(const vec2 &p1, const vec2 &p2, const GuiColor color = {0, 0, 0, 255}, const int thickness = 1)
 	{
 		ImGui::GetBackgroundDrawList()->AddLine(
 			ImVec2(p1.x, p1.y),
@@ -50,7 +49,7 @@ public:
 			thickness);
 	}
 
-	static void DrawCircle(const vec2& p, float radius, GuiColor color = { 255, 255, 255, 255 }, const int segments = 12, const int thickness = 1)
+	static void DrawCircle(const vec2 &p, float radius, GuiColor color = {255, 255, 255, 255}, const int segments = 12, const int thickness = 1)
 	{
 		ImGui::GetBackgroundDrawList()->AddCircle(
 			ImVec2(p.x, p.y),
@@ -60,7 +59,7 @@ public:
 			thickness);
 	}
 
-	static void DrawFilledCircle(const vec2& p, const float radius, GuiColor color = { 255, 255, 255, 255 }, const int segments = 12)
+	static void DrawFilledCircle(const vec2 &p, const float radius, GuiColor color = {255, 255, 255, 255}, const int segments = 12)
 	{
 		ImGui::GetBackgroundDrawList()->AddCircleFilled(
 			ImVec2(p.x, p.y),
@@ -69,7 +68,7 @@ public:
 			segments);
 	}
 
-	static void DrawTextual(const vec2& p, const char* text, const float fontSize = 2.f, const GuiColor color = { 255, 255, 255, 255 })
+	static void DrawTextual(const vec2 &p, const char *text, const float fontSize = 2.f, const GuiColor color = {255, 255, 255, 255})
 	{
 		ImGui::GetBackgroundDrawList()->AddText(
 			ImVec2(p.x, p.y),

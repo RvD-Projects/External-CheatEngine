@@ -1,5 +1,5 @@
 // Generated using https://github.com/a2x/cs2-dumper
-// 2024-12-23 21:20:55.175300600 UTC
+// 2024-12-25 20:41:23.147380300 UTC
 
 #pragma once
 
@@ -140,7 +140,7 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_LocalRotation = 0x2E8; // CUtlVector<float32>
                 constexpr std::ptrdiff_t m_LocalForce = 0x300; // CUtlVector<float32>
                 constexpr std::ptrdiff_t m_TaperedCapsuleStretches = 0x318; // CUtlVector<FeTaperedCapsuleStretch_t>
-                constexpr std::ptrdiff_t m_TaperedCapsuleRigids = 0x330; // 
+                constexpr std::ptrdiff_t m_TaperedCapsuleRigids = 0x330; // CUtlVector<FeTaperedCapsuleRigid_t>
                 constexpr std::ptrdiff_t m_SphereRigids = 0x348; // CUtlVector<FeSphereRigid_t>
                 constexpr std::ptrdiff_t m_WorldCollisionNodes = 0x360; // CUtlVector<uint16>
                 constexpr std::ptrdiff_t m_TreeParents = 0x378; // CUtlVector<uint16>
