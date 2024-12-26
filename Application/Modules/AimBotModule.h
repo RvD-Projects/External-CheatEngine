@@ -14,13 +14,14 @@ public:
 			return;
 
 		const uintptr_t listEntry_t = ReadEntities<uintptr_t>(0x8 * (MyLocalPlayer.crossIndex >> 9) + 16);
+		const uintptr_t entity_t = Read<uintptr_t>(listEntry_t + 120 * (MyLocalPlayer.crossIndex & 0x1ff));
 
 		std::vector<Player> filteredPlayers;
-		std::copy_if(ENTITIES.begin(),ENTITIES.end(), std::back_inserter(filteredPlayers), [&listEntry_t](const Player& player) {
+		std::copy_if(ENTITIES.begin(),ENTITIES.end(), std::back_inserter(filteredPlayers), [&entity_t](const Player& player) {
 			return player.health > 0
 				&& !player.isLocalPlayer
 				&& !player.isLocalPlayerTeam
-				&& player.listEntry == listEntry_t;
+				&& player.entity == entity_t;
 			});
 
 		if (filteredPlayers.empty())
