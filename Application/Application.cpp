@@ -1,5 +1,6 @@
 #include "Application.h"
 #include "Modules/RootModule.h"
+#include <thread>
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -125,8 +126,9 @@ INT APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	ImGui_ImplDX11_Init(device, context);
 
 	root_module.Init();
-	std::thread read([&]()
-					 { root_module.Loop(); });
+	std::thread read([&]() {
+		root_module.Loop();
+	});
 
 	bool running = true;
 	while (running)
