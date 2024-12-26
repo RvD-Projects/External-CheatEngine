@@ -5,7 +5,7 @@
 class AimBotModule : public Module
 {
 	bool aimAssist = false;
-	bool clickAssist = false;
+	bool clickAssist = true;
 
 public:
 	void Execute() override
@@ -24,14 +24,14 @@ public:
 			return;
 
 		vec2 out;
-		if (Geo::Get2DVector(position, out, VM.matrix))
+		if (Geo::Get2DVector(position, out, VM.matrix, SD))
 		{
-			if (aimAssist)
+			if (aimAssist && GetAsyncKeyState(VK_SHIFT))
 			{
 				SetCursorPos(out.x, out.y);
 			}
 
-			if (clickAssist)
+			if (clickAssist && GetAsyncKeyState(VK_SHIFT))
 			{
 				mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
 				mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);

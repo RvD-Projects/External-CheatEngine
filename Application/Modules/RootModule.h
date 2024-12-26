@@ -12,7 +12,7 @@ class RootModule : public Module
 	void _Render()
 	{
 		Gui::DrawTextual({0, 0}, "Overlay v 1.0.0");
-		Gui::DrawRectangle({0, 0}, {1920, 1080}, {255, 0, 0, 255});
+		Gui::DrawRectangle({0, 0}, SD, {255, 0, 0, 255});
 	}
 
 	void _Execute()
@@ -49,8 +49,6 @@ class RootModule : public Module
 public:
 	void Init() override
 	{
-		Engine::Init();
-
 		esp.Init();
 		aimBot.Init();
 	}

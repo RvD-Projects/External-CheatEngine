@@ -11,10 +11,10 @@ public:
 	 * @param v3 The input 3D vector to be transformed.
 	 * @param v2 The output 2D vector resulting from the transformation.
 	 * @param m A 4x4 transformation matrix used for the projection.
-	 * @param sd The screen dimensions, defaulting to 1920x1080.
+	 * @param sd The space dimensions, defaulting to empty.
 	 * @return True if the transformation is successful and the vector is within view; false otherwise.
 	 */
-	static bool Get2DVector(const vec3 &v3, vec2 &v2, const float m[16], const Dimension &sd = {1920, 1080})
+	static bool Get2DVector(const vec3& v3, vec2& v2, const float m[16], const Dimension& sd = {0,0})
 	{
 		vec4 clipCoords;
 		clipCoords.x = v3.x * m[0] + v3.y * m[1] + v3.z * m[2] + m[3];

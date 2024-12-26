@@ -24,6 +24,9 @@ using namespace cs2_dumper::schemas::client_dll::CCSPlayerController;
 
 namespace Engine
 {
+	const Dimension SD = { 1920, 1080 };
+	const Dimension SD_H = { SD.w / 2, SD.h / 2 };
+
 	DWORD PID;
 	uintptr_t CLIENT_DLL;
 

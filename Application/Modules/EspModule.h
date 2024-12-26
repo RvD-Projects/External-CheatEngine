@@ -13,11 +13,11 @@ public:
 				continue;
 
 			vec2 HEAD_SCREEN, FEET_SCREEN;
-			const bool HEAD_V = Geo::Get2DVector(player.position, HEAD_SCREEN, VM.matrix);
+			const bool HEAD_V = Geo::Get2DVector(player.position, HEAD_SCREEN, VM.matrix, SD);
 			if (!HEAD_V)
 				continue;
 
-			const bool FEET_V = Geo::Get2DVector(player.viewCamPos, FEET_SCREEN, VM.matrix);
+			const bool FEET_V = Geo::Get2DVector(player.viewCamPos, FEET_SCREEN, VM.matrix, SD);
 			if (!FEET_V)
 				continue;
 
@@ -32,6 +32,6 @@ public:
 			Gui::DrawTextual(HEAD_SCREEN, player.name.c_str());
 		}
 
-		Gui::DrawCircle({1920 / 2, 1080 / 2}, 8, {255, 0, 0, 255});
+		Gui::DrawCircle({ SD_H.w, SD_H.h }, 8, { 255, 0, 0, 255 });
 	}
 };
