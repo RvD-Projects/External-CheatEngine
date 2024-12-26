@@ -21,7 +21,7 @@ namespace Memory
 		return handle;
 	}
 
-	uintptr_t GetProcessID(const wchar_t *process)
+	uintptr_t GetProcessID(const wchar_t* process)
 	{
 		HANDLE handle = GetHandle(TH32CS_SNAPPROCESS, NULL);
 		if (!handle)
@@ -47,7 +47,7 @@ namespace Memory
 	}
 
 	// Function to get the module base address of a process
-	uintptr_t GetModuleBaseAddress(DWORD processID, const wchar_t *moduleName)
+	uintptr_t GetModuleBaseAddress(DWORD processID, const wchar_t* moduleName)
 	{
 		HANDLE handle = GetHandle(TH32CS_SNAPMODULE | TH32CS_SNAPMODULE32, processID);
 		if (!handle)
@@ -83,4 +83,21 @@ namespace Memory
 	{
 		return WriteProcessMemory(G_HANDLE, (LPVOID)address, &value, sizeof(T), nullptr);
 	}
+
+	std::string ReadString(uintptr_t address, size_t maxLength = 256) {
+		std::vector<char> buffer(maxLength);
+		size_t i = 0;
+
+		// Read characters one by one until we hit the null terminator or the max length
+		while (i < maxLength) {
+			buffer[i] = Read<char>(address + i);
+			if (buffer[i] == '\0') {
+				break;
+			}
+			i++;
+		}
+
+		return std::string(buffer.data());
+	}
+
 }

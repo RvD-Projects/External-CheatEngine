@@ -7,42 +7,24 @@
 #include "Module.h"
 #include "EspModule.h"
 
-#include "../../Engine/Math/Geo.h"
-
 class RootModule : public Module
 {
 	EspModule esp;
 
 	void _Render()
 	{
-		Gui::DrawTextual({0, 0}, "Overlay v 1.0.0", 64);
+		Gui::DrawTextual({0, 0}, "Overlay v 1.0.0");
 		Gui::DrawRectangle({0, 0}, {1920, 1080}, {255, 0, 0, 255});
-
-		for (uintptr_t entity : ENTITIES)
-		{
-			vec3 ABS_ORIG = Read<vec3>(entity + m_vOldOrigin);
-			vec3 PAWN_VC = Read<vec3>(entity + m_vecViewOffset);
-
-			vec3 VC_POS = ABS_ORIG + PAWN_VC;
-
-			vec2 HEAD_SCREEN, FEET_SCREEN;
-			const bool HEAD_V = Geo::Get2DVector(ABS_ORIG, HEAD_SCREEN, VM.matrix);
-			if (!HEAD_V)
-				continue;
-
-			const bool FEET_V = Geo::Get2DVector(VC_POS, FEET_SCREEN, VM.matrix);
-			if (!FEET_V)
-				continue;
-
-			const Dimension PAWN_D{HEAD_SCREEN.y - FEET_SCREEN.y, HEAD_SCREEN.y - FEET_SCREEN.y};
-
-			Gui::DrawRectangle(HEAD_SCREEN, PAWN_D);
-		}
 	}
 
-	void _PreparePointers()
+	void _ParsePointers()
 	{
+		Engine::ENTITIES = {};
+		Engine::ENEMIES = {};
+		Engine::FRIENDLIES = {};
+
 		Engine::VM = ReadClient<ViewMatrix>(dwViewMatrix);
+	
 		Engine::PLAYER_PAWN = ReadClient<uintptr_t>(dwLocalPlayerPawn);
 		Engine::PLAYER_CTRL = ReadClient<uintptr_t>(dwLocalPlayerController);
 
@@ -52,11 +34,7 @@ class RootModule : public Module
 		const uint8_t lifeState = ReadPlayerPawn<uint8_t>(m_lifeState);
 		const uint32_t iMaxHealth = ReadPlayerPawn<uint32_t>(m_iMaxHealth);
 		const uint32_t hammerID = ReadPlayerPawn<uint32_t>(m_sUniqueHammerID);
-	}
 
-	void _ParseEntities()
-	{
-		Engine::ENTITIES = {};
 		Engine::ENTITIES_LIST = ReadClient<uintptr_t>(dwEntityList);
 
 		for (int i = 1; i < 32; i++)
@@ -90,11 +68,20 @@ class RootModule : public Module
 			if (!PAWN)
 				continue;
 
-			const int TEAM = Read<int>(PAWN + m_iTeamNum);
-			const int HEALT = Read<int>(PAWN + m_iHealth);
-			const std::string NAME = Read<std::string>(PAWN + m_sSanitizedPlayerName);
+			const int health = Read<int>(PAWN + m_iHealth);
+			const BYTE team = Read<BYTE>(PAWN + m_iTeamNum);
+
+			const uintptr_t name_t = Read<uintptr_t>(ENTITY_CTRL + m_sSanitizedPlayerName);
+			const std::string name = ReadString(name_t);
 
 			ENTITIES.emplace_back(ENTITY);
+
+			if (TEAM == team) {
+				ENEMIES.emplace_back(ENTITY); 
+				continue;
+			}
+
+			FRIENDLIES.emplace_back(ENTITY);
 		}
 	}
 
@@ -102,8 +89,6 @@ public:
 	void Init() override
 	{
 		Engine::Init();
-
-		_PreparePointers();
 
 		EspModule esp{};
 		esp.Init();
@@ -113,7 +98,7 @@ public:
 	{
 		while (true)
 		{
-			_ParseEntities();
+			_ParsePointers();
 			Sleep(16);
 		}
 	}

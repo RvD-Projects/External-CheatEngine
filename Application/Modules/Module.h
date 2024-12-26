@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../Engine/Engine.h"
+#include "../../Engine/Math/Geo.h"
 
 using namespace Memory;
 using namespace Engine;
@@ -26,12 +27,6 @@ protected:
     T ReadClient(ptrdiff_t ptr_diff)
     {
         return Read<T>(CLIENT_DLL + ptr_diff);
-    };
-
-    template <typename T>
-    T ReadServer(ptrdiff_t ptr_diff)
-    {
-        return Read<T>(SERVER_DLL + ptr_diff);
     };
 
     template <typename T>

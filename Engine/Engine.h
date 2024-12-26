@@ -13,12 +13,14 @@ namespace Engine
 {
 	inline DWORD PID;
 	inline uintptr_t CLIENT_DLL;
-	inline uintptr_t SERVER_DLL;
 
 	BYTE TEAM;
 	ViewMatrix VM;
-	std::vector<uintptr_t> ENTITIES;
 	uintptr_t ENTITIES_LIST, PLAYER_PAWN, PLAYER_CTRL;
+
+	std::vector<uintptr_t> ENTITIES;
+	std::vector<uintptr_t> ENEMIES;
+	std::vector<uintptr_t> FRIENDLIES;
 
 	inline const wchar_t *GAME_EXE = L"cs2.exe";
 	inline const wchar_t *CLIENT_DLL_NAME = L"client.dll";
@@ -27,7 +29,6 @@ namespace Engine
 	void Init()
 	{
 		PID = Memory::GetProcessID(GAME_EXE);
-		SERVER_DLL = Memory::GetModuleBaseAddress(PID, SERVER_DLL_NAME);
 		CLIENT_DLL = Memory::GetModuleBaseAddress(PID, CLIENT_DLL_NAME);
 	}
 }
