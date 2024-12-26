@@ -1,29 +1,24 @@
 // Generated using https://github.com/a2x/cs2-dumper
-// 2024-12-25 20:41:23.147380300 UTC
+// 2024-12-26 03:30:19.681203 UTC
 
 #pragma once
 
 #include <cstddef>
 
-namespace cs2_dumper
-{
-    namespace schemas
-    {
+namespace cs2_dumper {
+    namespace schemas {
         // Module: host.dll
         // Class count: 2
         // Enum count: 0
-        namespace host_dll
-        {
+        namespace host_dll {
             // Parent: CAnimScriptBase
             // Field count: 1
-            namespace EmptyTestScript
-            {
+            namespace EmptyTestScript {
                 constexpr std::ptrdiff_t m_hTest = 0x10; // CAnimScriptParam<float32>
             }
             // Parent: None
             // Field count: 1
-            namespace CAnimScriptBase
-            {
+            namespace CAnimScriptBase {
                 constexpr std::ptrdiff_t m_bIsValid = 0x8; // bool
             }
         }
