@@ -6,93 +6,81 @@
 
 namespace Memory
 {
-    HANDLE gHandle;
+	HANDLE G_HANDLE;
+	uintptr_t G_PID;
 
-    // Function to get the PID of a process by name
-    DWORD GetProcessID(const wchar_t *process)
-    {
-        HANDLE handle = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
-        if (handle == INVALID_HANDLE_VALUE)
-        {
-            return 0;
-        }
+	HANDLE GetHandle(const DWORD flags, const DWORD processID)
+	{
+		HANDLE handle = CreateToolhelp32Snapshot(flags, processID);
+		if (handle == INVALID_HANDLE_VALUE)
+		{
+			std::wcerr << L"GetHandle (processId) failed" << std::endl;
+			return NULL;
+		}
 
-        PROCESSENTRY32 proc;
-        proc.dwSize = sizeof(PROCESSENTRY32);
-        if (Process32First(handle, &proc))
-        {
-            do
-            {
-                if (!wcscmp(process, proc.szExeFile))
-                {
-                    CloseHandle(handle);
-                    return proc.th32ProcessID;
-                }
-            } while (Process32Next(handle, &proc));
-        }
+		return handle;
+	}
 
-        CloseHandle(handle);
-        return 0;
-    }
+	uintptr_t GetProcessID(const wchar_t *process)
+	{
+		HANDLE handle = GetHandle(TH32CS_SNAPPROCESS, NULL);
+		if (!handle)
+			return NULL;
 
-    // Function to get the module base address of a process
-    HMODULE GetModuleBaseAddress(DWORD processID, const wchar_t *moduleName)
-    {
-        HANDLE handle = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE | TH32CS_SNAPMODULE32, processID);
-        if (handle == INVALID_HANDLE_VALUE)
-        {
-            std::wcerr << L"CreateToolhelp32Snapshot (module) failed" << std::endl;
-            return NULL;
-        }
+		PROCESSENTRY32 proc;
+		proc.dwSize = sizeof(PROCESSENTRY32);
+		Process32First(handle, &proc);
 
-        MODULEENTRY32 mod;
-        mod.dwSize = sizeof(MODULEENTRY32);
-        if (Module32First(handle, &mod))
-        {
-            do
-            {
-                std::wcout << L"Module: " << mod.szModule << std::endl;
-                if (!wcscmp(moduleName, mod.szModule))
-                {
-                    CloseHandle(handle);
-                    return mod.hModule;
-                }
-            } while (Module32Next(handle, &mod));
-        }
-        else
-        {
-            std::wcerr << L"Module32First failed" << std::endl;
-        }
+		do
+		{
+			if (!wcscmp(process, proc.szExeFile))
+			{
+				CloseHandle(handle);
+				G_PID = proc.th32ProcessID;
+				G_HANDLE = OpenProcess(PROCESS_ALL_ACCESS, NULL, G_PID);
+				return proc.th32ProcessID;
+			}
+		} while (Process32Next(handle, &proc));
 
-        CloseHandle(handle);
-        return NULL;
-    }
+		CloseHandle(handle);
+		return 0;
+	}
 
-    template <typename T>
-    T Read(HMODULE address)
-    {
-        T ret;
-        ReadProcessMemory(gHandle, (LPCVOID)address, &ret, sizeof(T), nullptr);
-        return ret;
-    }
+	// Function to get the module base address of a process
+	uintptr_t GetModuleBaseAddress(DWORD processID, const wchar_t *moduleName)
+	{
+		HANDLE handle = GetHandle(TH32CS_SNAPMODULE | TH32CS_SNAPMODULE32, processID);
+		if (!handle)
+			return NULL;
 
-    template <typename T>
-    bool Write(HMODULE address, T value)
-    {
-        return WriteProcessMemory(gHandle, (LPVOID)address, &value, sizeof(T), nullptr);
-    }
+		MODULEENTRY32 mod;
+		mod.dwSize = sizeof(MODULEENTRY32);
+		Module32First(handle, &mod);
 
-    template <typename T>
-    T Read(uintptr_t address)
-    {
-        T ret;
-        ReadProcessMemory(gHandle, (LPCVOID)address, &ret, sizeof(T), nullptr);
-        return ret;
-    }
+		do
+		{
+			if (!wcscmp(moduleName, mod.szModule))
+			{
+				CloseHandle(handle);
+				return (uintptr_t)mod.modBaseAddr;
+			}
+		} while (Module32Next(handle, &mod));
 
-    template <typename T>
-    bool Write(uintptr_t address, T value)
-    {
-        return WriteProcessMemory(gHandle, (LPVOID)address, &value, sizeof(T), nullptr);
-    }
+		CloseHandle(handle);
+		return NULL;
+	}
+
+	template <typename T>
+	T Read(uintptr_t address)
+	{
+		T ret;
+		ReadProcessMemory(G_HANDLE, (LPCVOID)address, &ret, sizeof(T), nullptr);
+		return ret;
+	}
+
+	template <typename T>
+	bool Write(uintptr_t address, T value)
+	{
+		return WriteProcessMemory(G_HANDLE, (LPVOID)address, &value, sizeof(T), nullptr);
+	}
 }
