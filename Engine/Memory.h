@@ -4,6 +4,19 @@
 #include <Windows.h>
 #include <TlHelp32.h>
 
+#include "GameDumper/Dumps/offsets.hpp"
+#include "GameDumper/Dumps/client_dll.hpp"
+#include "GameDumper/Dumps/server_dll.hpp"
+
+using namespace cs2_dumper::offsets::client_dll;
+using namespace cs2_dumper::schemas::client_dll;
+using namespace cs2_dumper::schemas::client_dll::C_BaseEntity;
+using namespace cs2_dumper::schemas::client_dll::C_CSGameRules;
+using namespace cs2_dumper::schemas::client_dll::C_BasePlayerPawn;
+using namespace cs2_dumper::schemas::client_dll::C_BaseModelEntity;
+using namespace cs2_dumper::schemas::client_dll::C_CSPlayerPawnBase;
+using namespace cs2_dumper::schemas::client_dll::CCSPlayerController;
+
 namespace Memory
 {
 	HANDLE G_HANDLE;
@@ -70,8 +83,18 @@ namespace Memory
 		return NULL;
 	}
 
+	ptrdiff_t EntityEntryDiff(const ptrdiff_t& ptr, const ptrdiff_t& mul = 0x7ff)
+	{
+		return (0x8 * (ptr & mul) >> 0x9) + 16;
+	}
+
+	ptrdiff_t EntityDiff(const ptrdiff_t& ptr)
+	{
+		return 120 * (ptr & 0x1ff);
+	}
+
 	template <typename T>
-	T Read(uintptr_t address)
+	T Read(const uintptr_t &address)
 	{
 		T ret;
 		ReadProcessMemory(G_HANDLE, (LPCVOID)address, &ret, sizeof(T), nullptr);
@@ -79,12 +102,12 @@ namespace Memory
 	}
 
 	template <typename T>
-	bool Write(uintptr_t address, T value)
+	bool Write(const uintptr_t &address, const T &value)
 	{
 		return WriteProcessMemory(G_HANDLE, (LPVOID)address, &value, sizeof(T), nullptr);
 	}
 
-	std::string ReadString(uintptr_t address, size_t maxLength = 256)
+	std::string ReadString(const uintptr_t &address, const size_t &maxLength = 256)
 	{
 		std::vector<char> buffer(maxLength);
 		size_t i = 0;
@@ -102,5 +125,4 @@ namespace Memory
 
 		return std::string(buffer.data());
 	}
-
 }

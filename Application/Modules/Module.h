@@ -1,10 +1,8 @@
 #pragma once
 
 #include "../Gui/Gui.h"
-#include "../../Engine/Engine.h"
 #include "../../Engine/GameRef.h"
 
-using namespace Engine;
 using namespace GameRef;
 
 class Module

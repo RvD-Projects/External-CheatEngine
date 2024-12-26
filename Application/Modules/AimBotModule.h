@@ -10,21 +10,25 @@ class AimBotModule : public Module
 public:
 	void Execute() override
 	{
-		if (!PLAYER.isInitialized || PLAYER.crossIndex < 0)
+		if (!MyLocalPlayer.isInitialized || MyLocalPlayer.crossIndex < 0)
 			return;
 
-		const uintptr_t crossList = ReadEntities<uintptr_t>(0x8 * (PLAYER.crossIndex >> 0x9) + 16);
-		const uintptr_t player_t = Read<uintptr_t>(crossList + 120 * (PLAYER.crossIndex & 0x1ff));
+		const uintptr_t listEntry_t = ReadEntities<uintptr_t>(0x8 * (MyLocalPlayer.crossIndex >> 9) + 16);
 
-		auto team = Read<UINT>(player_t + m_iTeamNum);
-		auto health = Read<UINT>(player_t + m_iHealth);
-		auto position = Read<vec3>(player_t + m_vOldOrigin);
+		std::vector<Player> filteredPlayers;
+		std::copy_if(ENTITIES.begin(),ENTITIES.end(), std::back_inserter(filteredPlayers), [&listEntry_t](const Player& player) {
+			return player.health > 0
+				&& !player.isLocalPlayer
+				&& !player.isLocalPlayerTeam
+				&& player.listEntry == listEntry_t;
+			});
 
-		if (team == PLAYER.team || health <= 0)
+		if (filteredPlayers.empty())
 			return;
 
 		vec2 out;
-		if (Geo::Get2DVector(position, out, VM.matrix, SD))
+		Player player = filteredPlayers.at(0);
+		if (Geo::Get2DVector(player.position, out, VM.matrix, SD))
 		{
 			if (aimAssist && GetAsyncKeyState(VK_SHIFT))
 			{

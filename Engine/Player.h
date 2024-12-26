@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Engine.h"
+#include "Memory.h";
 
-using namespace Engine;
+using namespace Memory;
 
 class Player
 {
@@ -18,24 +18,31 @@ public:
 	std::string name;
 	vec3 position, viewCamPos;
 
-	uintptr_t entity, ctrl, pawnCtrl, pawn;
+	uintptr_t listEntry, ctrl, pawnCtrl, entity, pawn;
 
 	Player() {};
-	Player(const uintptr_t list, const int &index)
+	Player(const uintptr_t &list, const int &index)
 	{
-		entity = Read<uintptr_t>(EntityEntryDiff(index) + list);
-		if (!entity)
+		listEntry = Read<uintptr_t>(EntityEntryDiff(index) + list);
+		if (!listEntry)
 			return;
 
-		ctrl = ReadEntity<uintptr_t>(EntityDiff(index));
+		ctrl = ReadListEntry<uintptr_t>(EntityDiff(index));
 		if (!ctrl)
 			return;
+
+		Init(listEntry);
+	};
+
+	void Init(const uintptr_t &entry)
+	{
+		listEntry = entry;
 
 		pawnCtrl = ReadController<uintptr_t>(m_hPlayerPawn);
 		if (!pawnCtrl)
 			return;
 
-		entity = ReadEntity<uintptr_t>(EntityDiff(pawnCtrl));
+		entity = ReadListEntry<uintptr_t>(EntityDiff(pawnCtrl));
 		if (!entity)
 			return;
 
@@ -46,34 +53,37 @@ public:
 		lifeState = ReadEntity<UINT>(m_lifeState);
 		position = ReadEntity<vec3>(m_vOldOrigin);
 		viewCamPos = position + ReadEntity<vec3>(m_vecViewOffset);
-
 		name = ReadString(ReadController<uintptr_t>(m_sSanitizedPlayerName));
-
-		const uintptr_t LocalPlayer = ReadLocalPlayer<uintptr_t>();
-		isLocalPlayer = LocalPlayer == entity;
-
-		if (isLocalPlayer)
-		{
-			crossIndex = Read<int>(LocalPlayer + m_iIDEntIndex);
-		}
 
 		isInitialized = true;
 	};
 
 	template <typename T>
-	T ReadEntity(ptrdiff_t ptr_diff)
+	T ReadListEntry(const ptrdiff_t &ptr_diff)
 	{
-		return Read<T>(entity + ptr_diff);
+		return Read<T>(listEntry + ptr_diff);
 	};
 
 	template <typename T>
-	T ReadController(ptrdiff_t ptr_diff)
+	T ReadController(const ptrdiff_t &ptr_diff)
 	{
 		return Read<T>(ctrl + ptr_diff);
 	};
 
 	template <typename T>
-	T ReadEntityPawn(ptrdiff_t ptr_diff)
+	T ReadPawnController(const ptrdiff_t &ptr_diff)
+	{
+		return Read<T>(pawnCtrl + ptr_diff);
+	};
+
+	template <typename T>
+	T ReadEntity(const ptrdiff_t &ptr_diff)
+	{
+		return Read<T>(entity + ptr_diff);
+	};
+
+	template <typename T>
+	T ReadEntityPawn(const ptrdiff_t &ptr_diff)
 	{
 		return Read<T>(pawn + ptr_diff);
 	};
