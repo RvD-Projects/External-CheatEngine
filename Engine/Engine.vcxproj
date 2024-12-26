@@ -171,6 +171,7 @@
     <ClInclude Include="GameDumper\Dumps\soundsystem_dll.hpp" />
     <ClInclude Include="GameDumper\Dumps\vphysics2_dll.hpp" />
     <ClInclude Include="GameDumper\Dumps\worldrenderer_dll.hpp" />
+    <ClInclude Include="GameRef.h" />
     <ClInclude Include="Math\Geo.h" />
     <ClInclude Include="Math\Vector.h" />
     <ClInclude Include="Math\ViewMatrix.h" />

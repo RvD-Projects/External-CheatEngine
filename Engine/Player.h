@@ -12,16 +12,16 @@ public:
 	bool isLocalPlayerTeam = false;
 
 	bool takesDamage;
-	int health, armor, maxHealth, lifeState, hammerID;
+	int crossIndex;
+	UINT team, health, armor, maxHealth, lifeState, hammerID;
 
-	int team;
 	std::string name;
 	vec3 position, viewCamPos;
 
 	uintptr_t entity, ctrl, pawnCtrl, pawn;
 
 	Player() {};
-	Player(const uintptr_t list, const int& index)
+	Player(const uintptr_t list, const int &index)
 	{
 		entity = Read<uintptr_t>(EntityEntryDiff(index) + list);
 		if (!entity)
@@ -38,16 +38,24 @@ public:
 		entity = ReadEntity<uintptr_t>(EntityDiff(pawnCtrl));
 		if (!entity)
 			return;
-		
-		team = ReadEntity<int>(m_iTeamNum);
-		health = ReadEntity<int>(m_iHealth);
-		armor = ReadEntity<int>(m_iPawnArmor);
-		maxHealth = ReadEntity<int>(m_iMaxHealth);
+
+		team = ReadEntity<UINT>(m_iTeamNum);
+		health = ReadEntity<UINT>(m_iHealth);
+		armor = ReadEntity<UINT>(m_iPawnArmor);
+		maxHealth = ReadEntity<UINT>(m_iMaxHealth);
+		lifeState = ReadEntity<UINT>(m_lifeState);
 		position = ReadEntity<vec3>(m_vOldOrigin);
 		viewCamPos = position + ReadEntity<vec3>(m_vecViewOffset);
 
-		isLocalPlayer = ReadClient<uintptr_t>(dwLocalPlayerPawn) == entity;
 		name = ReadString(ReadController<uintptr_t>(m_sSanitizedPlayerName));
+
+		const uintptr_t LocalPlayer = ReadLocalPlayer<uintptr_t>();
+		isLocalPlayer = LocalPlayer == entity;
+
+		if (isLocalPlayer)
+		{
+			crossIndex = Read<int>(LocalPlayer + m_iIDEntIndex);
+		}
 
 		isInitialized = true;
 	};

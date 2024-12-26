@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Module.h"
-#include "../Gui/Gui.h"
 
 class EspModule : public Module
 {
@@ -10,6 +9,9 @@ public:
 	{
 		for (Player player : ENEMIES)
 		{
+			if (!player.takesDamage || player.health <= 0)
+				continue;
+
 			vec2 HEAD_SCREEN, FEET_SCREEN;
 			const bool HEAD_V = Geo::Get2DVector(player.position, HEAD_SCREEN, VM.matrix);
 			if (!HEAD_V)

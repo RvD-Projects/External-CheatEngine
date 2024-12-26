@@ -126,9 +126,8 @@ INT APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	ImGui_ImplDX11_Init(device, context);
 
 	root_module.Init();
-	std::thread read([&]() {
-		root_module.Loop();
-	});
+	std::thread read([&]()
+					 { root_module.Loop(); });
 
 	bool running = true;
 	while (running)

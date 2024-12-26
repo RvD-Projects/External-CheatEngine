@@ -19,6 +19,7 @@ using namespace cs2_dumper::schemas::client_dll;
 using namespace cs2_dumper::schemas::client_dll::C_BaseEntity;
 using namespace cs2_dumper::schemas::client_dll::C_BasePlayerPawn;
 using namespace cs2_dumper::schemas::client_dll::C_BaseModelEntity;
+using namespace cs2_dumper::schemas::client_dll::C_CSPlayerPawnBase;
 using namespace cs2_dumper::schemas::client_dll::CCSPlayerController;
 
 namespace Engine
@@ -29,8 +30,8 @@ namespace Engine
 	ViewMatrix VM;
 	uintptr_t ENTITIES_LIST;
 
-    const wchar_t* GAME_EXE = L"cs2.exe";
-    const wchar_t* CLIENT_DLL_NAME = L"client.dll";
+	const wchar_t *GAME_EXE = L"cs2.exe";
+	const wchar_t *CLIENT_DLL_NAME = L"client.dll";
 
 	void Init()
 	{
@@ -38,23 +39,37 @@ namespace Engine
 		CLIENT_DLL = Memory::GetModuleBaseAddress(PID, CLIENT_DLL_NAME);
 	}
 
-	ptrdiff_t EntityEntryDiff(const uintptr_t& ptr) {
-		return (0x8 * (ptr & 0x7ff) >> 0x9) + 16;
+	ptrdiff_t EntityEntryDiff(const ptrdiff_t &ptr, const ptrdiff_t &mul = 0x7ff)
+	{
+		return (0x8 * (ptr & mul) >> 0x9) + 16;
 	}
 
-	ptrdiff_t EntityDiff(const uintptr_t& ptr) {
+	ptrdiff_t EntityDiff(const ptrdiff_t &ptr)
+	{
 		return 120 * (ptr & 0x1ff);
 	}
-		
+
 	template <typename T>
-	T ReadClient(ptrdiff_t ptr_diff)
+	T ReadClient(const ptrdiff_t &ptr_diff)
 	{
 		return Read<T>(CLIENT_DLL + ptr_diff);
 	};
 
 	template <typename T>
-	T ReadEntities(ptrdiff_t ptr_diff)
+	T WriteClient(const ptrdiff_t &ptr_diff, const T &value)
+	{
+		return Write<T>(CLIENT_DLL + ptr_diff, value);
+	};
+
+	template <typename T>
+	T ReadEntities(const ptrdiff_t &ptr_diff)
 	{
 		return Read<T>(ENTITIES_LIST + ptr_diff);
+	};
+
+	template <typename T>
+	T ReadLocalPlayer()
+	{
+		return ReadClient<uintptr_t>(dwLocalPlayerPawn);
 	};
 }

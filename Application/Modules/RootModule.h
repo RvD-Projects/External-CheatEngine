@@ -2,18 +2,20 @@
 
 #include "Module.h"
 #include "EspModule.h"
+#include "AimBotModule.h"
 
 class RootModule : public Module
 {
 	EspModule esp;
+	AimBotModule aimBot;
 
 	void _Render()
 	{
-		Gui::DrawTextual({ 0, 0 }, "Overlay v 1.0.0");
-		Gui::DrawRectangle({ 0, 0 }, { 1920, 1080 }, { 255, 0, 0, 255 });
+		Gui::DrawTextual({0, 0}, "Overlay v 1.0.0");
+		Gui::DrawRectangle({0, 0}, {1920, 1080}, {255, 0, 0, 255});
 	}
 
-	void _ParsePointers()
+	void _Execute()
 	{
 		VM = ReadClient<ViewMatrix>(dwViewMatrix);
 		ENTITIES_LIST = ReadClient<uintptr_t>(dwEntityList);
@@ -26,24 +28,22 @@ class RootModule : public Module
 		{
 			Player player(ENTITIES_LIST, i);
 
-			if (!player.isInitialized) continue;
+			if (!player.isInitialized)
+				continue;
 
 			b.emplace_back(player);
-
-			player.isLocalPlayerTeam = player.isLocalPlayer || PLAYER.team == player.team;
+			player.isLocalPlayerTeam = player.isLocalPlayer || player.team == PLAYER.team;
 
 			player.isLocalPlayer
 				? PLAYER = player
 				: (player.isLocalPlayerTeam
-					? bF.emplace_back(player)
-					: bE.emplace_back(player));
+					   ? bF.emplace_back(player)
+					   : bE.emplace_back(player));
 		}
 
 		ENTITIES = b;
 		ENEMIES = bE;
 		FRIENDLIES = bF;
-
-		esp.ENEMIES = ENEMIES;
 	}
 
 public:
@@ -51,22 +51,27 @@ public:
 	{
 		Engine::Init();
 
-		EspModule esp{};
 		esp.Init();
+		aimBot.Init();
 	}
 
 	void Loop() override
 	{
 		while (true)
 		{
-			_ParsePointers();
-			Sleep(10);
+			_Execute();
+
+			esp.Execute();
+			aimBot.Execute();
+			Sleep(16);
 		}
 	}
 
 	void Render() override
 	{
 		_Render();
+
 		esp.Render();
+		aimBot.Render();
 	}
 };
