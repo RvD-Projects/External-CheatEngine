@@ -28,12 +28,12 @@ class AimBotModule : public Module
 		Player player = filteredPlayers.at(0);
 		if (Geo::Get2DVector(player.position, out, VM.matrix, GetClientDimension()))
 		{
-			if (aimAssist && GetKeyState(VK_SHIFT))
+			if (aimAssist && GetAsyncKeyState(VK_SHIFT))
 			{
 				mouse_event(MOUSEEVENTF_MOVE, out.x, out.y, 0, 0);
 			}
 
-			if (clickAssist && GetKeyState(VK_SHIFT))
+			if (clickAssist && GetAsyncKeyState(VK_SHIFT))
 			{
 				mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
 				mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);

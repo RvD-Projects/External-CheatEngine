@@ -3,7 +3,6 @@
 #include "Engine.h"
 #include "GameDumper/Dumps/offsets.hpp"
 #include "GameDumper/Dumps/client_dll.hpp"
-#include "GameDumper/Dumps/server_dll.hpp"
 
 using namespace cs2_dumper::offsets::client_dll;
 using namespace cs2_dumper::schemas::client_dll;

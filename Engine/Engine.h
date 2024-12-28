@@ -37,19 +37,19 @@ namespace Engine
 	}
 
 	bool UpdateTargetWindowDefinitions() {
-		HWND hwnd = FindWindow(NULL, Target.w_name);
-		if (hwnd == NULL) {
+		HWND window = FindWindow(NULL, Target.w_name);
+		if (window == NULL) {
 			return false;
 		}
 
 		RECT clientRect;
-		GetClientRect(hwnd, &clientRect);
+		GetClientRect(window, &clientRect);
 		if (!clientRect.bottom || !clientRect.right) {
 			return false;
 		}
 
 		RECT windowRect;
-		GetWindowRect(hwnd, &windowRect);
+		GetWindowRect(window, &windowRect);
 
 		TargetWindow.rect = windowRect;
 		TargetWindow.position = Position(windowRect.left, windowRect.top);

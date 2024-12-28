@@ -34,7 +34,10 @@ public:
 			const Dimension PAWN_D{WIDTH, HEIGHT * 1.444, NULL};
 
 			Gui::DrawRectangle(HEAD_SCREEN, PAWN_D);
-			Gui::DrawTextual(HEAD_SCREEN, player.name.c_str());
+
+			Gui::DrawTextual(HEAD_SCREEN + vec2{ PAWN_D.w + 4, 0 }, player.name.data(), 4);
+			Gui::DrawTextual(HEAD_SCREEN + vec2{ PAWN_D.w + 4, 16}, std::to_string(player.health).append(" HP").data(),4, { 0,255,0,255 });
+			Gui::DrawTextual(HEAD_SCREEN + vec2{ PAWN_D.w + 4, 32 }, std::to_string(player.armor).append(" AP").data(), 4, { 0,0,255,255 });
 		}
 
 		auto half = GetClientDimension() / 2;

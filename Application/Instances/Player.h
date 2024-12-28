@@ -23,11 +23,11 @@ public:
 	Player() {};
 	Player(const uintptr_t &list, const int &index)
 	{
-		listEntry = Read<uintptr_t>(GameRef::EntityEntryDiff(index) + list);
+		listEntry = Read<uintptr_t>(EntityEntryDiff(index) + list);
 		if (!listEntry)
 			return;
 
-		ctrl = ReadListEntry<uintptr_t>(GameRef::EntityDiff(index));
+		ctrl = ReadListEntry<uintptr_t>(EntityDiff(index));
 		if (!ctrl)
 			return;
 
@@ -42,7 +42,7 @@ public:
 		if (!pawnCtrl)
 			return;
 
-		entity = ReadListEntry<uintptr_t>(GameRef::EntityDiff(pawnCtrl));
+		entity = ReadListEntry<uintptr_t>(EntityDiff(pawnCtrl));
 		if (!entity)
 			return;
 

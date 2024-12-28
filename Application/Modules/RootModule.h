@@ -72,8 +72,6 @@ public:
 
 		auto dim = GetClientDimension();
 		auto half = dim / 2;
-		Gui::DrawRectangle({ 0,0 }, dim, { 255, 0, 0, 255 }, 1);
-		Gui::DrawRectangle({ half.w, half.h }, half, { 0, 0, 255, 255 }, 1);
 
 		Gui::DrawTextual({ 2,2 }, "Overlay v 1.0.0");
 	}

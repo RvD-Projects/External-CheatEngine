@@ -20,11 +20,30 @@ struct Dimension
 struct Position
 {
 	float x, y;
+	Position operator+(Position other)
+	{
+		return { this->x + other.x, this->y + other.y };
+	}
+	Position operator-(Position other)
+	{
+		return { this->x - other.x, this->y - other.y };
+	}
 };
 
-struct vec2 : Position {};
+struct vec2
+{
+	float x, y;
+	vec2 operator+(vec2 other)
+	{
+		return { this->x + other.x, this->y + other.y };
+	}
+	vec2 operator-(vec2 other)
+	{
+		return { this->x - other.x, this->y - other.y };
+	}
+};
 
-struct vec3 : vec2
+struct vec3
 {
 	float x, y, z;
 	vec3 operator+(vec3 other)
@@ -45,9 +64,9 @@ struct vec3 : vec2
 	}
 };
 
-struct vec4 : vec3
+struct vec4
 {
-	float w;
+	float w, x, y, z;
 };
 
 struct APP_INFO
