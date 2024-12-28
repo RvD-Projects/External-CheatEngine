@@ -6,19 +6,22 @@
 
 class RootModule : public Module
 {
-	EspModule esp;
-	AimBotModule aimBot;
+	EspModule* Esp;
+	AimBotModule* AimBot;
 
-	void _Render()
-	{
-		Gui::DrawTextual({ 0, 0 }, "Overlay v 1.0.0");
-		Gui::DrawRectangle({ 0, 0 }, SD, { 255, 0, 0, 255 });
-	}
+    void Init() override
+    {
+        this->Esp = new EspModule();
+        this->AimBot = new AimBotModule();
 
-	void _Execute()
+		this->Esp->Init(this);
+		this->AimBot->Init(this);
+    }
+
+	void Execute() override
 	{
-		VM = ReadClient<ViewMatrix>(dwViewMatrix);
-		ENTITIES_LIST = ReadClient<uintptr_t>(dwEntityList);
+		VM = ReadDLL<ViewMatrix>(dwViewMatrix);
+		ENTITIES_LIST = ReadDLL<uintptr_t>(dwEntityList);
 
 		std::vector<Player> b = {};
 		std::vector<Player> bE = {};
@@ -58,30 +61,20 @@ class RootModule : public Module
 		FRIENDLIES = bF;
 	}
 
-public:
-	void Init() override
-	{
-		esp.Init();
-		aimBot.Init();
-	}
-
-	void Loop() override
-	{
-		while (true)
-		{
-			_Execute();
-
-			esp.Execute();
-			aimBot.Execute();
-			Sleep(16);
-		}
-	}
-
+public:	
 	void Render() override
 	{
-		_Render();
+		if (this->Esp)
+			this->Esp->Render();
 
-		esp.Render();
-		aimBot.Render();
+		if (this->AimBot)
+			this->AimBot->Render();
+
+		auto dim = GetClientDimension();
+		auto half = dim / 2;
+		Gui::DrawRectangle({ 0,0 }, dim, { 255, 0, 0, 255 }, 1);
+		Gui::DrawRectangle({ half.w, half.h }, half, { 0, 0, 255, 255 }, 1);
+
+		Gui::DrawTextual({ 2,2 }, "Overlay v 1.0.0");
 	}
 };

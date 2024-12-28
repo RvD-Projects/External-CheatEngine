@@ -1,8 +1,5 @@
 #include "Application.h"
 #include "Modules/RootModule.h"
-#include <thread>
-
-using namespace Engine;
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -45,28 +42,11 @@ INT APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 	RegisterClassExW(&wc);
 
-	const HWND window = CreateWindowExW(WS_EX_TOPMOST | WS_EX_TRANSPARENT | WS_EX_LAYERED, wc.lpszClassName, wc.lpszClassName, WS_POPUP, 0, 0, SD.w, SD.h, NULL, NULL, hInstance, NULL);
+	const HWND window = CreateWindowExW(WS_EX_TOPMOST | WS_EX_TRANSPARENT | WS_EX_LAYERED, wc.lpszClassName, wc.lpszClassName,
+		WS_POPUP, 0, 0, 1920, 1080, NULL, NULL, hInstance, NULL);
 
 	SetLayeredWindowAttributes(window, 0, 0, LWA_ALPHA);
 	SetLayeredWindowAttributes(window, 0, RGB(0, 0, 0), LWA_COLORKEY);
-	{
-		RECT client_area;
-		GetClientRect(window, &client_area);
-
-		RECT window_area;
-		GetWindowRect(window, &window_area);
-
-		POINT diff;
-		ClientToScreen(window, &diff);
-
-		const MARGINS margins{
-			window_area.left + diff.x,
-			window_area.top + diff.y,
-			client_area.right + diff.x,
-			client_area.bottom + diff.y};
-
-		DwmExtendFrameIntoClientArea(window, &margins);
-	}
 
 	DXGI_SWAP_CHAIN_DESC sd{};
 	sd.BufferCount = 2U;
@@ -126,12 +106,10 @@ INT APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	ImGui_ImplWin32_Init(window);
 	ImGui_ImplDX11_Init(device, context);
 
-	Engine::Init();
-	root_module.Init();
-	std::thread read([&]()
-		{ root_module.Loop(); });
-
 	bool running = true;
+	Start(L"cs2.exe", L"client.dll", L"Counter-Strike 2", window);
+	RootModule* Modules = new RootModule();
+	
 	while (running)
 	{
 		MSG msg;
@@ -162,7 +140,7 @@ INT APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		ImGui_ImplWin32_NewFrame();
 		ImGui::NewFrame();
 
-		root_module.Render();
+		Modules->Render();
 
 		ImGui::Render();
 
@@ -172,6 +150,7 @@ INT APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 		swap_chain->Present(1U, 0U);
+		::isReady = true;
 	}
 
 	ImGui_ImplDX11_Shutdown();

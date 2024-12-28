@@ -3,21 +3,37 @@
 #include <cmath>
 #include <numbers>
 
-struct vec4
+struct Dimension
 {
-	float w, x, y, z;
+	float w, h, d;
+
+	Dimension operator/(float dividend)
+	{
+		return { this->w / dividend, this->h / dividend ,this->d / dividend };
+	}
+	Dimension operator*(float dividend)
+	{
+		return { this->w * dividend, this->h * dividend ,this->d * dividend };
+	}
 };
 
-struct vec3
+struct Position
+{
+	float x, y;
+};
+
+struct vec2 : Position {};
+
+struct vec3 : vec2
 {
 	float x, y, z;
 	vec3 operator+(vec3 other)
 	{
-		return {this->x + other.x, this->y + other.y, this->z + other.z};
+		return { this->x + other.x, this->y + other.y, this->z + other.z };
 	}
 	vec3 operator-(vec3 other)
 	{
-		return {this->x - other.x, this->y - other.y, this->z - other.z};
+		return { this->x - other.x, this->y - other.y, this->z - other.z };
 	}
 
 	vec3 RelativeAngle()
@@ -25,16 +41,25 @@ struct vec3
 		return {
 			std::atan2(-z, std::hypot(x, y)) * (180.0f / std::numbers::pi_v<float>),
 			std::atan2(y, x) * (180.0f / std::numbers::pi_v<float>),
-			0.0f};
+			0.0f };
 	}
 };
 
-struct vec2
+struct vec4 : vec3
 {
-	float x, y;
+	float w;
 };
 
-struct Dimension
+struct APP_INFO
 {
-	float w, h, d;
+	const wchar_t* w_name;
+	const wchar_t* exe_name;
+	const wchar_t* dll_name;
+
+	uintptr_t pid;
+	uintptr_t dll;
+
+	RECT rect;
+	Position position;
+	Dimension dimension;
 };

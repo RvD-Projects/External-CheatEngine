@@ -5,6 +5,11 @@
 class EspModule : public Module
 {
 public:
+	void Execute() override
+	{
+		this->UpdatePointers(this->rootModule);
+	}
+
 	void Render() override
 	{
 		for (Player player : ENEMIES)
@@ -13,11 +18,11 @@ public:
 				continue;
 
 			vec2 HEAD_SCREEN, FEET_SCREEN;
-			const bool HEAD_V = Geo::Get2DVector(player.position, HEAD_SCREEN, VM.matrix, SD);
+			const bool HEAD_V = Geo::Get2DVector(player.position, HEAD_SCREEN, VM.matrix, GetClientDimension());
 			if (!HEAD_V)
 				continue;
 
-			const bool FEET_V = Geo::Get2DVector(player.viewCamPos, FEET_SCREEN, VM.matrix, SD);
+			const bool FEET_V = Geo::Get2DVector(player.viewCamPos, FEET_SCREEN, VM.matrix, GetClientDimension());
 			if (!FEET_V)
 				continue;
 
@@ -32,6 +37,7 @@ public:
 			Gui::DrawTextual(HEAD_SCREEN, player.name.c_str());
 		}
 
-		Gui::DrawCircle({ SD_H.w, SD_H.h }, 8, { 255, 0, 0, 255 });
+		auto half = GetClientDimension() / 2;
+		Gui::DrawCircle({ half.w, half.h }, 8, { 255, 0, 0, 255 }, 32);
 	}
 };

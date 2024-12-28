@@ -7,9 +7,10 @@ class AimBotModule : public Module
 	bool aimAssist = false;
 	bool clickAssist = true;
 
-public:
 	void Execute() override
 	{
+		this->UpdatePointers(this->rootModule);
+
 		if (!MyLocalPlayer.isInitialized || MyLocalPlayer.crossIndex < 0)
 			return;
 
@@ -17,26 +18,29 @@ public:
 		const uintptr_t entity_t = Read<uintptr_t>(listEntry_t + 120 * (MyLocalPlayer.crossIndex & 0x1ff));
 
 		std::vector<Player> filteredPlayers;
-		std::copy_if(ENTITIES.begin(), ENTITIES.end(), std::back_inserter(filteredPlayers), [&entity_t](const Player &player)
-					 { return player.health > 0 && !player.isLocalPlayer && !player.isLocalPlayerTeam && player.entity == entity_t; });
+		std::copy_if(ENTITIES.begin(), ENTITIES.end(), std::back_inserter(filteredPlayers), [&entity_t](const Player& player)
+			{ return player.health > 0 && !player.isLocalPlayer && !player.isLocalPlayerTeam && player.entity == entity_t; });
 
 		if (filteredPlayers.empty())
 			return;
 
 		vec2 out;
 		Player player = filteredPlayers.at(0);
-		if (Geo::Get2DVector(player.position, out, VM.matrix, SD))
+		if (Geo::Get2DVector(player.position, out, VM.matrix, GetClientDimension()))
 		{
-			if (aimAssist && GetAsyncKeyState(VK_SHIFT))
+			if (aimAssist && GetKeyState(VK_SHIFT))
 			{
-				SetCursorPos(out.x, out.y);
+				mouse_event(MOUSEEVENTF_MOVE, out.x, out.y, 0, 0);
 			}
 
-			if (clickAssist && GetAsyncKeyState(VK_SHIFT))
+			if (clickAssist && GetKeyState(VK_SHIFT))
 			{
 				mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
 				mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
 			}
 		}
 	}
+
+public:
+	void Render() override {};
 };

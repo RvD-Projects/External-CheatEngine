@@ -1,29 +1,36 @@
 #pragma once
 
 #include "Engine.h"
-#include "Player.h"
+#include "GameDumper/Dumps/offsets.hpp"
+#include "GameDumper/Dumps/client_dll.hpp"
+#include "GameDumper/Dumps/server_dll.hpp"
+
+using namespace cs2_dumper::offsets::client_dll;
+using namespace cs2_dumper::schemas::client_dll;
+using namespace cs2_dumper::schemas::client_dll::C_BaseEntity;
+using namespace cs2_dumper::schemas::client_dll::C_CSGameRules;
+using namespace cs2_dumper::schemas::client_dll::C_BasePlayerPawn;
+using namespace cs2_dumper::schemas::client_dll::C_BaseModelEntity;
+using namespace cs2_dumper::schemas::client_dll::C_CSPlayerPawnBase;
+using namespace cs2_dumper::schemas::client_dll::CCSPlayerController;
 
 using namespace Engine;
 
 namespace GameRef
 {
-	ViewMatrix VM;
-	uintptr_t ENTITIES_LIST;
-
-	Player MyLocalPlayer;
-    std::vector<Player> ENTITIES;
-    std::vector<Player> ENEMIES;
-    std::vector<Player> FRIENDLIES;
-
-	uintptr_t GetLocalPlayer_T(const bool& force = false)
+	ptrdiff_t EntityEntryDiff(const ptrdiff_t& ptr, const ptrdiff_t& mul = 0x7ff)
 	{
-		return ReadClient<uintptr_t>(dwLocalPlayerPawn);
-	};
+		return (0x8 * (ptr & mul) >> 0x9) + 16;
+	}
 
-	template <typename T>
-	T ReadEntities(const ptrdiff_t& ptr_diff)
+	ptrdiff_t EntityDiff(const ptrdiff_t& ptr)
 	{
-		return Read<T>(ENTITIES_LIST + ptr_diff);
+		return 120 * (ptr & 0x1ff);
+	}
+
+	uintptr_t GetLocalPlayer_T()
+	{
+		return ReadDLL<uintptr_t>(dwLocalPlayerPawn);
 	};
 
 	template <typename T>
@@ -33,11 +40,11 @@ namespace GameRef
 	};
 
 	bool GameIsDefuse() {
-		return ReadClient<bool>(m_bMapHasBombTarget);
+		return ReadDLL<bool>(m_bMapHasBombTarget);
 	}
 
 	bool GameIsRescue() {
-		return ReadClient<bool>(m_bMapHasBombTarget);
+		return ReadDLL<bool>(m_bMapHasBombTarget);
 	}
 
 	bool GameIsTeamPlay() {
