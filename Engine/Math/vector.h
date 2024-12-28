@@ -9,11 +9,11 @@ struct Dimension
 
 	Dimension operator/(float dividend)
 	{
-		return { this->w / dividend, this->h / dividend ,this->d / dividend };
+		return {this->w / dividend, this->h / dividend, this->d / dividend};
 	}
 	Dimension operator*(float dividend)
 	{
-		return { this->w * dividend, this->h * dividend ,this->d * dividend };
+		return {this->w * dividend, this->h * dividend, this->d * dividend};
 	}
 };
 
@@ -22,24 +22,11 @@ struct Position
 	float x, y;
 	Position operator+(Position other)
 	{
-		return { this->x + other.x, this->y + other.y };
+		return {this->x + other.x, this->y + other.y};
 	}
 	Position operator-(Position other)
 	{
-		return { this->x - other.x, this->y - other.y };
-	}
-};
-
-struct vec2
-{
-	float x, y;
-	vec2 operator+(vec2 other)
-	{
-		return { this->x + other.x, this->y + other.y };
-	}
-	vec2 operator-(vec2 other)
-	{
-		return { this->x - other.x, this->y - other.y };
+		return {this->x - other.x, this->y - other.y};
 	}
 };
 
@@ -48,11 +35,11 @@ struct vec3
 	float x, y, z;
 	vec3 operator+(vec3 other)
 	{
-		return { this->x + other.x, this->y + other.y, this->z + other.z };
+		return {this->x + other.x, this->y + other.y, this->z + other.z};
 	}
 	vec3 operator-(vec3 other)
 	{
-		return { this->x - other.x, this->y - other.y, this->z - other.z };
+		return {this->x - other.x, this->y - other.y, this->z - other.z};
 	}
 
 	vec3 RelativeAngle()
@@ -60,7 +47,7 @@ struct vec3
 		return {
 			std::atan2(-z, std::hypot(x, y)) * (180.0f / std::numbers::pi_v<float>),
 			std::atan2(y, x) * (180.0f / std::numbers::pi_v<float>),
-			0.0f };
+			0.0f};
 	}
 };
 
@@ -71,9 +58,9 @@ struct vec4
 
 struct APP_INFO
 {
-	const wchar_t* w_name;
-	const wchar_t* exe_name;
-	const wchar_t* dll_name;
+	const wchar_t *w_name;
+	const wchar_t *exe_name;
+	const wchar_t *dll_name;
 
 	uintptr_t pid;
 	uintptr_t dll;

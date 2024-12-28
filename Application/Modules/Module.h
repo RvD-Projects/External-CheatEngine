@@ -23,7 +23,8 @@ class Module
 public:
 	virtual void Render() {}
 
-	void Init(Module* rootModule) {
+	void Init(Module *rootModule)
+	{
 		this->UpdatePointers(rootModule);
 		this->Init();
 	}
@@ -33,8 +34,8 @@ protected:
 	DWORD refreshRate = 16;
 	std::atomic<bool> isReady;
 	std::atomic<bool> isRunning;
-	Module* rootModule = nullptr;
-	Module* parentModule = nullptr;
+	Module *rootModule = nullptr;
+	Module *parentModule = nullptr;
 
 	ViewMatrix VM;
 	uintptr_t ENTITIES_LIST;
@@ -47,8 +48,10 @@ protected:
 	virtual void Init() {};
 	virtual void Execute() {};
 
-	void UpdatePointers(Module* rootModule) {
-		if (rootModule) {
+	void UpdatePointers(Module *rootModule)
+	{
+		if (rootModule)
+		{
 			this->rootModule = rootModule;
 			this->ENEMIES = this->rootModule->ENEMIES;
 			this->ENTITIES = this->rootModule->ENTITIES;
@@ -60,19 +63,43 @@ protected:
 	}
 
 	template <typename T>
-	T ReadEntities(const ptrdiff_t& ptr_diff)
+	T ReadEntities(const ptrdiff_t &ptr_diff)
 	{
 		return Read<T>(ENTITIES_LIST + ptr_diff);
 	};
 
+	const bool GetCrosshairTarget(Player &inOut)
+	{
+		if (MyLocalPlayer.crossIndex < 0)
+			return false;
+
+		const uintptr_t listEntry_t = ReadEntities<uintptr_t>(0x8 * (MyLocalPlayer.crossIndex >> 9) + 16);
+		const uintptr_t entity_t = Read<uintptr_t>(listEntry_t + 120 * (MyLocalPlayer.crossIndex & 0x1ff));
+
+		std::vector<Player> filteredPlayers;
+		std::copy_if(ENTITIES.begin(), ENTITIES.end(),
+					 std::back_inserter(filteredPlayers), [&entity_t](const Player &player)
+					 { return player.entity == entity_t; });
+
+		if (filteredPlayers.empty())
+			return false;
+
+		inOut = filteredPlayers.at(0);
+
+		return true;
+	}
+
 public:
-	Module() {
+	Module()
+	{
 		thRead = std::thread(&Module::Loop, this);
 	};
 
-	~Module() {
+	~Module()
+	{
 		this->isRunning = false;
-		if (this->thRead.joinable()) {
+		if (this->thRead.joinable())
+		{
 			this->thRead.join();
 		}
 	}

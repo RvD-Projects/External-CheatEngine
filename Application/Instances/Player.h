@@ -10,8 +10,8 @@ public:
 	bool isInitialized = false;
 	bool isLocalPlayer = false;
 	bool isLocalPlayerTeam = false;
-
 	bool takesDamage;
+
 	int crossIndex;
 	UINT team, health, armor, maxHealth, lifeState, hammerID;
 
@@ -48,10 +48,11 @@ public:
 
 		team = ReadEntity<UINT>(m_iTeamNum);
 		health = ReadEntity<UINT>(m_iHealth);
-		armor = ReadEntity<UINT>(m_iPawnArmor);
+		armor = ReadController<UINT>(m_iPawnArmor);
 		maxHealth = ReadEntity<UINT>(m_iMaxHealth);
 		lifeState = ReadEntity<UINT>(m_lifeState);
 		position = ReadEntity<vec3>(m_vOldOrigin);
+
 		viewCamPos = position + ReadEntity<vec3>(m_vecViewOffset);
 		name = ReadString(ReadController<uintptr_t>(m_sSanitizedPlayerName));
 
@@ -87,4 +88,24 @@ public:
 	{
 		return Read<T>(pawn + ptr_diff);
 	};
+
+	const bool IsAlive()
+	{
+		return health > 0;
+	}
+
+	const bool IsValidTarget()
+	{
+		return !isLocalPlayerTeam && !isLocalPlayer && health > 0 && takesDamage;
+	}
+
+	const bool IsLocalPlayer()
+	{
+		return isLocalPlayer;
+	}
+
+	const bool IsEnemy()
+	{
+		return !isLocalPlayerTeam && !isLocalPlayer;
+	}
 };
