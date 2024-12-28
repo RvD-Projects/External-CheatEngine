@@ -1,5 +1,5 @@
 // Generated using https://github.com/a2x/cs2-dumper
-// 2024-12-26 08:12:11.318592300 UTC
+// 2024-12-28 05:13:36.458864400 UTC
 
 #pragma once
 
@@ -711,7 +711,7 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_vecCsViewPunchAngle = 0x40; // QAngle
                 constexpr std::ptrdiff_t m_nCsViewPunchAngleTick = 0x4C; // GameTick_t
                 constexpr std::ptrdiff_t m_flCsViewPunchAngleTickRatio = 0x50; // float32
-                constexpr std::ptrdiff_t m_PlayerFog = 0x58; // 
+                constexpr std::ptrdiff_t m_PlayerFog = 0x58; // C_fogplayerparams_t
                 constexpr std::ptrdiff_t m_hColorCorrectionCtrl = 0x98; // CHandle<C_ColorCorrection>
                 constexpr std::ptrdiff_t m_hViewEntity = 0x9C; // CHandle<C_BaseEntity>
                 constexpr std::ptrdiff_t m_hTonemapController = 0xA0; // CHandle<C_TonemapController2>
@@ -2114,8 +2114,8 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_bClipHitStaticWorld = 0x139C; // bool
                 constexpr std::ptrdiff_t m_bCachedPlaneIsValid = 0x139D; // bool
                 constexpr std::ptrdiff_t m_pClippingWeapon = 0x13A0; // C_CSWeaponBase*
-                constexpr std::ptrdiff_t m_previousPlayerState = 0x13A8; // CSPlayerState
-                constexpr std::ptrdiff_t m_iPlayerState = 0x13AC; // CSPlayerState
+                constexpr std::ptrdiff_t m_previousPlayerState = 0x13A8; // 
+                constexpr std::ptrdiff_t m_iPlayerState = 0x13AC; // 
                 constexpr std::ptrdiff_t m_bIsRescuing = 0x13B0; // bool
                 constexpr std::ptrdiff_t m_fImmuneToGunGameDamageTime = 0x13B4; // GameTime_t
                 constexpr std::ptrdiff_t m_fImmuneToGunGameDamageTimeLast = 0x13B8; // GameTime_t
@@ -2738,7 +2738,7 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_iReapplyProvisionParity = 0x20; // int32
                 constexpr std::ptrdiff_t m_hOuter = 0x24; // CHandle<C_BaseEntity>
                 constexpr std::ptrdiff_t m_bPreventLoopback = 0x28; // bool
-                constexpr std::ptrdiff_t m_ProviderType = 0x2C; // 
+                constexpr std::ptrdiff_t m_ProviderType = 0x2C; // attributeprovidertypes_t
                 constexpr std::ptrdiff_t m_CachedResults = 0x30; // CUtlVector<CAttributeManager::cached_attribute_float_t>
             }
             // Parent: C_BaseEntity
@@ -3652,7 +3652,7 @@ namespace cs2_dumper {
             // Field count: 2
             namespace CGrenadeTracer {
                 constexpr std::ptrdiff_t m_flTracerDuration = 0xD40; // float32
-                constexpr std::ptrdiff_t m_nType = 0xD44; // GrenadeType_t
+                constexpr std::ptrdiff_t m_nType = 0xD44; // 
             }
             // Parent: C_BaseTrigger
             // Field count: 1
@@ -4762,8 +4762,8 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_flTimeoutInterval = 0x580; // float32
                 constexpr std::ptrdiff_t m_bAsynchronouslySpawnEntities = 0x584; // bool
                 constexpr std::ptrdiff_t m_pOutputOnSpawned = 0x588; // CEntityIOOutput
-                constexpr std::ptrdiff_t m_clientOnlyEntityBehavior = 0x5B0; // PointTemplateClientOnlyEntityBehavior_t
-                constexpr std::ptrdiff_t m_ownerSpawnGroupType = 0x5B4; // 
+                constexpr std::ptrdiff_t m_clientOnlyEntityBehavior = 0x5B0; // 
+                constexpr std::ptrdiff_t m_ownerSpawnGroupType = 0x5B4; // PointTemplateOwnerSpawnGroupType_t
                 constexpr std::ptrdiff_t m_createdSpawnGroupHandles = 0x5B8; // CUtlVector<uint32>
                 constexpr std::ptrdiff_t m_SpawnedEntityHandles = 0x5D0; // CUtlVector<CEntityHandle>
                 constexpr std::ptrdiff_t m_ScriptSpawnCallback = 0x5E8; // HSCRIPT
@@ -6370,7 +6370,7 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_bLocked = 0x123D; // bool
                 constexpr std::ptrdiff_t m_closedPosition = 0x1240; // Vector
                 constexpr std::ptrdiff_t m_closedAngles = 0x124C; // QAngle
-                constexpr std::ptrdiff_t m_hMaster = 0x1258; // CHandle<C_BasePropDoor>
+                constexpr std::ptrdiff_t m_hMaster = 0x1258; // 
                 constexpr std::ptrdiff_t m_vWhereToSetLightingOrigin = 0x125C; // Vector
             }
             // Parent: C_CSGO_TeamSelectCharacterPosition

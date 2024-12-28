@@ -1,5 +1,5 @@
 // Generated using https://github.com/a2x/cs2-dumper
-// 2024-12-26 08:12:11.318592300 UTC
+// 2024-12-28 05:13:36.458864400 UTC
 
 #pragma once
 
@@ -644,7 +644,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CRegionSVM {
-                constexpr std::ptrdiff_t m_Planes = 0x0; // CUtlVector<RnPlane_t>
+                constexpr std::ptrdiff_t m_Planes = 0x0; // 
                 constexpr std::ptrdiff_t m_Nodes = 0x18; // CUtlVector<uint32>
             }
             // Parent: None
@@ -953,8 +953,8 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_Vertices = 0x70; // 
                 constexpr std::ptrdiff_t m_VertexPositions = 0x88; // CUtlVector<Vector>
                 constexpr std::ptrdiff_t m_Edges = 0xA0; // 
-                constexpr std::ptrdiff_t m_Faces = 0xB8; // 
-                constexpr std::ptrdiff_t m_FacePlanes = 0xD0; // CUtlVector<RnPlane_t>
+                constexpr std::ptrdiff_t m_Faces = 0xB8; // CUtlVector<RnFace_t>
+                constexpr std::ptrdiff_t m_FacePlanes = 0xD0; // 
                 constexpr std::ptrdiff_t m_nFlags = 0xE8; // uint32
                 constexpr std::ptrdiff_t m_pRegionSVM = 0xF0; // CRegionSVM*
             }

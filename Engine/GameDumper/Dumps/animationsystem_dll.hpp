@@ -1,5 +1,5 @@
 // Generated using https://github.com/a2x/cs2-dumper
-// 2024-12-26 08:12:11.318592300 UTC
+// 2024-12-28 05:13:36.458864400 UTC
 
 #pragma once
 
@@ -1210,7 +1210,7 @@ namespace cs2_dumper {
             namespace CSequenceUpdateNode {
                 constexpr std::ptrdiff_t m_hSequence = 0x70; // HSequence
                 constexpr std::ptrdiff_t m_duration = 0x74; // float32
-                constexpr std::ptrdiff_t m_paramSpans = 0x78; // CParamSpanUpdater
+                constexpr std::ptrdiff_t m_paramSpans = 0x78; // 
                 constexpr std::ptrdiff_t m_tags = 0x90; // CUtlVector<TagSpan_t>
             }
             // Parent: CNmPoseNode__CDefinition
@@ -1370,7 +1370,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CMotionGraph {
-                constexpr std::ptrdiff_t m_paramSpans = 0x10; // CParamSpanUpdater
+                constexpr std::ptrdiff_t m_paramSpans = 0x10; // 
                 constexpr std::ptrdiff_t m_tags = 0x28; // CUtlVector<TagSpan_t>
                 constexpr std::ptrdiff_t m_pRootNode = 0x40; // CSmartPtr<CMotionNode>
                 constexpr std::ptrdiff_t m_nParameterCount = 0x48; // int32
@@ -1917,7 +1917,7 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_parts = 0x80; // CUtlVector<VPhysXBodyPart_t>
                 constexpr std::ptrdiff_t m_constraints2 = 0x98; // CUtlVector<VPhysXConstraint2_t>
                 constexpr std::ptrdiff_t m_joints = 0xB0; // CUtlVector<VPhysXJoint_t>
-                constexpr std::ptrdiff_t m_pFeModel = 0xC8; // PhysFeModelDesc_t*
+                constexpr std::ptrdiff_t m_pFeModel = 0xC8; // 
                 constexpr std::ptrdiff_t m_boneParents = 0xD0; // CUtlVector<uint16>
                 constexpr std::ptrdiff_t m_surfacePropertyHashes = 0xE8; // CUtlVector<uint32>
                 constexpr std::ptrdiff_t m_collisionAttributes = 0x100; // CUtlVector<VPhysXCollisionAttributes_t>
@@ -2686,7 +2686,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CRagdollComponentUpdater {
-                constexpr std::ptrdiff_t m_ragdollNodePaths = 0x30; // 
+                constexpr std::ptrdiff_t m_ragdollNodePaths = 0x30; // CUtlVector<CAnimNodePath>
                 constexpr std::ptrdiff_t m_boneIndices = 0x48; // 
                 constexpr std::ptrdiff_t m_boneNames = 0x60; // CUtlVector<CUtlString>
                 constexpr std::ptrdiff_t m_weightLists = 0x78; // CUtlVector<WeightList>
@@ -2758,7 +2758,7 @@ namespace cs2_dumper {
             namespace CBlend2DUpdateNode {
                 constexpr std::ptrdiff_t m_items = 0x60; // CUtlVector<BlendItem_t>
                 constexpr std::ptrdiff_t m_tags = 0x78; // CUtlVector<TagSpan_t>
-                constexpr std::ptrdiff_t m_paramSpans = 0x90; // CParamSpanUpdater
+                constexpr std::ptrdiff_t m_paramSpans = 0x90; // 
                 constexpr std::ptrdiff_t m_nodeItemIndices = 0xA8; // 
                 constexpr std::ptrdiff_t m_damping = 0xC0; // CAnimInputDamping
                 constexpr std::ptrdiff_t m_blendSourceX = 0xD0; // AnimValueSource
@@ -3143,7 +3143,7 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_description = 0x20; // CUtlString
                 constexpr std::ptrdiff_t m_physics = 0x28; // 
                 constexpr std::ptrdiff_t m_audioSounds = 0x50; // CPhysSurfacePropertiesSoundNames
-                constexpr std::ptrdiff_t m_audioParams = 0xA8; // 
+                constexpr std::ptrdiff_t m_audioParams = 0xA8; // CPhysSurfacePropertiesAudio
             }
             // Parent: CNmValueNode__CDefinition
             // Field count: 0
@@ -5562,7 +5562,7 @@ namespace cs2_dumper {
             // MGetKV3ClassDefaults
             namespace CAnimAttachment {
                 constexpr std::ptrdiff_t m_influenceRotations = 0x0; // Quaternion[3]
-                constexpr std::ptrdiff_t m_influenceOffsets = 0x30; // 
+                constexpr std::ptrdiff_t m_influenceOffsets = 0x30; // VectorAligned[3]
                 constexpr std::ptrdiff_t m_influenceIndices = 0x60; // int32[3]
                 constexpr std::ptrdiff_t m_influenceWeights = 0x6C; // float32[3]
                 constexpr std::ptrdiff_t m_numInfluences = 0x78; // uint8
