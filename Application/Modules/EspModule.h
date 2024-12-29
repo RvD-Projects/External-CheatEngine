@@ -80,8 +80,8 @@ class EspModule : public Module
 		Dimension ESP_D;
 		GetEspBox(EYE_SCREEN, FEET_SCREEN, ESP_P, ESP_D);
 
-		Gui::DrawFilledCircle(EYE_SCREEN, 32, Green25, 6);
-		Gui::DrawCircle(EYE_SCREEN, 32, White50, 6);
+		Gui::DrawFilledCircle(EYE_SCREEN, 32, Green25);
+		Gui::DrawCircle(EYE_SCREEN, 32, White50);
 	}
 
 public:
@@ -105,6 +105,6 @@ public:
 		}
 
 		const Dimension half = GetClientDimension() / 2;
-		Gui::DrawFilledCircle({half.w, half.h}, 64, White12, 32);
+		Gui::DrawFilledCircle({half.w, half.h}, 64, White12);
 	}
 };

@@ -40,23 +40,23 @@ public:
 			thickness);
 	}
 
-	static void DrawCircle(const Position &p, float radius, GuiColor color = {255, 255, 255, 255}, const float segments = 12, const float thickness = 1.5f)
+	static void DrawCircle(const Position &p, float radius, GuiColor color = {255, 255, 255, 255}, const float thickness = 1.5f, const int segments = 0)
 	{
 		ImGui::GetBackgroundDrawList()->AddCircle(
 			ImVec2(p.x, p.y),
 			radius,
 			Color(color),
-			segments,
+			segments > 0 ? segments : radius * M_PI,
 			thickness);
 	}
 
-	static void DrawFilledCircle(const Position &p, const float radius, GuiColor color = {255, 255, 255, 255}, const int segments = 12)
+	static void DrawFilledCircle(const Position &p, const float radius, GuiColor color = {255, 255, 255, 255}, const int segments = 0)
 	{
 		ImGui::GetBackgroundDrawList()->AddCircleFilled(
 			ImVec2(p.x, p.y),
 			radius,
 			Color(color),
-			segments);
+			segments > 0 ? segments : radius * M_PI);
 	}
 
 	static void DrawTextual(const Position &p, const char *text, const float fontSize = 2.f, const GuiColor color = {255, 255, 255, 255})
