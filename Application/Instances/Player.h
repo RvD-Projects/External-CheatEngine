@@ -17,7 +17,8 @@ public:
 
 	std::string name;
 	Vector3 position, viewCamPos;
-	Position feetScreen, eyeScreen;
+	Position screenFeet, screenEye, esp_p;
+	Dimension screen_d, esp_d;
 
 	uintptr_t listEntry, ctrl, pawnCtrl, entity, pawn;
 
@@ -89,6 +90,12 @@ public:
 	{
 		return Read<T>(pawn + ptr_diff);
 	};
+
+	void GetEsp(Position &posOut, Dimension &dimOut)
+	{
+		posOut = this->esp_p;
+		dimOut = this->esp_d;
+	}
 
 	const bool IsAlive()
 	{

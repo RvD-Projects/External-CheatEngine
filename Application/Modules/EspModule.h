@@ -16,39 +16,18 @@ class EspModule : public Module
 		this->UpdatePointers(this->rootModule);
 	}
 
-	void GetEspBox(const Position &TOP, const Position &BOTTOM, Position &ESP_P, Dimension &ESP_D)
+	void RenderPlayerSkeleton(Player &player)
 	{
-		const float HEIGHT = (BOTTOM.y - TOP.y);
-		const float WIDTH = HEIGHT * 0.777f;
-
-		ESP_D.h = HEIGHT * 1.1777f;
-		ESP_D.w = WIDTH;
-
-		ESP_P.x = BOTTOM.x - (ESP_D.w * 0.5f);
-		ESP_P.y = BOTTOM.y - ESP_D.h;
+		const float headRadius = player.screen_d.h / 16;
+		Gui::DrawFilledCircle(player.screenEye, headRadius, Green25);
+		Gui::DrawCircle(player.screenEye, headRadius, White50);
 	}
 
-	void RenderPlayerBox(const Player &player)
+	void RenderPlayerBoxStats(Player &player)
 	{
 		Position ESP_P;
 		Dimension ESP_D;
-		GetEspBox(player.eyeScreen, player.feetScreen, ESP_P, ESP_D);
-
-		Gui::DrawRectangle(ESP_P, ESP_D, White50);
-		Gui::DrawTextual(ESP_P + Position{ESP_D.w + 4, 0}, player.name.data(), 8);
-		Gui::DrawTextual(ESP_P + Position{ESP_D.w + 4, 16}, std::to_string(player.health).append(" HP").data(), 8, Red64);
-
-		if (player.armor)
-		{
-			Gui::DrawTextual(ESP_P + Position{ESP_D.w + 4, 32}, std::to_string(player.armor).append(" AP").data(), 8, Blue64);
-		}
-	}
-
-	void RenderPlayerBoxStats(const Player &player)
-	{
-		Position ESP_P;
-		Dimension ESP_D;
-		GetEspBox(player.eyeScreen, player.feetScreen, ESP_P, ESP_D);
+		player.GetEsp(ESP_P, ESP_D);
 
 		const float healthRatio = (float)player.health / player.maxHealth;
 		const float armorRatio = (float)player.armor / 100.0f;
@@ -74,14 +53,20 @@ class EspModule : public Module
 		Gui::DrawRectangle(BORDER_POS, BORDER_D);
 	}
 
-	void RenderPlayerSkeleton(const Player &player)
+	void RenderPlayerBox(Player &player)
 	{
 		Position ESP_P;
 		Dimension ESP_D;
-		GetEspBox(player.eyeScreen, player.feetScreen, ESP_P, ESP_D);
+		player.GetEsp(ESP_P, ESP_D);
 
-		Gui::DrawFilledCircle(player.eyeScreen, 32, Green25);
-		Gui::DrawCircle(player.eyeScreen, 32, White50);
+		Gui::DrawRectangle(ESP_P, ESP_D, White50);
+		Gui::DrawTextual(ESP_P + Position{ESP_D.w + 4, 0}, player.name.data(), 8);
+		Gui::DrawTextual(ESP_P + Position{ESP_D.w + 4, 16}, std::to_string(player.health).append(" HP").data(), 8, Red64);
+
+		if (player.armor)
+		{
+			Gui::DrawTextual(ESP_P + Position{ESP_D.w + 4, 32}, std::to_string(player.armor).append(" AP").data(), 8, Blue64);
+		}
 	}
 
 public:
@@ -93,8 +78,8 @@ public:
 				continue;
 
 			RenderPlayerSkeleton(player);
-			RenderPlayerBox(player);
 			RenderPlayerBoxStats(player);
+			RenderPlayerBox(player);
 		}
 
 		const Dimension half = GetClientDimension() / 2;

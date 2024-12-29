@@ -34,7 +34,7 @@ class RootModule : public Module
 			if (!player.isInitialized)
 				continue;
 
-			SetPlayerScreenPos(VM, player);
+			SetPlayerScreenDef(VM, player);
 
 			if (GetLocalPlayer_T() == player.entity)
 			{
@@ -62,17 +62,24 @@ class RootModule : public Module
 		FRIENDLIES = bF;
 	};
 
-	void SetPlayerScreenPos(const ViewMatrix &VM, Player &player)
+	void SetPlayerScreenDef(const ViewMatrix &VM, Player &player)
 	{
 		Position FEET, EYES;
-		if (Geo::Get2DVector(player.position, FEET, VM.matrix, GetClientDimension()))
-		{
-			player.feetScreen = FEET;
-		}
-
 		if (Geo::Get2DVector(player.viewCamPos, EYES, VM.matrix, GetClientDimension()))
 		{
-			player.eyeScreen = EYES;
+			player.screenEye = EYES;
+			if (Geo::Get2DVector(player.position, FEET, VM.matrix, GetClientDimension()))
+			{
+				player.screenFeet = FEET;
+				player.screen_d.h = (player.screenFeet.y - player.screenEye.y) * 1.1777f;
+				player.screen_d.w = player.screen_d.h * 0.777f;
+
+				player.esp_d = player.screen_d;
+				player.esp_p = Position{
+					player.screenFeet.x - (player.esp_d.w * 0.5f),
+					player.screenFeet.y - player.esp_d.h,
+				};
+			}
 		}
 	};
 
