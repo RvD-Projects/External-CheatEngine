@@ -18,14 +18,14 @@ class EspModule : public Module
 
 	void GetEspBox(Position &EYE_SCREEN, Position &FEET_SCREEN, Position &ESP_P, Dimension &ESP_D)
 	{
-		const float HEIGHT = (FEET_SCREEN.y - EYE_SCREEN.y) * 1.1777f;
+		const float HEIGHT = (FEET_SCREEN.y - EYE_SCREEN.y);
 		const float WIDTH = HEIGHT * 0.777f;
 
+		ESP_D.h = HEIGHT * 1.1777f;
 		ESP_D.w = WIDTH;
-		ESP_D.h = HEIGHT;
 
-		ESP_P.x = FEET_SCREEN.x - (WIDTH * 0.5f);
-		ESP_P.y = FEET_SCREEN.y - HEIGHT;
+		ESP_P.x = FEET_SCREEN.x - (ESP_D.w * 0.5f);
+		ESP_P.y = FEET_SCREEN.y - ESP_D.h;
 	}
 
 	void RenderPlayerBox(const Player &player, Position &EYE_SCREEN, Position &FEET_SCREEN)
