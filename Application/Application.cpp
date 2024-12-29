@@ -43,10 +43,11 @@ INT APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	RegisterClassExW(&wc);
 
 	const HWND window = CreateWindowExW(WS_EX_TOPMOST | WS_EX_TRANSPARENT | WS_EX_LAYERED, wc.lpszClassName, wc.lpszClassName,
-		WS_POPUP, 0, 0, 1920, 1080, NULL, NULL, hInstance, NULL);
+										WS_POPUP, 0, 0, 1920, 1080, NULL, NULL, hInstance, NULL);
 
-	SetLayeredWindowAttributes(window, 0, 0, LWA_ALPHA);
-	SetLayeredWindowAttributes(window, 0, RGB(0, 0, 0), LWA_COLORKEY);
+	MARGINS margins = {-1};
+	SetLayeredWindowAttributes(window, RGB(0, 0, 0), 255, LWA_ALPHA);
+	DwmExtendFrameIntoClientArea(window, &margins);
 
 	DXGI_SWAP_CHAIN_DESC sd{};
 	sd.BufferCount = 2U;
@@ -88,11 +89,8 @@ INT APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 	ID3D11Texture2D *back_buffer;
 	swap_chain->GetBuffer(0, IID_PPV_ARGS(&back_buffer));
-
 	if (!back_buffer)
-	{
 		return 1;
-	}
 
 	device->CreateRenderTargetView(back_buffer, nullptr, &render_target_view);
 	back_buffer->Release();
@@ -101,15 +99,13 @@ INT APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	UpdateWindow(window);
 
 	ImGui::CreateContext();
-	ImGui::StyleColorsDark();
-
 	ImGui_ImplWin32_Init(window);
 	ImGui_ImplDX11_Init(device, context);
 
 	bool running = true;
 	Start(L"cs2.exe", L"client.dll", L"Counter-Strike 2", window);
-	RootModule* Modules = new RootModule();
-	
+	RootModule *Modules = new RootModule();
+
 	while (running)
 	{
 		MSG msg;
@@ -139,14 +135,12 @@ INT APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		ImGui_ImplDX11_NewFrame();
 		ImGui_ImplWin32_NewFrame();
 		ImGui::NewFrame();
-
 		Modules->Render();
-
 		ImGui::Render();
 
-		constexpr FLOAT clear_color[]{0.0F, 0.0F, 0.0F, 1.0F};
+		constexpr FLOAT CLEAR[]{0.F, 0.F, 0.F, 0.0F};
 		context->OMSetRenderTargets(1U, &render_target_view, NULL);
-		context->ClearRenderTargetView(render_target_view, clear_color);
+		context->ClearRenderTargetView(render_target_view, CLEAR);
 
 		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 		swap_chain->Present(1U, 0U);
