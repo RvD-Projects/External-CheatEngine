@@ -43,7 +43,7 @@ const GuiColor Blue50{0, 0, 255, 128.0f};
 const GuiColor Blue64{0, 0, 255, 160.0f};
 const GuiColor Blue75{0, 0, 255, 192.0f};
 
-const GuiColor GameRed{199, 51, 59, 255};
-const GuiColor GameGreen{56, 109, 41, 255};
-const GuiColor GameBlue{51, 93, 114, 255};
-const GuiColor GameBlack{32, 36, 38, 255};
+const GuiColor GameRed{199, 51, 59, 128};
+const GuiColor GameGreen{56, 109, 41, 128};
+const GuiColor GameBlue{51, 93, 114, 128};
+const GuiColor GameBlack{32, 36, 38, 128};
