@@ -18,14 +18,14 @@ class EspModule : public Module
 
 	void GetEspBox(Position &EYE_SCREEN, Position &FEET_SCREEN, Position &ESP_P, Dimension &ESP_D)
 	{
-		const float HEIGHT = (EYE_SCREEN.y - FEET_SCREEN.y) * 1.1777f;
+		const float HEIGHT = (FEET_SCREEN.y - EYE_SCREEN.y) * 1.1777f;
 		const float WIDTH = HEIGHT * 0.777f;
 
 		ESP_D.w = WIDTH;
 		ESP_D.h = HEIGHT;
 
-		ESP_P.x = EYE_SCREEN.x - (WIDTH * 0.5f);
-		ESP_P.y = EYE_SCREEN.y - HEIGHT;
+		ESP_P.x = FEET_SCREEN.x - (WIDTH * 0.5f);
+		ESP_P.y = FEET_SCREEN.y - HEIGHT;
 	}
 
 	void RenderPlayerBox(const Player &player, Position &EYE_SCREEN, Position &FEET_SCREEN)
@@ -34,13 +34,13 @@ class EspModule : public Module
 		Dimension ESP_D;
 		GetEspBox(EYE_SCREEN, FEET_SCREEN, ESP_P, ESP_D);
 
-		Gui::DrawRectangle(ESP_P, ESP_D, {255, 255, 255, 255});
+		Gui::DrawRectangle(ESP_P, ESP_D, White50);
 		Gui::DrawTextual(ESP_P + Position{ESP_D.w + 4, 0}, player.name.data(), 8);
-		Gui::DrawTextual(ESP_P + Position{ESP_D.w + 4, 16}, std::to_string(player.health).append(" HP").data(), 8, {255, 0, 0, 255});
+		Gui::DrawTextual(ESP_P + Position{ESP_D.w + 4, 16}, std::to_string(player.health).append(" HP").data(), 8, Red64);
 
 		if (player.armor)
 		{
-			Gui::DrawTextual(ESP_P + Position{ESP_D.w + 4, 32}, std::to_string(player.armor).append(" AP").data(), 8, {0, 0, 255, 255});
+			Gui::DrawTextual(ESP_P + Position{ESP_D.w + 4, 32}, std::to_string(player.armor).append(" AP").data(), 8, Blue64);
 		}
 	}
 
@@ -61,6 +61,7 @@ class EspModule : public Module
 
 		const Dimension BOX_D{BORDER_D.w / sections, BORDER_D.h * healthRatio};
 		const Position BOX_POS{BORDER_POS.x, BORDER_POS.y + BORDER_D.h - BOX_D.h};
+
 		Gui::DrawFilledRectangle(BOX_POS, BOX_D, GameRed);
 
 		if (player.armor)
@@ -73,6 +74,16 @@ class EspModule : public Module
 		Gui::DrawRectangle(BORDER_POS, BORDER_D);
 	}
 
+	void RenderPlayerSkeleton(const Player &player, Position &EYE_SCREEN, Position &FEET_SCREEN)
+	{
+		Position ESP_P;
+		Dimension ESP_D;
+		GetEspBox(EYE_SCREEN, FEET_SCREEN, ESP_P, ESP_D);
+
+		Gui::DrawFilledCircle(EYE_SCREEN, 32, Green25, 6);
+		Gui::DrawCircle(EYE_SCREEN, 32, White50, 6);
+	}
+
 public:
 	void Render() override
 	{
@@ -81,18 +92,19 @@ public:
 			if (!player.IsValidTarget())
 				continue;
 
-			Position EYE_SCREEN, FEET_SCREEN;
-			if (!Geo::Get2DVector(player.position, EYE_SCREEN, VM.matrix, GetClientDimension()))
+			Position FEET_SCREEN, EYE_SCREEN;
+			if (!Geo::Get2DVector(player.position, FEET_SCREEN, VM.matrix, GetClientDimension()))
 				continue;
 
-			if (!Geo::Get2DVector(player.viewCamPos, FEET_SCREEN, VM.matrix, GetClientDimension()))
+			if (!Geo::Get2DVector(player.viewCamPos, EYE_SCREEN, VM.matrix, GetClientDimension()))
 				continue;
 
+			RenderPlayerSkeleton(player, EYE_SCREEN, FEET_SCREEN);
 			RenderPlayerBox(player, EYE_SCREEN, FEET_SCREEN);
 			RenderPlayerBoxStats(player, EYE_SCREEN, FEET_SCREEN);
 		}
 
 		const Dimension half = GetClientDimension() / 2;
-		Gui::DrawCircle({half.w, half.h}, 16, {255, 0, 0, 255}, 128);
+		Gui::DrawFilledCircle({half.w, half.h}, 64, White12, 32);
 	}
 };
