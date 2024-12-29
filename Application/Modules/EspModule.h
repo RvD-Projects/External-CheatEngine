@@ -16,23 +16,23 @@ class EspModule : public Module
 		this->UpdatePointers(this->rootModule);
 	}
 
-	void GetEspBox(Position &EYE_SCREEN, Position &FEET_SCREEN, Position &ESP_P, Dimension &ESP_D)
+	void GetEspBox(const Position &TOP, const Position &BOTTOM, Position &ESP_P, Dimension &ESP_D)
 	{
-		const float HEIGHT = (FEET_SCREEN.y - EYE_SCREEN.y);
+		const float HEIGHT = (BOTTOM.y - TOP.y);
 		const float WIDTH = HEIGHT * 0.777f;
 
 		ESP_D.h = HEIGHT * 1.1777f;
 		ESP_D.w = WIDTH;
 
-		ESP_P.x = FEET_SCREEN.x - (ESP_D.w * 0.5f);
-		ESP_P.y = FEET_SCREEN.y - ESP_D.h;
+		ESP_P.x = BOTTOM.x - (ESP_D.w * 0.5f);
+		ESP_P.y = BOTTOM.y - ESP_D.h;
 	}
 
-	void RenderPlayerBox(const Player &player, Position &EYE_SCREEN, Position &FEET_SCREEN)
+	void RenderPlayerBox(const Player &player)
 	{
 		Position ESP_P;
 		Dimension ESP_D;
-		GetEspBox(EYE_SCREEN, FEET_SCREEN, ESP_P, ESP_D);
+		GetEspBox(player.eyeScreen, player.feetScreen, ESP_P, ESP_D);
 
 		Gui::DrawRectangle(ESP_P, ESP_D, White50);
 		Gui::DrawTextual(ESP_P + Position{ESP_D.w + 4, 0}, player.name.data(), 8);
@@ -44,11 +44,11 @@ class EspModule : public Module
 		}
 	}
 
-	void RenderPlayerBoxStats(const Player &player, Position &EYE_SCREEN, Position &FEET_SCREEN)
+	void RenderPlayerBoxStats(const Player &player)
 	{
 		Position ESP_P;
 		Dimension ESP_D;
-		GetEspBox(EYE_SCREEN, FEET_SCREEN, ESP_P, ESP_D);
+		GetEspBox(player.eyeScreen, player.feetScreen, ESP_P, ESP_D);
 
 		const float healthRatio = (float)player.health / player.maxHealth;
 		const float armorRatio = (float)player.armor / 100.0f;
@@ -74,14 +74,14 @@ class EspModule : public Module
 		Gui::DrawRectangle(BORDER_POS, BORDER_D);
 	}
 
-	void RenderPlayerSkeleton(const Player &player, Position &EYE_SCREEN, Position &FEET_SCREEN)
+	void RenderPlayerSkeleton(const Player &player)
 	{
 		Position ESP_P;
 		Dimension ESP_D;
-		GetEspBox(EYE_SCREEN, FEET_SCREEN, ESP_P, ESP_D);
+		GetEspBox(player.eyeScreen, player.feetScreen, ESP_P, ESP_D);
 
-		Gui::DrawFilledCircle(EYE_SCREEN, 32, Green25);
-		Gui::DrawCircle(EYE_SCREEN, 32, White50);
+		Gui::DrawFilledCircle(player.eyeScreen, 32, Green25);
+		Gui::DrawCircle(player.eyeScreen, 32, White50);
 	}
 
 public:
@@ -92,16 +92,9 @@ public:
 			if (!player.IsValidTarget())
 				continue;
 
-			Position FEET_SCREEN, EYE_SCREEN;
-			if (!Geo::Get2DVector(player.position, FEET_SCREEN, VM.matrix, GetClientDimension()))
-				continue;
-
-			if (!Geo::Get2DVector(player.viewCamPos, EYE_SCREEN, VM.matrix, GetClientDimension()))
-				continue;
-
-			RenderPlayerSkeleton(player, EYE_SCREEN, FEET_SCREEN);
-			RenderPlayerBox(player, EYE_SCREEN, FEET_SCREEN);
-			RenderPlayerBoxStats(player, EYE_SCREEN, FEET_SCREEN);
+			RenderPlayerSkeleton(player);
+			RenderPlayerBox(player);
+			RenderPlayerBoxStats(player);
 		}
 
 		const Dimension half = GetClientDimension() / 2;

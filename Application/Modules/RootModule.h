@@ -6,17 +6,17 @@
 
 class RootModule : public Module
 {
-	EspModule* Esp;
-	AimBotModule* AimBot;
+	EspModule *Esp;
+	AimBotModule *AimBot;
 
-    void Init() override
-    {
-        this->Esp = new EspModule();
-        this->AimBot = new AimBotModule();
+	void Init() override
+	{
+		this->Esp = new EspModule();
+		this->AimBot = new AimBotModule();
 
 		this->Esp->Init(this);
 		this->AimBot->Init(this);
-    }
+	}
 
 	void Execute() override
 	{
@@ -34,6 +34,8 @@ class RootModule : public Module
 			if (!player.isInitialized)
 				continue;
 
+			SetPlayerScreenPos(VM, player);
+
 			if (GetLocalPlayer_T() == player.entity)
 			{
 				player.isLocalPlayer = true;
@@ -41,13 +43,12 @@ class RootModule : public Module
 				MyLocalPlayer = player;
 			}
 
-			player.isLocalPlayerTeam = !player.isLocalPlayer 
-				&& GameIsTeamPlay()
-				&& ReadLocalPlayer<int>(m_iTeamNum) == player.team;
+			player.isLocalPlayerTeam = !player.isLocalPlayer && GameIsTeamPlay() && ReadLocalPlayer<int>(m_iTeamNum) == player.team;
 
 			b.emplace_back(player);
 
-			if (player.isLocalPlayer) {
+			if (player.isLocalPlayer)
+			{
 				continue;
 			}
 
@@ -59,9 +60,23 @@ class RootModule : public Module
 		ENTITIES = b;
 		ENEMIES = bE;
 		FRIENDLIES = bF;
-	}
+	};
 
-public:	
+	void SetPlayerScreenPos(const ViewMatrix &VM, Player &player)
+	{
+		Position FEET, EYES;
+		if (Geo::Get2DVector(player.position, FEET, VM.matrix, GetClientDimension()))
+		{
+			player.feetScreen = FEET;
+		}
+
+		if (Geo::Get2DVector(player.viewCamPos, EYES, VM.matrix, GetClientDimension()))
+		{
+			player.eyeScreen = EYES;
+		}
+	};
+
+public:
 	void Render() override
 	{
 		if (this->Esp)
@@ -73,6 +88,6 @@ public:
 		auto dim = GetClientDimension();
 		auto half = dim / 2;
 
-		Gui::DrawTextual({ 2,2 }, "Overlay v 1.0.0");
+		Gui::DrawTextual({2, 2}, "Overlay v 1.0.0");
 	}
 };

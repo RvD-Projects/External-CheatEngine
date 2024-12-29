@@ -17,6 +17,7 @@ public:
 
 	std::string name;
 	Vector3 position, viewCamPos;
+	Position feetScreen, eyeScreen;
 
 	uintptr_t listEntry, ctrl, pawnCtrl, entity, pawn;
 
