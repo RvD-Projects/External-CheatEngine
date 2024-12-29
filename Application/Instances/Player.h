@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../../Engine/GameRef.h"
+#include "../Modules/Module.h"
 
-using namespace GameRef;
+using namespace Modules;
 
 class Player
 {

@@ -1,10 +1,11 @@
 #pragma once
 
-#include "../../Engine/GameRef.h"
+#include "../Modules/Modules.h"
 #include "../Instances/Player.h"
 #include "../Gui/Gui.h"
 
-using namespace GameRef;
+using namespace Modules;
+using namespace Modules::GameRules;
 
 class Module
 {
