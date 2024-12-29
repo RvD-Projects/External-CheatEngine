@@ -16,7 +16,7 @@ public:
 	UINT team, health, armor, maxHealth, lifeState, hammerID;
 
 	std::string name;
-	vec3 position, viewCamPos;
+	Vector3 position, viewCamPos;
 
 	uintptr_t listEntry, ctrl, pawnCtrl, entity, pawn;
 
@@ -51,9 +51,9 @@ public:
 		armor = ReadController<UINT>(m_iPawnArmor);
 		maxHealth = ReadEntity<UINT>(m_iMaxHealth);
 		lifeState = ReadEntity<UINT>(m_lifeState);
-		position = ReadEntity<vec3>(m_vOldOrigin);
+		position = ReadEntity<Vector3>(m_vOldOrigin);
 
-		viewCamPos = position + ReadEntity<vec3>(m_vecViewOffset);
+		viewCamPos = position + ReadEntity<Vector3>(m_vecViewOffset);
 		name = ReadString(ReadController<uintptr_t>(m_sSanitizedPlayerName));
 
 		isInitialized = true;

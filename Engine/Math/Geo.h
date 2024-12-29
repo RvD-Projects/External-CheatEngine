@@ -14,9 +14,9 @@ public:
 	 * @param sd The space dimensions, defaulting to empty.
 	 * @return True if the transformation is successful and the vector is within view; false otherwise.
 	 */
-	static bool Get2DVector(const vec3 &v3, Position &v2, const float m[16], const Dimension &sd = {0, 0})
+	static bool Get2DVector(const Vector3 &v3, Position &v2, const float m[16], const Dimension &sd = {0, 0})
 	{
-		vec4 clipCoords;
+		Vector4 clipCoords;
 		clipCoords.x = v3.x * m[0] + v3.y * m[1] + v3.z * m[2] + m[3];
 		clipCoords.y = v3.x * m[4] + v3.y * m[5] + v3.z * m[6] + m[7];
 		clipCoords.z = v3.x * m[8] + v3.y * m[9] + v3.z * m[10] + m[11];
@@ -25,7 +25,7 @@ public:
 		if (clipCoords.w < 0.1f)
 			return false;
 
-		vec3 coords;
+		Vector3 coords;
 		coords.x = clipCoords.x / clipCoords.w;
 		coords.y = clipCoords.y / clipCoords.w;
 		coords.z = clipCoords.z / clipCoords.w;

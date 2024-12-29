@@ -30,19 +30,19 @@ struct Position
 	}
 };
 
-struct vec3
+struct Vector3
 {
 	float x, y, z;
-	vec3 operator+(vec3 other)
+	Vector3 operator+(Vector3 other)
 	{
 		return {this->x + other.x, this->y + other.y, this->z + other.z};
 	}
-	vec3 operator-(vec3 other)
+	Vector3 operator-(Vector3 other)
 	{
 		return {this->x - other.x, this->y - other.y, this->z - other.z};
 	}
 
-	vec3 RelativeAngle()
+	Vector3 RelativeAngle()
 	{
 		return {
 			std::atan2(-z, std::hypot(x, y)) * (180.0f / std::numbers::pi_v<float>),
@@ -51,21 +51,7 @@ struct vec3
 	}
 };
 
-struct vec4
+struct Vector4
 {
 	float w, x, y, z;
-};
-
-struct APP_INFO
-{
-	const wchar_t *w_name;
-	const wchar_t *exe_name;
-	const wchar_t *dll_name;
-
-	uintptr_t pid;
-	uintptr_t dll;
-
-	RECT rect;
-	Position position;
-	Dimension dimension;
 };

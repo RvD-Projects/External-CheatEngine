@@ -15,6 +15,20 @@
 
 using namespace Memory;
 
+struct APP_INFO
+{
+	const wchar_t *w_name;
+	const wchar_t *exe_name;
+	const wchar_t *dll_name;
+
+	uintptr_t pid;
+	uintptr_t dll;
+
+	RECT rect;
+	Position position;
+	Dimension dimension;
+};
+
 namespace Engine
 {
 	APP_INFO Target;
@@ -43,20 +57,18 @@ namespace Engine
 		HWND window = FindWindow(NULL, Target.w_name);
 		if (window == NULL)
 			return false;
-	
 
 		RECT clientRect;
 		GetClientRect(window, &clientRect);
 		if (!clientRect.bottom || !clientRect.right)
 			return false;
-	
 
 		RECT windowRect;
 		GetWindowRect(window, &windowRect);
 
 		TargetWindow.rect = windowRect;
-		TargetWindow.position = Position{ static_cast<float>(windowRect.left), static_cast<float>(windowRect.top) };
-		TargetWindow.dimension = Dimension{ static_cast<float>(windowRect.right - windowRect.left), static_cast<float>(windowRect.bottom - windowRect.top) };
+		TargetWindow.position = Position{static_cast<float>(windowRect.left), static_cast<float>(windowRect.top)};
+		TargetWindow.dimension = Dimension{static_cast<float>(windowRect.right - windowRect.left), static_cast<float>(windowRect.bottom - windowRect.top)};
 
 		TargetClient.rect = clientRect;
 		TargetClient.dimension = Dimension{1920, 1080};
