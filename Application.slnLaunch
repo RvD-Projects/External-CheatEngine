@@ -1,0 +1,21 @@
+[
+  {
+    "Name": "Debug",
+    "Projects": [
+      {
+        "Path": "Application\\Application.vcxproj",
+        "Action": "Start",
+        "DebugTarget": "Local Windows Debugger"
+      }
+    ]
+  },
+  {
+    "Name": "Launch",
+    "Projects": [
+      {
+        "Path": "Application\\Application.vcxproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]
