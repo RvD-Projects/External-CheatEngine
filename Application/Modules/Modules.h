@@ -8,6 +8,8 @@ using namespace Engine;
 
 using namespace cs2_dumper::offsets::client_dll;
 using namespace cs2_dumper::schemas::client_dll;
+using namespace cs2_dumper::schemas::client_dll::C_PlantedC4;
+using namespace cs2_dumper::schemas::client_dll::C_Multimeter;
 using namespace cs2_dumper::schemas::client_dll::C_CSGameRules;
 using namespace cs2_dumper::schemas::client_dll::CCSPlayerController;
 
@@ -43,19 +45,43 @@ namespace Modules
 
     namespace GameRules
     {
-        static bool GameIsDefuse()
+        template <typename T>
+        T ReadGameRules(const ptrdiff_t &ptr_diff)
+        {
+            auto rules = ReadDLL<uintptr_t>(dwGameRules);
+
+            return Read<T>(rules + ptr_diff);
+        }
+
+        bool GameIsDefuse()
         {
             return ReadDLL<bool>(m_bMapHasBombTarget);
         };
 
-        static bool GameIsRescue()
+        bool GameIsRescue()
         {
             return ReadDLL<bool>(m_bMapHasBombTarget);
         };
 
-        static bool GameIsTeamPlay()
+        bool GameIsTeamPlay()
         {
             return GameIsRescue() || GameIsDefuse();
         };
+
+        bool BombIsPlanted()
+        {
+            if (!GameIsDefuse())
+                return false;
+
+            return ReadGameRules<bool>(m_bBombPlanted);
+        };
+
+        template <typename T>
+        T ReadPlantedBomb(const ptrdiff_t &ptr_diff, uintptr_t outBombPlantPtr)
+        {
+            uintptr_t bombPlantPtr = ReadDLL<uintptr_t>(m_bBombPlanted);
+
+            return Read<T>(bombPlantPtr + ptr_diff);
+        }
     }
 };

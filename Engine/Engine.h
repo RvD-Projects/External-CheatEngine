@@ -1,5 +1,6 @@
 #pragma once
 
+#include <map>
 #include <vector>
 #include <string>
 #include <cstdint>
@@ -8,10 +9,13 @@
 #include <iostream>
 #include <windows.h>
 #include <thread>
+#include <chrono>
 
 #include "Memory.h"
 #include "Math/Geo.h"
 #include "Math/ViewMatrix.h"
+
+#include "Classes/Timer.h"
 
 using namespace Memory;
 
@@ -25,7 +29,7 @@ struct APP_INFO
 	uintptr_t dll;
 
 	RECT rect;
-	Position position;
+	Position position, center;
 	Dimension dimension;
 };
 
@@ -69,10 +73,12 @@ namespace Engine
 		TargetWindow.rect = windowRect;
 		TargetWindow.position = Position{static_cast<float>(windowRect.left), static_cast<float>(windowRect.top)};
 		TargetWindow.dimension = Dimension{static_cast<float>(windowRect.right - windowRect.left), static_cast<float>(windowRect.bottom - windowRect.top)};
+		TargetWindow.center = Position{TargetWindow.dimension.w / 2, TargetWindow.dimension.h / 2};
 
 		TargetClient.rect = clientRect;
 		TargetClient.dimension = Dimension{1920, 1080};
 		TargetClient.position = Position{TargetWindow.position.x, TargetWindow.position.y};
+		TargetClient.center = Position{TargetClient.dimension.w / 2, TargetClient.dimension.h / 2};
 
 		return true;
 	}
@@ -128,7 +134,12 @@ namespace Engine
 
 	Position GetClientPosition()
 	{
-		return Position{TargetClient.position.x, TargetClient.position.y};
+		return TargetClient.position;
+	}
+
+	Position GetClientCenterPosition()
+	{
+		return TargetClient.center;
 	}
 
 	Dimension GetClientDimension()
@@ -138,7 +149,7 @@ namespace Engine
 
 	Position GetWindowPosition()
 	{
-		return Position{TargetWindow.position.x, TargetWindow.position.y};
+		return TargetWindow.position;
 	}
 
 	Dimension GetWindowDimension()

@@ -3,13 +3,14 @@
 #include "../Modules/Module.h"
 
 using namespace Modules;
+using namespace Modules::GameRules;
 
 class Player
 {
 public:
 	bool isInitialized = false;
 	bool isLocalPlayer = false;
-	bool isLocalPlayerTeam = false;
+	bool isTeammate = false;
 	bool takesDamage;
 
 	int crossIndex;
@@ -104,7 +105,7 @@ public:
 
 	const bool IsValidTarget()
 	{
-		return !isLocalPlayerTeam && !isLocalPlayer && health > 0 && takesDamage;
+		return !isTeammate && !isLocalPlayer && health > 0 && takesDamage;
 	}
 
 	const bool IsLocalPlayer()
@@ -114,6 +115,6 @@ public:
 
 	const bool IsEnemy()
 	{
-		return !isLocalPlayerTeam && !isLocalPlayer;
+		return !isTeammate && !isLocalPlayer;
 	}
 };

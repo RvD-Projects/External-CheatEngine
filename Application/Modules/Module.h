@@ -2,6 +2,7 @@
 
 #include "../Modules/Modules.h"
 #include "../Instances/Player.h"
+#include "../Instances/C4Bomb.h"
 #include "../Gui/Gui.h"
 
 using namespace Modules;
@@ -46,6 +47,8 @@ protected:
 	std::vector<Player> ENEMIES;
 	std::vector<Player> FRIENDLIES;
 
+	C4Bomb C4Bomb;
+
 	virtual void Init() {};
 	virtual void Execute() {};
 
@@ -59,7 +62,7 @@ protected:
 			this->ENTITIES_LIST = this->rootModule->ENTITIES_LIST;
 			this->FRIENDLIES = this->rootModule->FRIENDLIES;
 			this->MyLocalPlayer = this->rootModule->MyLocalPlayer;
-			this->VM = this->rootModule->VM;
+			this->C4Bomb = this->rootModule->C4Bomb;
 		}
 	}
 
@@ -88,6 +91,22 @@ protected:
 		inOut = filteredPlayers.at(0);
 
 		return true;
+	}
+
+	GuiColor GetTimerColor(const Timer &timer)
+	{
+		auto timeLeft = std::chrono::duration_cast<std::chrono::milliseconds>(timer.Remaining()).count();
+		if (timeLeft < 100)
+			return Transparent;
+
+		auto percent = timer.Remaining() / timer.Duration();
+		if (percent > 0.5f)
+			return White;
+
+		if (percent > 0.15f)
+			return Yellow;
+
+		return Red75;
 	}
 
 public:
