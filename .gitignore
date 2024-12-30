@@ -365,3 +365,4 @@ FodyWeavers.xsd
 *.exe
 
 DvlErrLog.txt
+imgui.ini
