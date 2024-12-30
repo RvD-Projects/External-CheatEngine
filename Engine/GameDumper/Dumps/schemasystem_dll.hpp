@@ -1,5 +1,5 @@
 // Generated using https://github.com/a2x/cs2-dumper
-// 2024-12-28 05:13:36.458864400 UTC
+// 2024-12-30 02:35:52.966641300 UTC
 
 #pragma once
 
@@ -133,7 +133,7 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_CUtlSymbol = 0x148; // CUtlSymbol
                 constexpr std::ptrdiff_t m_stringToken = 0x14C; // CUtlStringToken
                 constexpr std::ptrdiff_t m_stringTokenWithStorage = 0x150; // CUtlStringTokenWithStorage
-                constexpr std::ptrdiff_t m_ResourceTypes = 0x168; // CResourceArray<CResourcePointer<CResourceString>>
+                constexpr std::ptrdiff_t m_ResourceTypes = 0x168; // 
                 constexpr std::ptrdiff_t m_KV3 = 0x170; // KeyValues3
             }
             // Parent: CExampleSchemaVData_PolymorphicBase

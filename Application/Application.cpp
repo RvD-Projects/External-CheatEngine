@@ -49,6 +49,8 @@ INT APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	SetLayeredWindowAttributes(window, RGB(0, 0, 0), 255, LWA_ALPHA);
 	DwmExtendFrameIntoClientArea(window, &margins);
 
+	SetWindowDisplayAffinity(window, 0x00000011); // hacks invisible
+
 	DXGI_SWAP_CHAIN_DESC sd{};
 	sd.BufferCount = 2U;
 	sd.SampleDesc.Count = 1U;
