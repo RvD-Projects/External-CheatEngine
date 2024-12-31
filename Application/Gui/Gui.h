@@ -59,7 +59,7 @@ public:
 			segments > 0 ? segments : radius * M_PI);
 	}
 
-	static void DrawTextual(const Position &p, const char *text, const float fontSize = 2.f, const GuiColor color = {255, 255, 255, 255})
+	static void DrawTextual(const Position &p, const char *text, const GuiColor color = {255, 255, 255, 255}, const float fontSize = 2.f)
 	{
 		ImGui::GetBackgroundDrawList()->AddText(
 			ImVec2(p.x, p.y),

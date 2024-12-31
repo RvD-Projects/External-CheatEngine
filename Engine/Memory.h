@@ -47,7 +47,7 @@ namespace Memory
 	}
 
 	// Function to get the module base address of a process
-	uintptr_t GetModuleBaseAddress(DWORD processID, const wchar_t *moduleName)
+	uintptr_t GetModuleBaseAddress(uintptr_t processID, const std::string &moduleName)
 	{
 		HANDLE handle = GetHandle(TH32CS_SNAPMODULE | TH32CS_SNAPMODULE32, processID);
 		if (!handle)
@@ -59,7 +59,8 @@ namespace Memory
 
 		do
 		{
-			if (!wcscmp(moduleName, mod.szModule))
+			std::wstring wModuleName(moduleName.begin(), moduleName.end());
+			if (!wcscmp(wModuleName.data(), mod.szModule))
 			{
 				CloseHandle(handle);
 				return (uintptr_t)mod.modBaseAddr;

@@ -4,7 +4,7 @@
 
 class AimBotModule : public Module
 {
-	bool aimAssist = false;
+	bool aimAssist = true;
 	bool clickAssist = true;
 
 	void Execute() override
@@ -19,12 +19,15 @@ class AimBotModule : public Module
 		if (!Geo::Get2DVector(target.position, out, VM.matrix, GetClientDimension()))
 			return;
 
-		if (aimAssist && GetAsyncKeyState(VK_LSHIFT))
+		// Empty the old states first (insure next check are actual)
+		GetAsyncKeyState(VK_SHIFT);
+
+		if (aimAssist && GetAsyncKeyState(VK_SHIFT))
 		{
-			mouse_event(MOUSEEVENTF_MOVE, out.x, out.y, 0, 0);
+			WriteClient<Vector3>(dwViewAngles, (target.position - MyLocalPlayer.position).RelativeAngle());
 		}
 
-		if (clickAssist && GetAsyncKeyState(VK_LSHIFT))
+		if (clickAssist && GetAsyncKeyState(VK_SHIFT))
 		{
 			mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
 			mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);

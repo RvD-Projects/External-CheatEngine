@@ -20,8 +20,19 @@ class RootModule : public Module
 
 	void Execute() override
 	{
-		VM = ReadDLL<ViewMatrix>(dwViewMatrix);
-		ENTITIES_LIST = ReadDLL<uintptr_t>(dwEntityList);
+		UpdateEntities();
+		UpdateGamesRules();
+	};
+
+	void UpdateGamesRules()
+	{
+		C4Bomb.Update();
+	}
+
+	void UpdateEntities()
+	{
+		VM = ReadClient<ViewMatrix>(dwViewMatrix);
+		ENTITIES_LIST = ReadClient<uintptr_t>(dwEntityList);
 
 		std::vector<Player> b = {};
 		std::vector<Player> bE = {};
@@ -35,24 +46,15 @@ class RootModule : public Module
 				continue;
 
 			SetPlayerScreenDef(VM, player);
-
-			if (GetLocalPlayer_T() == player.entity)
-			{
-				player.isLocalPlayer = true;
-				player.crossIndex = ReadLocalPlayer<int>(m_iIDEntIndex);
-				MyLocalPlayer = player;
-			}
-
-			player.isLocalPlayerTeam = !player.isLocalPlayer && GameIsTeamPlay() && ReadLocalPlayer<int>(m_iTeamNum) == player.team;
-
 			b.emplace_back(player);
 
 			if (player.isLocalPlayer)
 			{
+				MyLocalPlayer = player;
 				continue;
 			}
 
-			player.isLocalPlayerTeam
+			player.isTeammate
 				? bF.emplace_back(player)
 				: bE.emplace_back(player);
 		}
@@ -60,9 +62,9 @@ class RootModule : public Module
 		ENTITIES = b;
 		ENEMIES = bE;
 		FRIENDLIES = bF;
-	};
+	}
 
-	void SetPlayerScreenDef(const ViewMatrix &VM, Player &player)
+	void SetPlayerScreenDef(const ViewMatrix &VM, Player &player) const
 	{
 		Position FEET, EYES;
 		if (Geo::Get2DVector(player.viewCamPos, EYES, VM.matrix, GetClientDimension()))
@@ -91,9 +93,6 @@ public:
 
 		if (this->AimBot)
 			this->AimBot->Render();
-
-		auto dim = GetClientDimension();
-		auto half = dim / 2;
 
 		Gui::DrawTextual({2, 2}, "Overlay v 1.0.0");
 	}

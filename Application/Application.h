@@ -31,7 +31,7 @@ void UpdateOverlayPosition(HWND window)
     SetWindowPos(window, HWND_TOPMOST, pos.x, pos.y, dim.w, dim.h, SWP_NOZORDER | SWP_NOACTIVATE);
 
     // Apply the DPI scale factor to the ImGui context
-    //ImGui::GetIO().FontGlobalScale = ImGui_ImplWin32_GetDpiScaleForHwnd(window);
+    // ImGui::GetIO().FontGlobalScale = ImGui_ImplWin32_GetDpiScaleForHwnd(window);
 }
 
 void Execute(HWND appWindow)
@@ -51,8 +51,10 @@ void Execute(HWND appWindow)
     }
 }
 
-void Start(const wchar_t *targetExeName, const wchar_t *targetDllName, const wchar_t *targetWindowName, HWND appWindow)
+void Start(const wchar_t *targetExeName, const wchar_t *targetWindowName, HWND appWindow)
 {
-    Engine::Start(targetExeName, targetDllName, targetWindowName);
-    std::thread(Execute, appWindow).detach();
+    Engine::Run(targetExeName, targetWindowName, {"client.dll", "server.dll"});
+    std::thread([appWindow]()
+                { Execute(appWindow); })
+        .detach();
 }

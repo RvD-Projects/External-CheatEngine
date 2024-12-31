@@ -7,6 +7,7 @@ struct EspConfig
 	bool pBx, pName, pHealth, pArmor, pBxHealth, pBxArmor;
 	GuiColor pBxCol, pBxBorderCol, pHealthCol, pArmorCol, pBxHealthCol, pBxArmorCol;
 	Position pBxPosOffset, pBxDimOffset;
+	std::map<std::string, std::string> objects;
 };
 
 class EspModule : public Module
@@ -60,13 +61,18 @@ class EspModule : public Module
 		player.GetEsp(ESP_P, ESP_D);
 
 		Gui::DrawRectangle(ESP_P, ESP_D, White50);
-		Gui::DrawTextual(ESP_P + Position{ESP_D.w + 4, 0}, player.name.data(), 8);
-		Gui::DrawTextual(ESP_P + Position{ESP_D.w + 4, 16}, std::to_string(player.health).append(" HP").data(), 8, Red64);
+		Gui::DrawTextual(ESP_P + Position{ESP_D.w + 4, 0}, player.name.data());
+	}
 
-		if (player.armor)
-		{
-			Gui::DrawTextual(ESP_P + Position{ESP_D.w + 4, 32}, std::to_string(player.armor).append(" AP").data(), 8, Blue64);
-		}
+	void RenderGameObjects(Player &player)
+	{
+		if (!C4Bomb.FuseChrono.IsRunning())
+			return;
+
+		const Position pos = GetClientCenterPosition();
+		Gui::DrawTextual(pos, ("Time left: " + C4Bomb.FuseChrono.ToString()).data(), GetTimerColor(C4Bomb.FuseChrono));
+		Gui::DrawTextual({pos.x, pos.y + 16}, ("Defuse Kit: " + C4Bomb.DefuseKitChrono.ToString()).data(), GetTimerColor(C4Bomb.DefuseKitChrono));
+		Gui::DrawTextual({pos.x, pos.y + 32}, ("Defuse: " + C4Bomb.DefuseChrono.ToString()).data(), GetTimerColor(C4Bomb.DefuseChrono));
 	}
 
 public:
@@ -80,9 +86,9 @@ public:
 			RenderPlayerSkeleton(player);
 			RenderPlayerBoxStats(player);
 			RenderPlayerBox(player);
+			RenderGameObjects(player);
 		}
 
-		const Dimension half = GetClientDimension() / 2;
-		Gui::DrawFilledCircle({half.w, half.h}, 64, White12);
+		Gui::DrawFilledCircle(GetClientCenterPosition(), 64, White12);
 	}
 };

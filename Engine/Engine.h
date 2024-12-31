@@ -1,5 +1,6 @@
 #pragma once
 
+#include <map>
 #include <vector>
 #include <string>
 #include <cstdint>
@@ -8,24 +9,27 @@
 #include <iostream>
 #include <windows.h>
 #include <thread>
+#include <chrono>
 
 #include "Memory.h"
 #include "Math/Geo.h"
 #include "Math/ViewMatrix.h"
 
+#include "Classes/Timer.h"
+
 using namespace Memory;
 
 struct APP_INFO
 {
+	uintptr_t pid;
 	const wchar_t *w_name;
 	const wchar_t *exe_name;
-	const wchar_t *dll_name;
 
-	uintptr_t pid;
-	uintptr_t dll;
+	std::vector<std::string> dlls_name;
+	std::map<std::string, uintptr_t> dlls;
 
 	RECT rect;
-	Position position;
+	Position position, center;
 	Dimension dimension;
 };
 
@@ -43,13 +47,12 @@ namespace Engine
 	{
 		Target.pid = GetProcessID(Target.exe_name);
 		if (!Target.pid)
-		{
 			return false;
-		}
 
-		Target.dll = GetModuleBaseAddress(Target.pid, Target.dll_name);
+		for (const auto &dll_name : Target.dlls_name)
+			Target.dlls[dll_name] = (GetModuleBaseAddress(Target.pid, dll_name));
 
-		return Target.pid && Target.dll;
+		return true;
 	}
 
 	bool UpdateTargetWindowDefinitions()
@@ -69,10 +72,12 @@ namespace Engine
 		TargetWindow.rect = windowRect;
 		TargetWindow.position = Position{static_cast<float>(windowRect.left), static_cast<float>(windowRect.top)};
 		TargetWindow.dimension = Dimension{static_cast<float>(windowRect.right - windowRect.left), static_cast<float>(windowRect.bottom - windowRect.top)};
+		TargetWindow.center = Position{TargetWindow.dimension.w / 2, TargetWindow.dimension.h / 2};
 
 		TargetClient.rect = clientRect;
 		TargetClient.dimension = Dimension{1920, 1080};
 		TargetClient.position = Position{TargetWindow.position.x, TargetWindow.position.y};
+		TargetClient.center = Position{TargetClient.dimension.w / 2, TargetClient.dimension.h / 2};
 
 		return true;
 	}
@@ -105,30 +110,23 @@ namespace Engine
 		}
 	}
 
-	void Start(const wchar_t *exe_name, const wchar_t *dll_name, const wchar_t *window_name)
+	void Run(const wchar_t *exe_name, const wchar_t *window_name, const std::vector<std::string> &dlls_name)
 	{
 		Target.exe_name = exe_name;
-		Target.dll_name = dll_name;
+		Target.dlls_name = dlls_name;
 		Target.w_name = window_name;
 
 		std::thread(Execute).detach();
 	}
 
-	template <typename T>
-	T ReadDLL(const ptrdiff_t &ptr_diff)
-	{
-		return Read<T>(Target.dll + ptr_diff);
-	};
-
-	template <typename T>
-	T WriteDLL(const ptrdiff_t &ptr_diff, const T &value)
-	{
-		return Write<T>(Target.dll + ptr_diff, value);
-	};
-
 	Position GetClientPosition()
 	{
-		return Position{TargetClient.position.x, TargetClient.position.y};
+		return TargetClient.position;
+	}
+
+	Position GetClientCenterPosition()
+	{
+		return TargetClient.center;
 	}
 
 	Dimension GetClientDimension()
@@ -138,7 +136,7 @@ namespace Engine
 
 	Position GetWindowPosition()
 	{
-		return Position{TargetWindow.position.x, TargetWindow.position.y};
+		return TargetWindow.position;
 	}
 
 	Dimension GetWindowDimension()

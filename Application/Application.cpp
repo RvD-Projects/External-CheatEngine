@@ -102,10 +102,10 @@ INT APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	ImGui_ImplWin32_Init(window);
 	ImGui_ImplDX11_Init(device, context);
 
-	bool running = true;
-	Start(L"cs2.exe", L"client.dll", L"Counter-Strike 2", window);
+	Start(L"cs2.exe", L"Counter-Strike 2", window);
 	RootModule *Modules = new RootModule();
 
+	bool running = true;
 	while (running)
 	{
 		MSG msg;

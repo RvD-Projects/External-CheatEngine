@@ -1,5 +1,5 @@
 // Generated using https://github.com/a2x/cs2-dumper
-// 2024-12-28 05:13:36.458864400 UTC
+// 2024-12-31 18:09:29.456835300 UTC
 
 #pragma once
 
@@ -309,7 +309,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace RnTriangle_t {
-                constexpr std::ptrdiff_t m_nIndex = 0x0; // int32[3]
+                constexpr std::ptrdiff_t m_nIndex = 0x0; // 
             }
             // Parent: None
             // Field count: 2
@@ -444,7 +444,7 @@ namespace cs2_dumper {
             namespace RnMesh_t {
                 constexpr std::ptrdiff_t m_vMin = 0x0; // Vector
                 constexpr std::ptrdiff_t m_vMax = 0xC; // Vector
-                constexpr std::ptrdiff_t m_Nodes = 0x18; // CUtlVector<RnNode_t>
+                constexpr std::ptrdiff_t m_Nodes = 0x18; // 
                 constexpr std::ptrdiff_t m_Vertices = 0x30; // CUtlVectorSIMDPaddedVector
                 constexpr std::ptrdiff_t m_Triangles = 0x48; // CUtlVector<RnTriangle_t>
                 constexpr std::ptrdiff_t m_Wings = 0x60; // CUtlVector<RnWing_t>
@@ -644,7 +644,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CRegionSVM {
-                constexpr std::ptrdiff_t m_Planes = 0x0; // 
+                constexpr std::ptrdiff_t m_Planes = 0x0; // CUtlVector<RnPlane_t>
                 constexpr std::ptrdiff_t m_Nodes = 0x18; // CUtlVector<uint32>
             }
             // Parent: None
@@ -747,7 +747,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace RnWing_t {
-                constexpr std::ptrdiff_t m_nIndex = 0x0; // int32[3]
+                constexpr std::ptrdiff_t m_nIndex = 0x0; // 
             }
             // Parent: None
             // Field count: 2
@@ -950,11 +950,11 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_MassProperties = 0x34; // matrix3x4_t
                 constexpr std::ptrdiff_t m_flVolume = 0x64; // float32
                 constexpr std::ptrdiff_t m_flSurfaceArea = 0x68; // float32
-                constexpr std::ptrdiff_t m_Vertices = 0x70; // 
+                constexpr std::ptrdiff_t m_Vertices = 0x70; // CUtlVector<RnVertex_t>
                 constexpr std::ptrdiff_t m_VertexPositions = 0x88; // CUtlVector<Vector>
                 constexpr std::ptrdiff_t m_Edges = 0xA0; // 
-                constexpr std::ptrdiff_t m_Faces = 0xB8; // CUtlVector<RnFace_t>
-                constexpr std::ptrdiff_t m_FacePlanes = 0xD0; // 
+                constexpr std::ptrdiff_t m_Faces = 0xB8; // 
+                constexpr std::ptrdiff_t m_FacePlanes = 0xD0; // CUtlVector<RnPlane_t>
                 constexpr std::ptrdiff_t m_nFlags = 0xE8; // uint32
                 constexpr std::ptrdiff_t m_pRegionSVM = 0xF0; // CRegionSVM*
             }

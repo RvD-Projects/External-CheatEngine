@@ -1,5 +1,5 @@
 // Generated using https://github.com/a2x/cs2-dumper
-// 2024-12-28 05:13:36.458864400 UTC
+// 2024-12-31 18:09:29.456835300 UTC
 
 #pragma once
 
@@ -301,7 +301,7 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_SourceOutflowName = 0x0; // CUtlSymbolLarge
                 constexpr std::ptrdiff_t m_nDestChunk = 0x8; // 
                 constexpr std::ptrdiff_t m_nInstruction = 0xC; // int32
-                constexpr std::ptrdiff_t m_OutflowRegisterMap = 0x10; // 
+                constexpr std::ptrdiff_t m_OutflowRegisterMap = 0x10; // PulseRegisterMap_t
             }
             // Parent: None
             // Field count: 1
@@ -751,9 +751,9 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CPulse_InvokeBinding {
-                constexpr std::ptrdiff_t m_RegisterMap = 0x0; // 
+                constexpr std::ptrdiff_t m_RegisterMap = 0x0; // PulseRegisterMap_t
                 constexpr std::ptrdiff_t m_FuncName = 0x20; // CUtlSymbolLarge
-                constexpr std::ptrdiff_t m_nCellIndex = 0x28; // 
+                constexpr std::ptrdiff_t m_nCellIndex = 0x28; // PulseRuntimeCellIndex_t
                 constexpr std::ptrdiff_t m_nSrcChunk = 0x2C; // 
                 constexpr std::ptrdiff_t m_nSrcInstruction = 0x30; // int32
             }
@@ -1010,7 +1010,7 @@ namespace cs2_dumper {
             namespace CPulse_CallInfo {
                 constexpr std::ptrdiff_t m_PortName = 0x0; // CUtlSymbolLarge
                 constexpr std::ptrdiff_t m_nEditorNodeID = 0x8; // PulseDocNodeID_t
-                constexpr std::ptrdiff_t m_RegisterMap = 0x10; // 
+                constexpr std::ptrdiff_t m_RegisterMap = 0x10; // PulseRegisterMap_t
                 constexpr std::ptrdiff_t m_CallMethodID = 0x30; // PulseDocNodeID_t
                 constexpr std::ptrdiff_t m_nSrcChunk = 0x34; // 
                 constexpr std::ptrdiff_t m_nSrcInstruction = 0x38; // int32
@@ -1075,8 +1075,8 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_DomainIdentifier = 0x8; // CUtlSymbolLarge
                 constexpr std::ptrdiff_t m_ParentMapName = 0x10; // CUtlSymbolLarge
                 constexpr std::ptrdiff_t m_ParentXmlName = 0x18; // CUtlSymbolLarge
-                constexpr std::ptrdiff_t m_vecGameBlackboards = 0x20; // CUtlVector<CUtlSymbolLarge>
-                constexpr std::ptrdiff_t m_Chunks = 0x38; // CUtlVector<CPulse_Chunk*>
+                constexpr std::ptrdiff_t m_vecGameBlackboards = 0x20; // 
+                constexpr std::ptrdiff_t m_Chunks = 0x38; // 
                 constexpr std::ptrdiff_t m_Cells = 0x50; // CUtlVector<CPulseCell_Base*>
                 constexpr std::ptrdiff_t m_Vars = 0x68; // CUtlVector<CPulse_Variable>
                 constexpr std::ptrdiff_t m_PublicOutputs = 0x80; // CUtlVector<CPulse_PublicOutput>
@@ -1128,7 +1128,7 @@ namespace cs2_dumper {
             // MGetKV3ClassDefaults
             namespace CPulseCell_Inflow_BaseEntrypoint {
                 constexpr std::ptrdiff_t m_EntryChunk = 0x48; // 
-                constexpr std::ptrdiff_t m_RegisterMap = 0x50; // 
+                constexpr std::ptrdiff_t m_RegisterMap = 0x50; // PulseRegisterMap_t
             }
             // Parent: None
             // Field count: 1
