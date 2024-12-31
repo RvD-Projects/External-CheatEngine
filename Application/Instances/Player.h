@@ -8,13 +8,8 @@ using namespace Modules::GameRules;
 class Player
 {
 public:
-	bool isInitialized = false;
-	bool isLocalPlayer = false;
-	bool isTeammate = false;
-	bool isAlive, takesDamage;
-
-	int crossIndex;
-	UINT team, health, armor, lifeState, maxHealth, hammerID;
+	bool isInitialized, isLocalPlayer, isTeammate, isAlive, takesDamage = false;
+	int team, health, armor, maxHealth, hammerID, crossIndex, lifeState;
 
 	std::string name;
 	Vector3 position, viewCamPos;
@@ -49,18 +44,22 @@ public:
 		if (!entity)
 			return;
 
-		team = ReadEntity<UINT>(m_iTeamNum);
-		health = ReadEntity<UINT>(m_iHealth);
-		armor = ReadController<UINT>(m_iPawnArmor);
-		maxHealth = ReadEntity<UINT>(m_iMaxHealth);
-		lifeState = ReadEntity<UINT>(m_lifeState);
+		team = ReadEntity<int>(m_iTeamNum);
+		health = ReadEntity<int>(m_iHealth);
+		armor = ReadController<int>(m_iPawnArmor);
+		maxHealth = ReadEntity<int>(m_iMaxHealth);
+		lifeState = ReadEntity<int>(m_lifeState);
 		takesDamage = ReadEntity<bool>(m_bTakesDamage);
 		position = ReadEntity<Vector3>(m_vOldOrigin);
+		isAlive = lifeState == 256;
+
+		isLocalPlayer = GetLocalPlayer_T() == entity;
+		isTeammate = !isLocalPlayer && ReadLocalPlayer<int>(m_iTeamNum) == team;
+		crossIndex = isLocalPlayer ? ReadLocalPlayer<int>(m_iIDEntIndex) : -1;
 
 		viewCamPos = position + ReadEntity<Vector3>(m_vecViewOffset);
 		name = ReadString(ReadController<uintptr_t>(m_sSanitizedPlayerName));
 
-		isAlive = lifeState == 256;
 		isInitialized = true;
 	};
 
@@ -107,7 +106,7 @@ public:
 
 	const bool IsEnemy()
 	{
-		return !isTeammate && !isLocalPlayer;
+		return !isLocalPlayer && !isTeammate;
 	}
 
 	const bool IsAlive()

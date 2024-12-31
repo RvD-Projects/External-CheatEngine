@@ -14,7 +14,7 @@ public:
 	Timer DefuseChrono = Timer(30500);
 	Timer DefuseKitChrono = Timer(35500);
 
-	UINT team;
+	int team;
 	Vector3 position;
 	Dimension screen_d, esp_d;
 	Position screenPos, esp_p;

@@ -1,5 +1,5 @@
 // Generated using https://github.com/a2x/cs2-dumper
-// 2024-12-28 05:13:36.458864400 UTC
+// 2024-12-31 18:09:29.456835300 UTC
 
 #pragma once
 
@@ -792,7 +792,7 @@ namespace cs2_dumper {
             // MPropertyCustomEditor
             // MParticleCustomFieldDefaultValue
             namespace CParticleModelInput {
-                constexpr std::ptrdiff_t m_nType = 0x10; // ParticleModelType_t
+                constexpr std::ptrdiff_t m_nType = 0x10; // 
                 constexpr std::ptrdiff_t m_NamedValue = 0x18; // CParticleNamedValueRef
                 constexpr std::ptrdiff_t m_nControlPoint = 0x58; // int32
             }
@@ -1743,7 +1743,7 @@ namespace cs2_dumper {
             // MGetKV3ClassDefaults
             namespace CParticleFunction {
                 constexpr std::ptrdiff_t m_flOpStrength = 0x8; // CParticleCollectionFloatInput
-                constexpr std::ptrdiff_t m_nOpEndCapState = 0x168; // 
+                constexpr std::ptrdiff_t m_nOpEndCapState = 0x168; // ParticleEndcapMode_t
                 constexpr std::ptrdiff_t m_flOpStartFadeInTime = 0x16C; // float32
                 constexpr std::ptrdiff_t m_flOpEndFadeInTime = 0x170; // float32
                 constexpr std::ptrdiff_t m_flOpStartFadeOutTime = 0x174; // float32
@@ -2814,7 +2814,7 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_bInfiniteBounds = 0x23C; // bool
                 constexpr std::ptrdiff_t m_bEnableNamedValues = 0x23D; // bool
                 constexpr std::ptrdiff_t m_NamedValueDomain = 0x240; // CUtlString
-                constexpr std::ptrdiff_t m_NamedValueLocals = 0x248; // CUtlVector<ParticleNamedValueSource_t*>
+                constexpr std::ptrdiff_t m_NamedValueLocals = 0x248; // 
                 constexpr std::ptrdiff_t m_ConstantColor = 0x260; // Color
                 constexpr std::ptrdiff_t m_ConstantNormal = 0x264; // Vector
                 constexpr std::ptrdiff_t m_flConstantRadius = 0x270; // float32
@@ -4109,7 +4109,7 @@ namespace cs2_dumper {
             // MPropertyCustomEditor
             // MParticleCustomFieldDefaultValue
             namespace CParticleTransformInput {
-                constexpr std::ptrdiff_t m_nType = 0x10; // ParticleTransformType_t
+                constexpr std::ptrdiff_t m_nType = 0x10; // 
                 constexpr std::ptrdiff_t m_NamedValue = 0x18; // CParticleNamedValueRef
                 constexpr std::ptrdiff_t m_bFollowNamedValue = 0x58; // bool
                 constexpr std::ptrdiff_t m_bSupportsDisabled = 0x59; // bool
@@ -5774,7 +5774,7 @@ namespace cs2_dumper {
             // MParticleCustomFieldDefaultValue
             namespace CParticleFloatInput {
                 constexpr std::ptrdiff_t m_nType = 0x10; // ParticleFloatType_t
-                constexpr std::ptrdiff_t m_nMapType = 0x14; // 
+                constexpr std::ptrdiff_t m_nMapType = 0x14; // ParticleFloatMapType_t
                 constexpr std::ptrdiff_t m_flLiteralValue = 0x18; // float32
                 constexpr std::ptrdiff_t m_NamedValue = 0x20; // CParticleNamedValueRef
                 constexpr std::ptrdiff_t m_nControlPoint = 0x60; // int32
@@ -5806,7 +5806,7 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_bNoiseImgPreviewLive = 0xD4; // bool
                 constexpr std::ptrdiff_t m_flNoCameraFallback = 0xE0; // float32
                 constexpr std::ptrdiff_t m_bUseBoundsCenter = 0xE4; // bool
-                constexpr std::ptrdiff_t m_nInputMode = 0xE8; // 
+                constexpr std::ptrdiff_t m_nInputMode = 0xE8; // ParticleFloatInputMode_t
                 constexpr std::ptrdiff_t m_flMultFactor = 0xEC; // float32
                 constexpr std::ptrdiff_t m_flInput0 = 0xF0; // float32
                 constexpr std::ptrdiff_t m_flInput1 = 0xF4; // float32

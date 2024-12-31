@@ -21,12 +21,12 @@ using namespace Memory;
 
 struct APP_INFO
 {
+	uintptr_t pid;
 	const wchar_t *w_name;
 	const wchar_t *exe_name;
-	const wchar_t *dll_name;
 
-	uintptr_t pid;
-	uintptr_t dll;
+	std::vector<std::string> dlls_name;
+	std::map<std::string, uintptr_t> dlls;
 
 	RECT rect;
 	Position position, center;
@@ -47,13 +47,12 @@ namespace Engine
 	{
 		Target.pid = GetProcessID(Target.exe_name);
 		if (!Target.pid)
-		{
 			return false;
-		}
 
-		Target.dll = GetModuleBaseAddress(Target.pid, Target.dll_name);
+		for (const auto &dll_name : Target.dlls_name)
+			Target.dlls[dll_name] = (GetModuleBaseAddress(Target.pid, dll_name));
 
-		return Target.pid && Target.dll;
+		return true;
 	}
 
 	bool UpdateTargetWindowDefinitions()
@@ -111,26 +110,14 @@ namespace Engine
 		}
 	}
 
-	void Start(const wchar_t *exe_name, const wchar_t *dll_name, const wchar_t *window_name)
+	void Run(const wchar_t *exe_name, const wchar_t *window_name, const std::vector<std::string> &dlls_name)
 	{
 		Target.exe_name = exe_name;
-		Target.dll_name = dll_name;
+		Target.dlls_name = dlls_name;
 		Target.w_name = window_name;
 
 		std::thread(Execute).detach();
 	}
-
-	template <typename T>
-	T ReadDLL(const ptrdiff_t &ptr_diff)
-	{
-		return Read<T>(Target.dll + ptr_diff);
-	};
-
-	template <typename T>
-	bool WriteDLL(const ptrdiff_t &ptr_diff, const T &value)
-	{
-		return Write<T>(Target.dll + ptr_diff, value);
-	};
 
 	Position GetClientPosition()
 	{

@@ -24,7 +24,7 @@ class AimBotModule : public Module
 
 		if (aimAssist && GetAsyncKeyState(VK_SHIFT))
 		{
-			WriteDLL<Vector3>(dwViewAngles, (target.position - MyLocalPlayer.position).RelativeAngle());
+			WriteClient<Vector3>(dwViewAngles, (target.position - MyLocalPlayer.position).RelativeAngle());
 		}
 
 		if (clickAssist && GetAsyncKeyState(VK_SHIFT))

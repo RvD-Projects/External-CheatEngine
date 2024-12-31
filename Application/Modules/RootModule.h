@@ -31,8 +31,8 @@ class RootModule : public Module
 
 	void UpdateEntities()
 	{
-		VM = ReadDLL<ViewMatrix>(dwViewMatrix);
-		ENTITIES_LIST = ReadDLL<uintptr_t>(dwEntityList);
+		VM = ReadClient<ViewMatrix>(dwViewMatrix);
+		ENTITIES_LIST = ReadClient<uintptr_t>(dwEntityList);
 
 		std::vector<Player> b = {};
 		std::vector<Player> bE = {};
@@ -46,20 +46,11 @@ class RootModule : public Module
 				continue;
 
 			SetPlayerScreenDef(VM, player);
-
-			if (GetLocalPlayer_T() == player.entity)
-			{
-				player.isLocalPlayer = true;
-				player.crossIndex = ReadLocalPlayer<int>(m_iIDEntIndex);
-				MyLocalPlayer = player;
-			}
-
-			player.isTeammate = !player.isLocalPlayer && GameIsTeamPlay() && ReadLocalPlayer<int>(m_iTeamNum) == player.team;
-
 			b.emplace_back(player);
 
 			if (player.isLocalPlayer)
 			{
+				MyLocalPlayer = player;
 				continue;
 			}
 
