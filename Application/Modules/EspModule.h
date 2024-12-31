@@ -89,6 +89,7 @@ public:
 			RenderGameObjects(player);
 		}
 
-		Gui::DrawFilledCircle(GetClientCenterPosition(), 64, White12);
+		Gui::DrawFilledCircle(GetClientCenterPosition(), 32, White12);
+		Gui::DrawCircle(GetClientCenterPosition(), 32, White25);
 	}
 };
