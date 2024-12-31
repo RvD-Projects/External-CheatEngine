@@ -11,10 +11,10 @@ public:
 	bool isInitialized = false;
 	bool isLocalPlayer = false;
 	bool isTeammate = false;
-	bool takesDamage;
+	bool isAlive, takesDamage;
 
 	int crossIndex;
-	UINT team, health, armor, maxHealth, lifeState, hammerID;
+	UINT team, health, armor, lifeState, maxHealth, hammerID;
 
 	std::string name;
 	Vector3 position, viewCamPos;
@@ -54,11 +54,13 @@ public:
 		armor = ReadController<UINT>(m_iPawnArmor);
 		maxHealth = ReadEntity<UINT>(m_iMaxHealth);
 		lifeState = ReadEntity<UINT>(m_lifeState);
+		takesDamage = ReadEntity<bool>(m_bTakesDamage);
 		position = ReadEntity<Vector3>(m_vOldOrigin);
 
 		viewCamPos = position + ReadEntity<Vector3>(m_vecViewOffset);
 		name = ReadString(ReadController<uintptr_t>(m_sSanitizedPlayerName));
 
+		isAlive = lifeState == 256;
 		isInitialized = true;
 	};
 
@@ -98,16 +100,6 @@ public:
 		dimOut = this->esp_d;
 	}
 
-	const bool IsAlive()
-	{
-		return health > 0;
-	}
-
-	const bool IsValidTarget()
-	{
-		return !isTeammate && !isLocalPlayer && health > 0 && takesDamage;
-	}
-
 	const bool IsLocalPlayer()
 	{
 		return isLocalPlayer;
@@ -116,5 +108,15 @@ public:
 	const bool IsEnemy()
 	{
 		return !isTeammate && !isLocalPlayer;
+	}
+
+	const bool IsAlive()
+	{
+		return isAlive && health > 0;
+	}
+
+	const bool IsValidTarget()
+	{
+		return IsEnemy() && IsAlive();
 	}
 };

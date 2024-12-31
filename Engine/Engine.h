@@ -127,7 +127,7 @@ namespace Engine
 	};
 
 	template <typename T>
-	T WriteDLL(const ptrdiff_t &ptr_diff, const T &value)
+	bool WriteDLL(const ptrdiff_t &ptr_diff, const T &value)
 	{
 		return Write<T>(Target.dll + ptr_diff, value);
 	};

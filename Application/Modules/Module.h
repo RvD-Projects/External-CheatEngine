@@ -33,7 +33,7 @@ public:
 
 protected:
 	std::thread thRead;
-	DWORD refreshRate = 16;
+	DWORD refreshRate = 10;
 	std::atomic<bool> isReady;
 	std::atomic<bool> isRunning;
 	Module *rootModule = nullptr;
@@ -57,6 +57,7 @@ protected:
 		if (rootModule)
 		{
 			this->rootModule = rootModule;
+			this->VM = this->rootModule->VM;
 			this->ENEMIES = this->rootModule->ENEMIES;
 			this->ENTITIES = this->rootModule->ENTITIES;
 			this->ENTITIES_LIST = this->rootModule->ENTITIES_LIST;
