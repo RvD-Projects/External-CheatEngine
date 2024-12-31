@@ -62,12 +62,6 @@ class EspModule : public Module
 
 		Gui::DrawRectangle(ESP_P, ESP_D, White50);
 		Gui::DrawTextual(ESP_P + Position{ESP_D.w + 4, 0}, player.name.data());
-		Gui::DrawTextual(ESP_P + Position{ESP_D.w + 4, 16}, std::to_string(player.health).append(" HP").data(), Red64);
-
-		if (player.armor)
-		{
-			Gui::DrawTextual(ESP_P + Position{ESP_D.w + 4, 32}, std::to_string(player.armor).append(" AP").data(), Blue64);
-		}
 	}
 
 	void RenderGameObjects(Player &player)

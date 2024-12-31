@@ -60,7 +60,7 @@ namespace Modules
 
         bool GameIsRescue()
         {
-            return ReadDLL<bool>(m_bMapHasBombTarget);
+            return ReadDLL<bool>(m_bMapHasRescueZone);
         };
 
         bool GameIsTeamPlay()
