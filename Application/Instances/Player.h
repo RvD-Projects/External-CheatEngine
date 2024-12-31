@@ -29,13 +29,6 @@ public:
 		if (!ctrl)
 			return;
 
-		Init(listEntry);
-	};
-
-	void Init(const uintptr_t &entry)
-	{
-		listEntry = entry;
-
 		pawnCtrl = ReadController<uintptr_t>(m_hPlayerPawn);
 		if (!pawnCtrl)
 			return;
@@ -44,22 +37,26 @@ public:
 		if (!entity)
 			return;
 
+		Init();
+	}
+
+	void Init()
+	{
+		name = ReadString(ReadController<uintptr_t>(m_sSanitizedPlayerName));
+		position = ReadEntity<Vector3>(m_vOldOrigin);
+		viewCamPos = position + ReadEntity<Vector3>(m_vecViewOffset);
+
 		team = ReadEntity<int>(m_iTeamNum);
 		health = ReadEntity<int>(m_iHealth);
-		armor = ReadController<int>(m_iPawnArmor);
 		maxHealth = ReadEntity<int>(m_iMaxHealth);
-		lifeState = ReadEntity<int>(m_lifeState);
+		armor = ReadController<int>(m_iPawnArmor);
 		takesDamage = ReadEntity<bool>(m_bTakesDamage);
-		position = ReadEntity<Vector3>(m_vOldOrigin);
+		lifeState = ReadEntity<int>(m_lifeState);
 		isAlive = lifeState == 256;
 
 		isLocalPlayer = GetLocalPlayer_T() == entity;
-		isTeammate = !isLocalPlayer && ReadLocalPlayer<int>(m_iTeamNum) == team;
+		isTeammate = isLocalPlayer || ReadLocalPlayer<int>(m_iTeamNum) == team;
 		crossIndex = isLocalPlayer ? ReadLocalPlayer<int>(m_iIDEntIndex) : -1;
-
-		viewCamPos = position + ReadEntity<Vector3>(m_vecViewOffset);
-		name = ReadString(ReadController<uintptr_t>(m_sSanitizedPlayerName));
-
 		isInitialized = true;
 	};
 
