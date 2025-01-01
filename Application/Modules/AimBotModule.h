@@ -2,21 +2,35 @@
 
 #include "Module.h"
 
+struct ModulesConfig
+{
+	bool aimAssist, clickAssist;
+};
+
 class AimBotModule : public Module
 {
-	bool aimAssist = true;
-	bool clickAssist = true;
+	AimConfig config;
 
 	void Execute() override
 	{
+		this->config.isActive = true;
+
 		this->UpdatePointers(this->rootModule);
 
+		this->config.isReady = true;
+
 		Player target;
-		if (!GetCrosshairTarget(target) || !target.IsValidTarget())
-			return;
+		for (Player &player : ENEMIES)
+		{
+			if (!player.IsValidTarget())
+				continue;
+
+			target = player;
+			break;
+		}
 
 		Position out;
-		if (!Geo::Get2DVector(target.position, out, VM.matrix, GetClientDimension()))
+		if (!Get2DVector(target.position, out, VM.matrix, ClientDimension))
 			return;
 
 		WriteClient<Vector3>(dwViewAngles, (target.position - MyLocalPlayer.position).RelativeAngle());
@@ -24,16 +38,22 @@ class AimBotModule : public Module
 		// Empty the old states first (insure next check are actual)
 		GetAsyncKeyState(VK_SHIFT);
 
-		if (aimAssist && GetAsyncKeyState(VK_SHIFT))
+		if (config.aimAssist && GetAsyncKeyState(VK_SHIFT))
 		{
-			WriteClient<Vector3>(dwViewAngles, (target.position - MyLocalPlayer.position).RelativeAngle());
+			WriteClient<Vector3>(dwViewAngles, target.distance.RelativeAngle());
 		}
 
-		if (clickAssist && GetAsyncKeyState(VK_SHIFT))
+		if (config.clickAssist && GetAsyncKeyState(VK_SHIFT))
 		{
 			mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
 			mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
 		}
+	}
+
+	void RenderAimZone()
+	{
+		Gui::DrawFilledCircle(ClientCenterPosition, 32, White12);
+		Gui::DrawCircle(ClientCenterPosition, 32, White25);
 	}
 
 public:

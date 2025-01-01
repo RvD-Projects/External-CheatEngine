@@ -2,19 +2,15 @@
 
 #include "Module.h"
 
-struct EspConfig
-{
-	bool pBx, pName, pHealth, pArmor, pBxHealth, pBxArmor;
-	GuiColor pBxCol, pBxBorderCol, pHealthCol, pArmorCol, pBxHealthCol, pBxArmorCol;
-	Position pBxPosOffset, pBxDimOffset;
-	std::map<std::string, std::string> objects;
-};
-
 class EspModule : public Module
 {
 	void Execute() override
 	{
+		this->config.isActive = true;
+
 		this->UpdatePointers(this->rootModule);
+
+		this->config.isReady = true;
 	}
 
 	void RenderPlayerSkeleton(Player &player)
@@ -72,7 +68,7 @@ class EspModule : public Module
 		if (!C4Bomb.FuseChrono.IsRunning())
 			return;
 
-		const Position pos = GetClientCenterPosition();
+		const Position pos = ClientCenterPosition;
 		Gui::DrawTextual(pos, ("Time left: " + C4Bomb.FuseChrono.ToString()).data(), GetTimerColor(C4Bomb.FuseChrono));
 		Gui::DrawTextual({pos.x, pos.y + 16}, ("Defuse Kit: " + C4Bomb.DefuseKitChrono.ToString()).data(), GetTimerColor(C4Bomb.DefuseKitChrono));
 		Gui::DrawTextual({pos.x, pos.y + 32}, ("Defuse: " + C4Bomb.DefuseChrono.ToString()).data(), GetTimerColor(C4Bomb.DefuseChrono));

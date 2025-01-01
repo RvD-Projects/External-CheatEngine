@@ -12,12 +12,16 @@
 #include <chrono>
 
 #include "Memory.h"
-#include "Math/Geo.h"
 #include "Math/ViewMatrix.h"
+#include "Math/Vector.h"
+#include "Math/Shapes.h"
+#include "Math/Geo.h"
 
 #include "Classes/Timer.h"
 
 using namespace Memory;
+using namespace Shapes;
+using namespace Geo;
 
 struct APP_INFO
 {

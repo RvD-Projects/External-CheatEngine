@@ -2,9 +2,6 @@
 
 #include "../Modules/Module.h"
 
-using namespace Modules;
-using namespace Modules::GameRules;
-
 class C4Bomb
 {
 public:

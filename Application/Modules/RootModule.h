@@ -11,32 +11,33 @@ class RootModule : public Module
 
 	void Init() override
 	{
+		this->config.isActive = true;
+
 		this->Esp = new EspModule();
 		this->AimBot = new AimBotModule();
 
 		this->Esp->Init(this);
 		this->AimBot->Init(this);
+
+		this->config.isReady = true;
 	}
 
 	void Execute() override
 	{
-		UpdateEntities();
-		UpdateGamesRules();
+		Dimension ClientDimension = GetClientDimension();
+		Position ClientCenterPosition = GetClientCenterPosition();
+		VM = ReadClient<ViewMatrix>(dwViewMatrix);
+
+		UpdatePlayerEntities();
+		C4Bomb.Update();
 	};
 
-	void UpdateGamesRules()
+	void UpdatePlayerEntities()
 	{
-		C4Bomb.Update();
-	}
-
-	void UpdateEntities()
-	{
-		VM = ReadClient<ViewMatrix>(dwViewMatrix);
-		ENTITIES_LIST = ReadClient<uintptr_t>(dwEntityList);
-
 		std::vector<Player> b = {};
 		std::vector<Player> bE = {};
 		std::vector<Player> bF = {};
+		ENTITIES_LIST = ReadClient<uintptr_t>(dwEntityList);
 
 		for (int i = 1; i < 32; i++)
 		{
@@ -45,14 +46,14 @@ class RootModule : public Module
 			if (!player.isInitialized)
 				continue;
 
-			SetPlayerScreenDef(VM, player);
+			if (player.isLocalPlayer)
+				MyLocalPlayer = player;
+
+			SetPlayerScreen(VM, player);
 			b.emplace_back(player);
 
 			if (player.isLocalPlayer)
-			{
-				MyLocalPlayer = player;
 				continue;
-			}
 
 			player.IsEnemy()
 				? bE.emplace_back(player)
@@ -64,36 +65,56 @@ class RootModule : public Module
 		FRIENDLIES = bF;
 	}
 
-	void SetPlayerScreenDef(const ViewMatrix &VM, Player &player) const
+	void SetPlayerScreen(const ViewMatrix &VM, Player &player) const
+	{
+		if (!player.IsEnemy())
+			return;
+
+		if (!SetPlayerScreenPosition(VM, player))
+			return;
+
+		SetPlayerScreenBones(player);
+	};
+
+	bool SetPlayerScreenPosition(const ViewMatrix &VM, Player &player) const
 	{
 		Position FEET, EYES;
-		if (Geo::Get2DVector(player.viewCamPos, EYES, VM.matrix, GetClientDimension()))
+		if (!Get2DVector(player.viewCamPos, EYES, VM.matrix, ClientDimension))
+			return false;
+
+		if (!Get2DVector(player.position, FEET, VM.matrix, ClientDimension))
+			return false;
+
+		player.screenEye = EYES;
+		player.screenFeet = FEET;
+		player.screen_d.h = (player.screenFeet.y - player.screenEye.y) * 1.1777f;
+		player.screen_d.w = player.screen_d.h * 0.777f;
+
+		player.esp_d = player.screen_d;
+		player.esp_p = Position{
+			player.screenFeet.x - (player.esp_d.w * 0.5f),
+			player.screenFeet.y - player.esp_d.h,
+		};
+
+		return true;
+	};
+
+	void SetPlayerScreenBones(Player &player) const
+	{
+		for (const auto &Connection : BoneConnections)
 		{
-			player.screenEye = EYES;
-			if (Geo::Get2DVector(player.position, FEET, VM.matrix, GetClientDimension()))
-			{
-				player.screenFeet = FEET;
-				player.screen_d.h = (player.screenFeet.y - player.screenEye.y) * 1.1777f;
-				player.screen_d.w = player.screen_d.h * 0.777f;
+			Line3D boneLine3D{
+				Read<Vector3>(player.boneMatrix + Connection.bone1 * 32),
+				Read<Vector3>(player.boneMatrix + Connection.bone2 * 32)};
 
-				player.esp_d = player.screen_d;
-				player.esp_p = Position{
-					player.screenFeet.x - (player.esp_d.w * 0.5f),
-					player.screenFeet.y - player.esp_d.h,
-				};
-			}
+			Position p1, p2;
+			if (!Get2DVector(boneLine3D.v1, p1, VM.matrix, ClientDimension))
+				break;
 
-			if (player.IsEnemy())
-			{
-				for (const auto &bone : player.bones)
-				{
-					Line boneLine;
-					Geo::Get2DVector(bone.v1, boneLine.p1, VM.matrix, GetClientDimension());
-					Geo::Get2DVector(bone.v2, boneLine.p2, VM.matrix, GetClientDimension());
+			if (!Get2DVector(boneLine3D.v2, p2, VM.matrix, ClientDimension))
+				break;
 
-					player.screenBones.emplace_back(boneLine);
-				}
-			}
+			player.screenBones.emplace_back(Line{p1, p2});
 		}
 	};
 

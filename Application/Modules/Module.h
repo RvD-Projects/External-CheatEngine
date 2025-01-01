@@ -1,12 +1,8 @@
 #pragma once
 
-#include "../Modules/Modules.h"
+#include "Configs.h"
 #include "../Instances/Player.h"
 #include "../Instances/C4Bomb.h"
-#include "../Gui/Gui.h"
-
-using namespace Modules;
-using namespace Modules::GameRules;
 
 class Module
 {
@@ -14,11 +10,10 @@ class Module
 	{
 		this->Init(this->rootModule);
 
-		this->isRunning = true;
-		while (this->isRunning)
+		while (this->config.isActive)
 		{
 			this->Execute();
-			std::this_thread::sleep_for(std::chrono::milliseconds(this->refreshRate));
+			std::this_thread::sleep_for(std::chrono::milliseconds(this->config.refreshRate));
 		}
 	}
 
@@ -33,23 +28,29 @@ public:
 
 protected:
 	std::thread thRead;
-	DWORD refreshRate = 10;
-	std::atomic<bool> isReady;
-	std::atomic<bool> isRunning;
 	Module *rootModule = nullptr;
 	Module *parentModule = nullptr;
 
-	ViewMatrix VM;
-	uintptr_t ENTITIES_LIST;
+	ModuleConfig config;
 
-	Player MyLocalPlayer;
+	ViewMatrix VM;
+	Dimension ClientDimension;
+	Position ClientCenterPosition;
+
+	uintptr_t ENTITIES_LIST;
 	std::vector<Player> ENTITIES;
 	std::vector<Player> ENEMIES;
 	std::vector<Player> FRIENDLIES;
+	Player MyLocalPlayer;
 
 	C4Bomb C4Bomb;
 
-	virtual void Init() {};
+	virtual void Init()
+	{
+		this->config.isReady = true;
+		this->config.isActive = true;
+	};
+
 	virtual void Execute() {};
 
 	void UpdatePointers(Module *rootModule)
@@ -57,12 +58,17 @@ protected:
 		if (rootModule)
 		{
 			this->rootModule = rootModule;
+
 			this->VM = this->rootModule->VM;
-			this->ENEMIES = this->rootModule->ENEMIES;
-			this->ENTITIES = this->rootModule->ENTITIES;
+			this->ClientDimension = this->rootModule->ClientDimension;
+			this->ClientCenterPosition = this->rootModule->ClientCenterPosition;
+
 			this->ENTITIES_LIST = this->rootModule->ENTITIES_LIST;
+			this->ENTITIES = this->rootModule->ENTITIES;
+			this->ENEMIES = this->rootModule->ENEMIES;
 			this->FRIENDLIES = this->rootModule->FRIENDLIES;
 			this->MyLocalPlayer = this->rootModule->MyLocalPlayer;
+
 			this->C4Bomb = this->rootModule->C4Bomb;
 		}
 	}
@@ -111,17 +117,14 @@ protected:
 	}
 
 public:
-	Module()
-	{
-		thRead = std::thread(&Module::Loop, this);
-	};
+	Module() { thRead = std::thread(&Module::Loop, this); };
 
 	~Module()
 	{
-		this->isRunning = false;
+		this->config.isReady = false;
+		this->config.isActive = false;
+
 		if (this->thRead.joinable())
-		{
 			this->thRead.join();
-		}
 	}
 };

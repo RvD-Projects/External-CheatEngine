@@ -4,8 +4,6 @@
 #include "../Modules/Module.h"
 
 using namespace Bones;
-using namespace Modules;
-using namespace Modules::GameRules;
 
 class Player
 {
@@ -62,20 +60,8 @@ public:
 		isTeammate = isLocalPlayer || ReadLocalPlayer<int>(m_iTeamNum) == team;
 		crossIndex = isLocalPlayer ? ReadLocalPlayer<int>(m_iIDEntIndex) : -1;
 
-		if (!isTeammate)
-		{
-			sceneNode = ReadEntity<uintptr_t>(m_pGameSceneNode);
-			boneMatrix = Read<uintptr_t>(sceneNode + m_modelState + 0x80);
-
-			for (size_t i = 0; i < NbOfBoneConnections; i++)
-			{
-				Line3D boneLine3D{
-					Read<Vector3>(boneMatrix + BoneConnections[i].bone1 * 32),
-					Read<Vector3>(boneMatrix + BoneConnections[i].bone2 * 32)};
-
-				bones.emplace_back(boneLine3D);
-			}
-		}
+		sceneNode = ReadEntity<uintptr_t>(m_pGameSceneNode);
+		boneMatrix = Read<uintptr_t>(sceneNode + m_modelState + 0x80);
 
 		isInitialized = true;
 	};

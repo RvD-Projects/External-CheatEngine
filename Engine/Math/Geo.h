@@ -2,9 +2,8 @@
 
 #include "Vector.h"
 
-class Geo
+namespace Geo
 {
-public:
 	/**
 	 * Transforms a 3D vector into a 2D vector using a transformation matrix and screen dimensions.
 	 *
@@ -14,7 +13,7 @@ public:
 	 * @param sd The space dimensions, defaulting to empty.
 	 * @return True if the transformation is successful and the vector is within view; false otherwise.
 	 */
-	static bool Get2DVector(const Vector3 &v3, Position &v2, const float m[16], const Dimension &sd = {0, 0})
+	bool Get2DVector(const Vector3 &v3, Position &v2, const float m[16], const Dimension &sd = {0, 0})
 	{
 		Vector4 clipCoords;
 		clipCoords.x = v3.x * m[0] + v3.y * m[1] + v3.z * m[2] + m[3];
@@ -39,7 +38,7 @@ public:
 		return true;
 	}
 
-	static float GetVectorDistance(const Vector3 &p1, const Vector3 &p2)
+	float GetVectorDistance(const Vector3 &p1, const Vector3 &p2)
 	{
 		return sqrt(pow(p1.x - p2.x, 2) + pow(p1.x - p2.x, 2) + pow(p1.z - p2.z, 2));
 	}

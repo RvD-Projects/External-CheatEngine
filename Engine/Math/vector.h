@@ -57,12 +57,6 @@ struct Vector4
 	float w, x, y, z;
 };
 
-struct Line
-{
-	Position p1;
-	Position p2;
-};
-
 struct Line3D
 {
 	Vector3 v1;
