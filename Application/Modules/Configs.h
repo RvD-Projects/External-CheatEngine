@@ -30,5 +30,5 @@ struct AimConfig : public ModuleConfig
 {
     bool isAimActive, isClickActive, showAimCircle;
     Circle aimCircle = {.radius = 32};
-    Box searchBox;
+    Box searchBox = {.d = {32, 32}};
 };

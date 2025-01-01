@@ -6,7 +6,7 @@
 
 struct Dimension
 {
-	float w, h, d;
+	float w = 1, h = 1, d = 1;
 
 	Dimension operator/(float dividend)
 	{
