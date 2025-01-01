@@ -127,6 +127,6 @@ public:
 		if (this->AimBot)
 			this->AimBot->Render();
 
-		Gui::DrawTextual({2, 2}, "Overlay v 1.0.0");
+		DrawTextual({2, 2}, "Overlay v 1.0.0");
 	}
 };

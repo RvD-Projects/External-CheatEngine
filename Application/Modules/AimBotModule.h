@@ -52,8 +52,8 @@ class AimBotModule : public Module
 
 	void RenderAimZone()
 	{
-		Gui::DrawFilledCircle(ClientCenterPosition, 32, White12);
-		Gui::DrawCircle(ClientCenterPosition, 32, White25);
+		DrawFilledCircle(ClientCenterPosition, 32, White12);
+		DrawCircle(ClientCenterPosition, 32, White25);
 	}
 
 public:
