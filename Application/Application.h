@@ -16,8 +16,7 @@
 #include "../Engine/Engine.h"
 
 DWORD refreshRate = 16; // Update every ~16ms (60 FPS)
-std::atomic<bool> isReady;
-std::atomic<bool> isRunning;
+std::atomic<bool> isReady, isRunning, isHidden;
 
 const wchar_t *APP_NAME = L"CS2 Overlay";
 const wchar_t *EXE_NAME = L"Application.exe";
@@ -57,4 +56,12 @@ void Start(const wchar_t *targetExeName, const wchar_t *targetWindowName, HWND a
     std::thread([appWindow]()
                 { Execute(appWindow); })
         .detach();
+}
+
+bool ToggleWindowAffinity(const HWND &window)
+{
+    isHidden = !isHidden;
+    SetWindowDisplayAffinity(window, isHidden ? 0x00000000 : 0x00000017);
+
+    return isHidden;
 }

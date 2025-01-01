@@ -106,31 +106,18 @@ INT APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	RootModule *Modules = new RootModule();
 
 	bool running = true;
-	bool isHidden = false;
-
 	while (running)
 	{
 		MSG msg;
 
+		if (GetAsyncKeyState(VK_F8))
+		{
+			ToggleWindowAffinity(window);
+		}
+
 		if (GetAsyncKeyState(VK_F9))
 		{
 			running = false;
-		}
-
-		if (GetAsyncKeyState(VK_F8))
-		{
-			if (!isHidden)
-			{
-				SetWindowDisplayAffinity(window, 0x00000011); // Hide From ScreenShare/Recording/ScreenShot
-				isHidden = true;
-				// Gui::DrawTextual({2, 10}, "Hidden");
-			}
-			else if (isHidden)
-			{
-				SetWindowDisplayAffinity(window, 0x00000000); // Show On ScreenShare/Recording/ScreenShot
-				isHidden = false;
-				// Gui::DrawTextual({2, 10}, "");
-			}
 		}
 
 		while (PeekMessage(&msg, window, 0, 0, PM_REMOVE))

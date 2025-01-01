@@ -60,8 +60,8 @@ class RootModule : public Module
 			}
 
 			player.IsEnemy()
-				? bF.emplace_back(player)
-				: bE.emplace_back(player);
+				? bE.emplace_back(player)
+				: bF.emplace_back(player);
 		}
 
 		ENTITIES = b;
