@@ -24,7 +24,7 @@ class EspModule : public Module
 		Gui::DrawCircle(player.screenEye, headRadius, White50);
 
 		for (const auto &line : player.screenBones)
-			Gui::DrawLine(line.p1, line.p2, White75);
+			Gui::DrawLine(line.p1, line.p2, White75, 2.5f);
 	}
 
 	void RenderPlayerBoxStats(Player &player)

@@ -54,11 +54,6 @@ class RootModule : public Module
 				continue;
 			}
 
-			if (MyLocalPlayer.isInitialized && player.IsEnemy())
-			{
-				player.distance = (player.position - MyLocalPlayer.position);
-			}
-
 			player.IsEnemy()
 				? bE.emplace_back(player)
 				: bF.emplace_back(player);
