@@ -1,12 +1,12 @@
 #pragma once
 
-typedef struct
+struct GuiColor
 {
-    float R;
-    float G;
-    float B;
-    float A;
-} GuiColor;
+    float R = 255.f;
+    float G = 255.f;
+    float B = 255.f;
+    float A = 255.f;
+};
 
 const GuiColor Transparent{0, 0, 0, 0};
 

@@ -3,9 +3,9 @@
 #include "../AppEngine.h"
 #include "../Gui/Gui.h"
 
-using namespace Gui;
 using namespace AppEngine;
 using namespace AppEngine::GameRules;
+using namespace Gui;
 
 struct ModuleConfig
 {
@@ -28,5 +28,7 @@ struct EspConfig : public ModuleConfig
 
 struct AimConfig : public ModuleConfig
 {
-    bool aimAssist, clickAssist;
+    bool isAimActive, isClickActive, showAimCircle;
+    Circle aimCircle;
+    Box searchBox;
 };

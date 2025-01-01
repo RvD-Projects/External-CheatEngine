@@ -38,12 +38,12 @@ class AimBotModule : public Module
 		// Empty the old states first (insure next check are actual)
 		GetAsyncKeyState(VK_SHIFT);
 
-		if (config.aimAssist && GetAsyncKeyState(VK_SHIFT))
+		if (config.isAimActive && GetAsyncKeyState(VK_SHIFT))
 		{
 			WriteClient<Vector3>(dwViewAngles, target.distance.RelativeAngle());
 		}
 
-		if (config.clickAssist && GetAsyncKeyState(VK_SHIFT))
+		if (config.isClickActive && GetAsyncKeyState(VK_SHIFT))
 		{
 			mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
 			mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);

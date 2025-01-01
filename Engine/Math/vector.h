@@ -29,6 +29,31 @@ struct Position
 	{
 		return {this->x - other.x, this->y - other.y};
 	}
+	Position operator*(float other)
+	{
+		return {this->x * other, this->y * other};
+	}
+	Position operator/(float other)
+	{
+		return {this->x / other, this->y / other};
+	}
+
+	Position operator+(Position *other)
+	{
+		return {this->x + other->x, this->y + other->y};
+	}
+	Position operator-(Position *other)
+	{
+		return {this->x - other->x, this->y - other->y};
+	}
+	Position operator*(float *other)
+	{
+		return {this->x * *other, this->y * *other};
+	}
+	Position operator/(float *other)
+	{
+		return {this->x / *other, this->y / *other};
+	}
 };
 
 struct Vector3

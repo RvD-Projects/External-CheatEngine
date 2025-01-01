@@ -182,12 +182,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AppEngine.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="Gui\Gui.h" />
     <ClInclude Include="Instances\Bones.h" />
     <ClInclude Include="Instances\C4Bomb.h" />
     <ClInclude Include="Instances\Player.h" />
     <ClInclude Include="Modules\AimBotModule.h" />
+    <ClInclude Include="Modules\Configs.h" />
     <ClInclude Include="Modules\EspModule.h" />
     <ClInclude Include="Modules\Module.h" />
     <ClInclude Include="Modules\Modules.h" />
