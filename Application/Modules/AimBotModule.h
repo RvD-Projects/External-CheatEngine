@@ -19,6 +19,8 @@ class AimBotModule : public Module
 		if (!Geo::Get2DVector(target.position, out, VM.matrix, GetClientDimension()))
 			return;
 
+		WriteClient<Vector3>(dwViewAngles, (target.position - MyLocalPlayer.position).RelativeAngle());
+
 		// Empty the old states first (insure next check are actual)
 		GetAsyncKeyState(VK_SHIFT);
 

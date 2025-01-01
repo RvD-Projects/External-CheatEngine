@@ -110,6 +110,11 @@ INT APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	{
 		MSG msg;
 
+		if (GetAsyncKeyState(VK_F8))
+		{
+			ToggleWindowAffinity(window);
+		}
+
 		if (GetAsyncKeyState(VK_F9))
 		{
 			running = false;

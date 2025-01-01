@@ -22,6 +22,9 @@ class EspModule : public Module
 		const float headRadius = player.screen_d.h / 16;
 		Gui::DrawFilledCircle(player.screenEye, headRadius, Green25);
 		Gui::DrawCircle(player.screenEye, headRadius, White50);
+
+		for (const auto &line : player.screenBones)
+			Gui::DrawLine(line.p1, line.p2, White75, 2.5f);
 	}
 
 	void RenderPlayerBoxStats(Player &player)
