@@ -29,6 +29,6 @@ struct EspConfig : public ModuleConfig
 struct AimConfig : public ModuleConfig
 {
     bool isAimActive, isClickActive, showAimCircle;
-    Circle aimCircle;
+    Circle aimCircle = {.radius = 32};
     Box searchBox;
 };

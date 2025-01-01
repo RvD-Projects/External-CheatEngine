@@ -25,8 +25,8 @@ namespace Shapes
     struct Circle
     {
         Position p;
-        float r = 1;
-        Dimension d = {r * 2, r * 2};
+        float radius = 1;
+        Dimension d = {radius * 2, radius * 2};
         GuiColor color;
         GuiColor borderColor;
     };
