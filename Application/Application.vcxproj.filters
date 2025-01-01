@@ -43,6 +43,9 @@
     <ClInclude Include="Instances\C4Bomb.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Instances\Bones.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">

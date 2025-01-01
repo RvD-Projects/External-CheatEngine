@@ -184,6 +184,7 @@
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="Gui\Gui.h" />
+    <ClInclude Include="Instances\Bones.h" />
     <ClInclude Include="Instances\C4Bomb.h" />
     <ClInclude Include="Instances\Player.h" />
     <ClInclude Include="Modules\AimBotModule.h" />

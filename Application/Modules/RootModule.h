@@ -54,7 +54,12 @@ class RootModule : public Module
 				continue;
 			}
 
-			player.isTeammate
+			if (MyLocalPlayer.isInitialized && player.IsEnemy())
+			{
+				player.distance = (player.position - MyLocalPlayer.position);
+			}
+
+			player.IsEnemy()
 				? bF.emplace_back(player)
 				: bE.emplace_back(player);
 		}
@@ -81,6 +86,18 @@ class RootModule : public Module
 					player.screenFeet.x - (player.esp_d.w * 0.5f),
 					player.screenFeet.y - player.esp_d.h,
 				};
+			}
+
+			if (player.IsEnemy())
+			{
+				for (const auto &bone : player.bones)
+				{
+					Line boneLine;
+					Geo::Get2DVector(bone.v1, boneLine.p1, VM.matrix, GetClientDimension());
+					Geo::Get2DVector(bone.v2, boneLine.p2, VM.matrix, GetClientDimension());
+
+					player.screenBones.emplace_back(boneLine);
+				}
 			}
 		}
 	};

@@ -18,6 +18,7 @@ using namespace SERVER_SCHEMAS;
 using namespace CLIENT_SCHEMAS::C_PlantedC4;
 using namespace CLIENT_SCHEMAS::C_Multimeter;
 using namespace CLIENT_SCHEMAS::C_CSGameRules;
+using namespace CLIENT_SCHEMAS::CSkeletonInstance;
 using namespace CLIENT_SCHEMAS::CCSPlayerController;
 
 using namespace CLIENT_SCHEMAS::C_CSPlayerPawn;

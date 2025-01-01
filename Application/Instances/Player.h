@@ -1,7 +1,9 @@
 #pragma once
 
+#include "Bones.h"
 #include "../Modules/Module.h"
 
+using namespace Bones;
 using namespace Modules;
 using namespace Modules::GameRules;
 
@@ -12,11 +14,13 @@ public:
 	int team, health, armor, maxHealth, hammerID, crossIndex, lifeState;
 
 	std::string name;
-	Vector3 position, viewCamPos;
+	Vector3 position, viewCamPos, distance;
 	Position screenFeet, screenEye, esp_p;
 	Dimension screen_d, esp_d;
+	std::vector<Line3D> bones;
+	std::vector<Line> screenBones;
 
-	uintptr_t listEntry, ctrl, pawnCtrl, entity, pawn;
+	uintptr_t listEntry, ctrl, pawnCtrl, entity, sceneNode, boneMatrix;
 
 	Player() {};
 	Player(const uintptr_t &list, const int &index)
@@ -57,6 +61,22 @@ public:
 		isLocalPlayer = GetLocalPlayer_T() == entity;
 		isTeammate = isLocalPlayer || ReadLocalPlayer<int>(m_iTeamNum) == team;
 		crossIndex = isLocalPlayer ? ReadLocalPlayer<int>(m_iIDEntIndex) : -1;
+
+		if (!isTeammate)
+		{
+			sceneNode = ReadEntity<uintptr_t>(m_pGameSceneNode);
+			boneMatrix = Read<uintptr_t>(sceneNode + m_modelState + 0x80);
+
+			for (size_t i = 0; i < NbOfBoneConnections; i++)
+			{
+				Line3D boneLine3D{
+					Read<Vector3>(boneMatrix + BoneConnections[i].bone1 * 32),
+					Read<Vector3>(boneMatrix + BoneConnections[i].bone2 * 32)};
+
+				bones.emplace_back(boneLine3D);
+			}
+		}
+
 		isInitialized = true;
 	};
 
@@ -82,12 +102,6 @@ public:
 	T ReadEntity(const ptrdiff_t &ptr_diff)
 	{
 		return Read<T>(entity + ptr_diff);
-	};
-
-	template <typename T>
-	T ReadEntityPawn(const ptrdiff_t &ptr_diff)
-	{
-		return Read<T>(pawn + ptr_diff);
 	};
 
 	void GetEsp(Position &posOut, Dimension &dimOut)
