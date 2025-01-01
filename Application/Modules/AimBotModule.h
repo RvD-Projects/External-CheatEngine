@@ -13,11 +13,8 @@ class AimBotModule : public Module
 
 	void Execute() override
 	{
-		this->config.isActive = true;
-
-		this->UpdatePointers(this->rootModule);
-
-		this->config.isReady = true;
+		if (!config.isActive)
+			return;
 
 		Player target;
 		for (Player &player : ENEMIES)
@@ -25,13 +22,12 @@ class AimBotModule : public Module
 			if (!player.IsValidTarget())
 				continue;
 
+			if (!InterSects(player.screenBox, config.aimCircle))
+				continue;
+
 			target = player;
 			break;
 		}
-
-		Position out;
-		if (!Get2DVector(target.position, out, VM.matrix, ClientDimension))
-			return;
 
 		WriteClient<Vector3>(dwViewAngles, (target.position - MyLocalPlayer.position).RelativeAngle());
 
@@ -52,10 +48,19 @@ class AimBotModule : public Module
 
 	void RenderAimZone()
 	{
-		DrawFilledCircle(ClientCenterPosition, 32, White12);
-		DrawCircle(ClientCenterPosition, 32, White25);
+		if (!config.showAimCircle)
+			return;
+
+		DrawCircle(config.aimCircle.p, config.aimCircle.radius, config.aimCircle.color);
+		DrawFilledCircle(config.aimCircle.p, config.aimCircle.radius, config.aimCircle.borderColor);
 	}
 
 public:
-	void Render() override {};
+	void Render() override
+	{
+		if (config.isHidden || !config.isActive || !config.isReady)
+			return;
+
+		this->RenderAimZone();
+	};
 };

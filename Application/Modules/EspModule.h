@@ -4,39 +4,31 @@
 
 class EspModule : public Module
 {
-	void Execute() override
-	{
-		this->config.isActive = true;
-
-		this->UpdatePointers(this->rootModule);
-
-		this->config.isReady = true;
-	}
-
 	void RenderPlayerSkeleton(Player &player)
 	{
-		const float headRadius = player.screen_d.h / 16;
-		DrawFilledCircle(player.screenEye, headRadius, Green25);
-		DrawCircle(player.screenEye, headRadius, White50);
+		if (!player.screenBones.size())
+			return;
 
 		for (const auto &line : player.screenBones)
 			DrawLine(line.pStart, line.pEnd, White75, 2.5f);
+
+		const float headRadius = player.screenBox.d.h / 13;
+		const Position headPos = player.screenBones[0].pStart;
+
+		DrawFilledCircle(headPos, headRadius, White25);
+		DrawCircle(headPos, headRadius, White75, 2.5f);
 	}
 
 	void RenderPlayerBoxStats(Player &player)
 	{
-		Position ESP_P;
-		Dimension ESP_D;
-		player.GetEsp(ESP_P, ESP_D);
-
 		const float healthRatio = (float)player.health / player.maxHealth;
 		const float armorRatio = (float)player.armor / 100.0f;
 
 		const float divider = 12.f;
 		const float sections = player.armor ? 2.f : 1.f;
 
-		const Position BORDER_POS = ESP_P;
-		const Dimension BORDER_D{ESP_D.w / divider, ESP_D.h};
+		const Position BORDER_POS = player.screenBox.pStart;
+		const Dimension BORDER_D{player.screenBox.d.w / divider, player.screenBox.d.h};
 
 		const Dimension BOX_D{BORDER_D.w / sections, BORDER_D.h * healthRatio};
 		const Position BOX_POS{BORDER_POS.x, BORDER_POS.y + BORDER_D.h - BOX_D.h};
@@ -55,12 +47,8 @@ class EspModule : public Module
 
 	void RenderPlayerBox(Player &player)
 	{
-		Position ESP_P;
-		Dimension ESP_D;
-		player.GetEsp(ESP_P, ESP_D);
-
-		DrawRectangle(ESP_P, ESP_D, White50);
-		DrawTextual(ESP_P + Position{ESP_D.w + 4, 0}, player.name.data());
+		DrawRectangle(player.screenBox.pStart, player.screenBox.d, White50);
+		DrawTextual(player.screenBox.pStart + Position{0, -16}, player.name.data(), White50);
 	}
 
 	void RenderGameObjects(Player &player)
@@ -77,6 +65,9 @@ class EspModule : public Module
 public:
 	void Render() override
 	{
+		if (config.isHidden || !config.isActive || !config.isReady)
+			return;
+
 		for (Player player : ENEMIES)
 		{
 			if (!player.IsValidTarget())

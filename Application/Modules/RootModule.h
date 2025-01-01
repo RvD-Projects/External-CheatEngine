@@ -24,8 +24,8 @@ class RootModule : public Module
 
 	void Execute() override
 	{
-		Dimension ClientDimension = GetClientDimension();
-		Position ClientCenterPosition = GetClientCenterPosition();
+		ClientDimension = GetClientDimension();
+		ClientCenterPosition = GetClientCenterPosition();
 		VM = ReadClient<ViewMatrix>(dwViewMatrix);
 
 		UpdatePlayerEntities();
@@ -87,14 +87,13 @@ class RootModule : public Module
 
 		player.screenEye = EYES;
 		player.screenFeet = FEET;
-		player.screen_d.h = (player.screenFeet.y - player.screenEye.y) * 1.1777f;
-		player.screen_d.w = player.screen_d.h * 0.777f;
 
-		player.esp_d = player.screen_d;
-		player.esp_p = Position{
-			player.screenFeet.x - (player.esp_d.w * 0.5f),
-			player.screenFeet.y - player.esp_d.h,
-		};
+		const float height = abs(EYES.y - FEET.y) * 1.1777f;
+		const float width = height * 0.777f;
+
+		player.screenBox = Box{FEET, Dimension{width, height}};
+		player.screenBox.pStart.x -= player.screenBox.d.w * 0.5f;
+		player.screenBox.pStart.y -= player.screenBox.d.h;
 
 		return true;
 	};

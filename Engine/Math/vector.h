@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include <numbers>
+#include <algorithm>
 #include <corecrt_math_defines.h>
 
 struct Dimension

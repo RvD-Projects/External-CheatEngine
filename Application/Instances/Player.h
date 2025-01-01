@@ -13,10 +13,12 @@ public:
 
 	std::string name;
 	Vector3 position, viewCamPos, distance;
-	Position screenFeet, screenEye, esp_p;
-	Dimension screen_d, esp_d;
+
 	std::vector<Line3D> bones;
 	std::vector<Line> screenBones;
+
+	Position screenFeet, screenEye;
+	Box screenBox;
 
 	uintptr_t listEntry, ctrl, pawnCtrl, entity, sceneNode, boneMatrix;
 
@@ -89,12 +91,6 @@ public:
 	{
 		return Read<T>(entity + ptr_diff);
 	};
-
-	void GetEsp(Position &posOut, Dimension &dimOut)
-	{
-		posOut = this->esp_p;
-		dimOut = this->esp_d;
-	}
 
 	const bool IsLocalPlayer()
 	{

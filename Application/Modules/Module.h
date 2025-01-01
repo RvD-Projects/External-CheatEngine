@@ -12,6 +12,7 @@ class Module
 
 		while (this->config.isActive)
 		{
+			this->UpdatePointers(this->rootModule);
 			this->Execute();
 			std::this_thread::sleep_for(std::chrono::milliseconds(this->config.refreshRate));
 		}
