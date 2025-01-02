@@ -87,7 +87,7 @@ class EspModule : public Module
 			return;
 
 		const Position boxPos{8, ClientDimension.h - 80};
-		const Position textStart{boxPos.x + 4, boxPos.y + 4};
+		const Position textStart{boxPos.x + 8, boxPos.y + 8};
 
 		// Draw the box based on text size
 		DrawFilledRectangle(boxPos, {180, 64}, Black75);
