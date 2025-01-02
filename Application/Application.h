@@ -15,11 +15,32 @@
 
 #include "../Engine/Engine.h"
 
-DWORD refreshRate = 16; // Update every ~16ms (60 FPS)
-std::atomic<bool> isReady, isRunning, isHidden;
+long long refreshRate = 5;
+bool isReady = false, isRunning = false, isMainWindowHidden = false;
 
 const wchar_t *APP_NAME = L"CS2 Overlay";
 const wchar_t *EXE_NAME = L"Application.exe";
+
+/**
+ * Toggles the display affinity of a specified window.
+ *
+ * This function changes the visibility state of a window by toggling
+ * the `isMainWindowHidden` atomic boolean. It uses the `SetWindowDisplayAffinity`
+ * function to set the window's display affinity based on the current
+ * state of `isMainWindowHidden`. If no window handle is provided, the default
+ * value is NULL.
+ *
+ * @param window A constant reference to the window handle (HWND) for
+ * @return The new state of the `isMainWindowHidden` boolean, indicating whether
+ *         the window is now hidden.
+ */
+bool ToggleWindowAffinity(const HWND &window = NULL)
+{
+    ::isMainWindowHidden = !::isMainWindowHidden;
+    SetWindowDisplayAffinity(window, ::isMainWindowHidden ? 17 : 0);
+
+    return ::isMainWindowHidden;
+}
 
 void UpdateOverlayPosition(HWND window)
 {
@@ -28,6 +49,16 @@ void UpdateOverlayPosition(HWND window)
     auto dim = TargetClient.dimension;
 
     SetWindowPos(window, HWND_TOPMOST, pos.x, pos.y, dim.w, dim.h, SWP_NOZORDER | SWP_NOACTIVATE);
+
+    if (GetAsyncKeyState(VK_F8))
+    {
+        ToggleWindowAffinity(window);
+    }
+
+    if (GetAsyncKeyState(VK_F9))
+    {
+        ::isRunning = false;
+    }
 
     // Apply the DPI scale factor to the ImGui context
     // ImGui::GetIO().FontGlobalScale = ImGui_ImplWin32_GetDpiScaleForHwnd(window);
@@ -71,28 +102,8 @@ void Execute(HWND appWindow)
 void Start(const wchar_t *targetExeName, const wchar_t *targetWindowName, HWND appWindow)
 {
     Engine::Run(targetExeName, targetWindowName, {"client.dll", "server.dll"});
-    std::thread([appWindow]()
-                { Execute(appWindow); })
+    std::thread(
+        [appWindow]()
+        { Execute(appWindow); })
         .detach();
-}
-
-/**
- * Toggles the display affinity of a specified window.
- *
- * This function changes the visibility state of a window by toggling
- * the `isHidden` atomic boolean. It uses the `SetWindowDisplayAffinity`
- * function to set the window's display affinity based on the current
- * state of `isHidden`. If no window handle is provided, the default
- * value is NULL.
- *
- * @param window A constant reference to the window handle (HWND) for
- * @return The new state of the `isHidden` boolean, indicating whether
- *         the window is now hidden.
- */
-bool ToggleWindowAffinity(const HWND &window = NULL)
-{
-    isHidden = !isHidden;
-    SetWindowDisplayAffinity(window, isHidden ? 0 : 17);
-
-    return isHidden;
 }

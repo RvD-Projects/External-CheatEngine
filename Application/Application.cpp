@@ -105,22 +105,10 @@ INT APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	Start(L"cs2.exe", L"Counter-Strike 2", window);
 	RootModule *Modules = new RootModule();
 
-	SetWindowDisplayAffinity(window, 0);
-
-	bool running = true;
-	while (running)
+	::isRunning = true;
+	while (::isRunning)
 	{
 		MSG msg;
-
-		if (GetAsyncKeyState(VK_F8))
-		{
-			ToggleWindowAffinity(window);
-		}
-
-		if (GetAsyncKeyState(VK_F9))
-		{
-			running = false;
-		}
 
 		while (PeekMessage(&msg, window, 0, 0, PM_REMOVE))
 		{
@@ -151,6 +139,11 @@ INT APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 		swap_chain->Present(1U, 0U);
+
+		if (::isReady)
+			continue;
+
+		ToggleWindowAffinity(window);
 		::isReady = true;
 	}
 
