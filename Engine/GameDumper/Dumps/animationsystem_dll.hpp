@@ -1,5 +1,5 @@
 // Generated using https://github.com/a2x/cs2-dumper
-// 2025-01-02 05:58:45.763737500 UTC
+// 2025-01-02 19:17:50.639193400 UTC
 
 #pragma once
 
@@ -1917,7 +1917,7 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_parts = 0x80; // CUtlVector<VPhysXBodyPart_t>
                 constexpr std::ptrdiff_t m_constraints2 = 0x98; // CUtlVector<VPhysXConstraint2_t>
                 constexpr std::ptrdiff_t m_joints = 0xB0; // CUtlVector<VPhysXJoint_t>
-                constexpr std::ptrdiff_t m_pFeModel = 0xC8; // PhysFeModelDesc_t*
+                constexpr std::ptrdiff_t m_pFeModel = 0xC8; // 
                 constexpr std::ptrdiff_t m_boneParents = 0xD0; // CUtlVector<uint16>
                 constexpr std::ptrdiff_t m_surfacePropertyHashes = 0xE8; // CUtlVector<uint32>
                 constexpr std::ptrdiff_t m_collisionAttributes = 0x100; // CUtlVector<VPhysXCollisionAttributes_t>
@@ -2686,7 +2686,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CRagdollComponentUpdater {
-                constexpr std::ptrdiff_t m_ragdollNodePaths = 0x30; // CUtlVector<CAnimNodePath>
+                constexpr std::ptrdiff_t m_ragdollNodePaths = 0x30; // 
                 constexpr std::ptrdiff_t m_boneIndices = 0x48; // 
                 constexpr std::ptrdiff_t m_boneNames = 0x60; // CUtlVector<CUtlString>
                 constexpr std::ptrdiff_t m_weightLists = 0x78; // CUtlVector<WeightList>
@@ -2718,7 +2718,7 @@ namespace cs2_dumper {
             // MGetKV3ClassDefaults
             namespace CSeqSynthAnimDesc {
                 constexpr std::ptrdiff_t m_sName = 0x0; // CBufferString
-                constexpr std::ptrdiff_t m_flags = 0x10; // 
+                constexpr std::ptrdiff_t m_flags = 0x10; // CSeqSeqDescFlag
                 constexpr std::ptrdiff_t m_transition = 0x1C; // CSeqTransition
                 constexpr std::ptrdiff_t m_nLocalBaseReference = 0x24; // int16
                 constexpr std::ptrdiff_t m_nLocalBoneMask = 0x26; // int16
@@ -2925,7 +2925,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CParamSpanUpdater {
-                constexpr std::ptrdiff_t m_spans = 0x0; // CUtlVector<ParamSpan_t>
+                constexpr std::ptrdiff_t m_spans = 0x0; // 
             }
             // Parent: None
             // Field count: 0
@@ -3141,9 +3141,9 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_baseNameHash = 0xC; // uint32
                 constexpr std::ptrdiff_t m_bHidden = 0x18; // bool
                 constexpr std::ptrdiff_t m_description = 0x20; // CUtlString
-                constexpr std::ptrdiff_t m_physics = 0x28; // CPhysSurfacePropertiesPhysics
+                constexpr std::ptrdiff_t m_physics = 0x28; // 
                 constexpr std::ptrdiff_t m_audioSounds = 0x50; // CPhysSurfacePropertiesSoundNames
-                constexpr std::ptrdiff_t m_audioParams = 0xA8; // CPhysSurfacePropertiesAudio
+                constexpr std::ptrdiff_t m_audioParams = 0xA8; // 
             }
             // Parent: CNmValueNode__CDefinition
             // Field count: 0
@@ -3305,7 +3305,7 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_footInfo = 0x0; // CUtlVector<FootFixedData_t>
                 constexpr std::ptrdiff_t m_hipDampingSettings = 0x18; // CAnimInputDamping
                 constexpr std::ptrdiff_t m_nHipBoneIndex = 0x28; // int32
-                constexpr std::ptrdiff_t m_ikSolverType = 0x2C; // IKSolverType
+                constexpr std::ptrdiff_t m_ikSolverType = 0x2C; // 
                 constexpr std::ptrdiff_t m_bApplyTilt = 0x30; // bool
                 constexpr std::ptrdiff_t m_bApplyHipDrop = 0x31; // bool
                 constexpr std::ptrdiff_t m_bAlwaysUseFallbackHinge = 0x32; // bool
@@ -3778,12 +3778,12 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_bActiveListening = 0x8; // bool
                 constexpr std::ptrdiff_t m_bActiveTalking = 0x9; // bool
                 constexpr std::ptrdiff_t m_layerAnimations = 0x10; // CUtlVector<MoodAnimation_t>
-                constexpr std::ptrdiff_t m_flIntensity = 0x28; // CRangeFloat
-                constexpr std::ptrdiff_t m_flDurationScale = 0x30; // CRangeFloat
+                constexpr std::ptrdiff_t m_flIntensity = 0x28; // 
+                constexpr std::ptrdiff_t m_flDurationScale = 0x30; // 
                 constexpr std::ptrdiff_t m_bScaleWithInts = 0x38; // bool
-                constexpr std::ptrdiff_t m_flNextStart = 0x3C; // CRangeFloat
-                constexpr std::ptrdiff_t m_flStartOffset = 0x44; // CRangeFloat
-                constexpr std::ptrdiff_t m_flEndOffset = 0x4C; // CRangeFloat
+                constexpr std::ptrdiff_t m_flNextStart = 0x3C; // 
+                constexpr std::ptrdiff_t m_flStartOffset = 0x44; // 
+                constexpr std::ptrdiff_t m_flEndOffset = 0x4C; // 
                 constexpr std::ptrdiff_t m_flFadeIn = 0x54; // float32
                 constexpr std::ptrdiff_t m_flFadeOut = 0x58; // float32
             }
@@ -4289,7 +4289,7 @@ namespace cs2_dumper {
             // MGetKV3ClassDefaults
             namespace CNmParameterizedBlendNode__Parameterization_t {
                 constexpr std::ptrdiff_t m_blendRanges = 0x0; // CUtlLeanVectorFixedGrowable<CNmParameterizedBlendNode::BlendRange_t,5>
-                constexpr std::ptrdiff_t m_parameterRange = 0x48; // Range_t
+                constexpr std::ptrdiff_t m_parameterRange = 0x48; // 
             }
             // Parent: CNmBoolValueNode__CDefinition
             // Field count: 1
@@ -4457,16 +4457,16 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CSeqMultiFetch {
-                constexpr std::ptrdiff_t m_flags = 0x0; // 
+                constexpr std::ptrdiff_t m_flags = 0x0; // CSeqMultiFetchFlag
                 constexpr std::ptrdiff_t m_localReferenceArray = 0x8; // CUtlVector<int16>
-                constexpr std::ptrdiff_t m_nGroupSize = 0x20; // 
-                constexpr std::ptrdiff_t m_nLocalPose = 0x28; // 
+                constexpr std::ptrdiff_t m_nGroupSize = 0x20; // int32[2]
+                constexpr std::ptrdiff_t m_nLocalPose = 0x28; // int32[2]
                 constexpr std::ptrdiff_t m_poseKeyArray0 = 0x30; // CUtlVector<float32>
                 constexpr std::ptrdiff_t m_poseKeyArray1 = 0x48; // CUtlVector<float32>
                 constexpr std::ptrdiff_t m_nLocalCyclePoseParameter = 0x60; // int32
                 constexpr std::ptrdiff_t m_bCalculatePoseParameters = 0x64; // bool
                 constexpr std::ptrdiff_t m_bFixedBlendWeight = 0x65; // bool
-                constexpr std::ptrdiff_t m_flFixedBlendWeightVals = 0x68; // 
+                constexpr std::ptrdiff_t m_flFixedBlendWeightVals = 0x68; // float32[2]
             }
             // Parent: None
             // Field count: 11
@@ -4524,7 +4524,7 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_name = 0x18; // CBufferString
                 constexpr std::ptrdiff_t m_localHAnimArray_Handle = 0x60; // CUtlVector<CStrongHandle<InfoForResourceTypeCAnimData>>
                 constexpr std::ptrdiff_t m_includedGroupArray_Handle = 0x78; // CUtlVector<CStrongHandle<InfoForResourceTypeCAnimationGroup>>
-                constexpr std::ptrdiff_t m_directHSeqGroup_Handle = 0x90; // 
+                constexpr std::ptrdiff_t m_directHSeqGroup_Handle = 0x90; // CStrongHandle<InfoForResourceTypeCSequenceGroupData>
                 constexpr std::ptrdiff_t m_decodeKey = 0x98; // CAnimKeyData
                 constexpr std::ptrdiff_t m_szScripts = 0x110; // CUtlVector<CBufferString>
                 constexpr std::ptrdiff_t m_AdditionalExtRefs = 0x128; // CUtlVector<CStrongHandleVoid>
@@ -4551,7 +4551,7 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_trackCompressionSettings = 0x28; // CUtlVector<NmCompressionSettings_t>
                 constexpr std::ptrdiff_t m_compressedPoseOffsets = 0x40; // CUtlVector<uint32>
                 constexpr std::ptrdiff_t m_syncTrack = 0xA0; // CNmSyncTrack
-                constexpr std::ptrdiff_t m_rootMotion = 0x150; // 
+                constexpr std::ptrdiff_t m_rootMotion = 0x150; // CNmRootMotionData
                 constexpr std::ptrdiff_t m_bIsAdditive = 0x1A0; // bool
             }
             // Parent: CAnimActionUpdater
@@ -4670,10 +4670,10 @@ namespace cs2_dumper {
             // MGetKV3ClassDefaults
             namespace CSeqS1SeqDesc {
                 constexpr std::ptrdiff_t m_sName = 0x0; // CBufferString
-                constexpr std::ptrdiff_t m_flags = 0x10; // 
-                constexpr std::ptrdiff_t m_fetch = 0x20; // 
+                constexpr std::ptrdiff_t m_flags = 0x10; // CSeqSeqDescFlag
+                constexpr std::ptrdiff_t m_fetch = 0x20; // CSeqMultiFetch
                 constexpr std::ptrdiff_t m_nLocalWeightlist = 0x90; // int32
-                constexpr std::ptrdiff_t m_autoLayerArray = 0x98; // 
+                constexpr std::ptrdiff_t m_autoLayerArray = 0x98; // CUtlVector<CSeqAutoLayer>
                 constexpr std::ptrdiff_t m_IKLockArray = 0xB0; // CUtlVector<CSeqIKLock>
                 constexpr std::ptrdiff_t m_transition = 0xC8; // CSeqTransition
                 constexpr std::ptrdiff_t m_SequenceKeys = 0xD0; // KeyValues3
@@ -4718,7 +4718,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CNmFloatRangeComparisonNode__CDefinition {
-                constexpr std::ptrdiff_t m_range = 0x10; // Range_t
+                constexpr std::ptrdiff_t m_range = 0x10; // 
                 constexpr std::ptrdiff_t m_nInputValueNodeIdx = 0x18; // int16
                 constexpr std::ptrdiff_t m_bIsInclusiveCheck = 0x1A; // bool
             }
@@ -4922,7 +4922,7 @@ namespace cs2_dumper {
             namespace CRenderGroom {
                 constexpr std::ptrdiff_t m_hairs = 0x0; // CUtlVector<RenderHairStrandInfo_t>
                 constexpr std::ptrdiff_t m_hairPositionOffsets = 0x18; // CUtlVector<uint32>
-                constexpr std::ptrdiff_t m_hSimParamsMat = 0x40; // CStrongHandleCopyable<InfoForResourceTypeIMaterial2>
+                constexpr std::ptrdiff_t m_hSimParamsMat = 0x40; // 
                 constexpr std::ptrdiff_t m_nSegmentsPerHairStrand = 0x48; // int32
                 constexpr std::ptrdiff_t m_nGuideHairCount = 0x4C; // int32
                 constexpr std::ptrdiff_t m_nHairCount = 0x50; // int32
@@ -5147,7 +5147,7 @@ namespace cs2_dumper {
             // MGetKV3ClassDefaults
             namespace CNmFloatClampNode__CDefinition {
                 constexpr std::ptrdiff_t m_nInputValueNodeIdx = 0x10; // int16
-                constexpr std::ptrdiff_t m_clampRange = 0x14; // Range_t
+                constexpr std::ptrdiff_t m_clampRange = 0x14; // 
             }
             // Parent: None
             // Field count: 15
@@ -5436,7 +5436,7 @@ namespace cs2_dumper {
             // MGetKV3ClassDefaults
             namespace CPoseHandle {
                 constexpr std::ptrdiff_t m_nIndex = 0x0; // uint16
-                constexpr std::ptrdiff_t m_eType = 0x2; // PoseType_t
+                constexpr std::ptrdiff_t m_eType = 0x2; // 
             }
             // Parent: CNmIDValueNode__CDefinition
             // Field count: 2
@@ -5471,7 +5471,7 @@ namespace cs2_dumper {
             // MGetKV3ClassDefaults
             namespace CSeqCmdSeqDesc {
                 constexpr std::ptrdiff_t m_sName = 0x0; // CBufferString
-                constexpr std::ptrdiff_t m_flags = 0x10; // 
+                constexpr std::ptrdiff_t m_flags = 0x10; // CSeqSeqDescFlag
                 constexpr std::ptrdiff_t m_transition = 0x1C; // CSeqTransition
                 constexpr std::ptrdiff_t m_nFrameRangeSequence = 0x24; // int16
                 constexpr std::ptrdiff_t m_nFrameCount = 0x26; // int16
@@ -5550,9 +5550,9 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_pParamListUpdater = 0x60; // CSmartPtr<CAnimParameterManagerUpdater>
                 constexpr std::ptrdiff_t m_pTagManagerUpdater = 0x68; // CSmartPtr<CAnimTagManagerUpdater>
                 constexpr std::ptrdiff_t m_scriptManager = 0x70; // CSmartPtr<CAnimScriptManager>
-                constexpr std::ptrdiff_t m_settings = 0x78; // 
+                constexpr std::ptrdiff_t m_settings = 0x78; // CAnimGraphSettingsManager
                 constexpr std::ptrdiff_t m_pStaticPoseCache = 0xA8; // CSmartPtr<CStaticPoseCacheBuilder>
-                constexpr std::ptrdiff_t m_pSkeleton = 0xB0; // 
+                constexpr std::ptrdiff_t m_pSkeleton = 0xB0; // CSmartPtr<CAnimSkeleton>
                 constexpr std::ptrdiff_t m_rootNodePath = 0xB8; // CAnimNodePath
             }
             // Parent: None
@@ -5562,7 +5562,7 @@ namespace cs2_dumper {
             // MGetKV3ClassDefaults
             namespace CAnimAttachment {
                 constexpr std::ptrdiff_t m_influenceRotations = 0x0; // Quaternion[3]
-                constexpr std::ptrdiff_t m_influenceOffsets = 0x30; // VectorAligned[3]
+                constexpr std::ptrdiff_t m_influenceOffsets = 0x30; // 
                 constexpr std::ptrdiff_t m_influenceIndices = 0x60; // int32[3]
                 constexpr std::ptrdiff_t m_influenceWeights = 0x6C; // float32[3]
                 constexpr std::ptrdiff_t m_numInfluences = 0x78; // uint8
@@ -5713,7 +5713,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace AnimationDecodeDebugDump_t {
-                constexpr std::ptrdiff_t m_processingType = 0x0; // 
+                constexpr std::ptrdiff_t m_processingType = 0x0; // AnimationProcessingType_t
                 constexpr std::ptrdiff_t m_elems = 0x8; // CUtlVector<AnimationDecodeDebugDumpElement_t>
             }
             // Parent: CNmIDValueNode__CDefinition
@@ -5775,7 +5775,7 @@ namespace cs2_dumper {
             // Parent: None
             // Field count: 5
             namespace IKTargetSettings_t {
-                constexpr std::ptrdiff_t m_TargetSource = 0x0; // IKTargetSource
+                constexpr std::ptrdiff_t m_TargetSource = 0x0; // 
                 constexpr std::ptrdiff_t m_Bone = 0x8; // IKBoneNameAndIndex_t
                 constexpr std::ptrdiff_t m_AnimgraphParameterNamePosition = 0x18; // AnimParamID
                 constexpr std::ptrdiff_t m_AnimgraphParameterNameOrientation = 0x1C; // AnimParamID
@@ -5809,7 +5809,7 @@ namespace cs2_dumper {
             namespace CNmAnimationPoseNode__CDefinition {
                 constexpr std::ptrdiff_t m_nPoseTimeValueNodeIdx = 0x10; // int16
                 constexpr std::ptrdiff_t m_nDataSlotIdx = 0x12; // int16
-                constexpr std::ptrdiff_t m_inputTimeRemapRange = 0x14; // Range_t
+                constexpr std::ptrdiff_t m_inputTimeRemapRange = 0x14; // 
                 constexpr std::ptrdiff_t m_flUserSpecifiedTime = 0x1C; // float32
                 constexpr std::ptrdiff_t m_bUseFramesAsInput = 0x20; // bool
             }
@@ -6100,7 +6100,7 @@ namespace cs2_dumper {
             // Parent: None
             // Field count: 3
             namespace IKSolverSettings_t {
-                constexpr std::ptrdiff_t m_SolverType = 0x0; // IKSolverType
+                constexpr std::ptrdiff_t m_SolverType = 0x0; // 
                 constexpr std::ptrdiff_t m_nNumIterations = 0x4; // int32
                 constexpr std::ptrdiff_t m_EndEffectorRotationFixUpMode = 0x8; // EIKEndEffectorRotationFixUpMode
             }
@@ -6125,7 +6125,7 @@ namespace cs2_dumper {
             namespace CNmParameterizedBlendNode__BlendRange_t {
                 constexpr std::ptrdiff_t m_nInputIdx0 = 0x0; // int16
                 constexpr std::ptrdiff_t m_nInputIdx1 = 0x2; // int16
-                constexpr std::ptrdiff_t m_parameterValueRange = 0x4; // Range_t
+                constexpr std::ptrdiff_t m_parameterValueRange = 0x4; // 
             }
             // Parent: None
             // Field count: 6

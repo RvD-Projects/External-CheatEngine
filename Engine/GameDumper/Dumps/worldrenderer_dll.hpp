@@ -1,5 +1,5 @@
 // Generated using https://github.com/a2x/cs2-dumper
-// 2025-01-02 05:58:45.763737500 UTC
+// 2025-01-02 19:17:50.639193400 UTC
 
 #pragma once
 
@@ -92,7 +92,7 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_anyFlags = 0x4; // ObjectTypeFlags_t
                 constexpr std::ptrdiff_t m_nLayer = 0x8; // int16
                 constexpr std::ptrdiff_t m_aggregateMeshes = 0x10; // CUtlVector<AggregateMeshInfo_t>
-                constexpr std::ptrdiff_t m_lodSetups = 0x28; // CUtlVector<AggregateLODSetup_t>
+                constexpr std::ptrdiff_t m_lodSetups = 0x28; // 
                 constexpr std::ptrdiff_t m_visClusterMembership = 0x40; // CUtlVector<uint16>
                 constexpr std::ptrdiff_t m_fragmentTransforms = 0x58; // CUtlVector<matrix3x4_t>
                 constexpr std::ptrdiff_t m_renderableModel = 0x70; // CStrongHandle<InfoForResourceTypeCModel>
@@ -298,7 +298,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace EntityKeyValueData_t {
-                constexpr std::ptrdiff_t m_connections = 0x8; // 
+                constexpr std::ptrdiff_t m_connections = 0x8; // CUtlVector<EntityIOConnectionData_t>
                 constexpr std::ptrdiff_t m_keyValuesData = 0x20; // CUtlBinaryBlock
             }
             // Parent: None

@@ -1,5 +1,5 @@
 // Generated using https://github.com/a2x/cs2-dumper
-// 2025-01-02 05:58:45.763737500 UTC
+// 2025-01-02 19:17:50.639193400 UTC
 
 #pragma once
 
@@ -4203,7 +4203,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace C_OP_RenderOmni2Light {
-                constexpr std::ptrdiff_t m_nLightType = 0x210; // ParticleOmni2LightTypeChoiceList_t
+                constexpr std::ptrdiff_t m_nLightType = 0x210; // 
                 constexpr std::ptrdiff_t m_vColorBlend = 0x218; // CParticleCollectionVecInput
                 constexpr std::ptrdiff_t m_nColorBlendType = 0x890; // ParticleColorBlendType_t
                 constexpr std::ptrdiff_t m_nBrightnessUnit = 0x894; // ParticleLightUnitChoiceList_t
@@ -5235,7 +5235,7 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_nPriority = 0x1258; // int32
                 constexpr std::ptrdiff_t m_nFogLightingMode = 0x125C; // ParticleLightFogLightingMode_t
                 constexpr std::ptrdiff_t m_flFogContribution = 0x1260; // CParticleCollectionRendererFloatInput
-                constexpr std::ptrdiff_t m_nCapsuleLightBehavior = 0x13C0; // ParticleLightBehaviorChoiceList_t
+                constexpr std::ptrdiff_t m_nCapsuleLightBehavior = 0x13C0; // 
                 constexpr std::ptrdiff_t m_flCapsuleLength = 0x13C4; // float32
                 constexpr std::ptrdiff_t m_bReverseOrder = 0x13C8; // bool
                 constexpr std::ptrdiff_t m_bClosedLoop = 0x13C9; // bool
@@ -6437,7 +6437,7 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_flOutlineStart1 = 0x331C; // float32
                 constexpr std::ptrdiff_t m_flOutlineEnd0 = 0x3320; // float32
                 constexpr std::ptrdiff_t m_flOutlineEnd1 = 0x3324; // float32
-                constexpr std::ptrdiff_t m_nLightingMode = 0x3328; // 
+                constexpr std::ptrdiff_t m_nLightingMode = 0x3328; // ParticleLightingQuality_t
                 constexpr std::ptrdiff_t m_flLightingTessellation = 0x3330; // CParticleCollectionRendererFloatInput
                 constexpr std::ptrdiff_t m_flLightingDirectionality = 0x3490; // CParticleCollectionRendererFloatInput
                 constexpr std::ptrdiff_t m_bParticleShadows = 0x35F0; // bool

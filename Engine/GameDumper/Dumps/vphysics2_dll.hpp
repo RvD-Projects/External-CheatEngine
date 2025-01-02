@@ -1,5 +1,5 @@
 // Generated using https://github.com/a2x/cs2-dumper
-// 2025-01-02 05:58:45.763737500 UTC
+// 2025-01-02 19:17:50.639193400 UTC
 
 #pragma once
 
@@ -244,7 +244,7 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t nNode = 0x0; // uint16[2]
                 constexpr std::ptrdiff_t nCollisionMask = 0x4; // uint16
                 constexpr std::ptrdiff_t nDummy = 0x6; // uint16
-                constexpr std::ptrdiff_t flRadius = 0x8; // 
+                constexpr std::ptrdiff_t flRadius = 0x8; // float32[2]
             }
             // Parent: None
             // Field count: 4
@@ -1076,7 +1076,7 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t strength = 0x0; // float32
                 constexpr std::ptrdiff_t forceLimit = 0x4; // float32
                 constexpr std::ptrdiff_t torqueLimit = 0x8; // float32
-                constexpr std::ptrdiff_t bodyMassScale = 0xC; // 
+                constexpr std::ptrdiff_t bodyMassScale = 0xC; // float32[2]
                 constexpr std::ptrdiff_t isActive = 0x14; // bool
             }
             // Parent: None
