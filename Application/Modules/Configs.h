@@ -21,10 +21,14 @@ struct RootConfig : public ModuleConfig
 
 struct EspConfig : public ModuleConfig
 {
-    bool pBx, pName, pHealth, pArmor, pBxHealth, pBxArmor;
-    GuiColor pBxCol, pBxBorderCol, pHealthCol, pArmorCol, pBxHealthCol, pBxArmorCol;
     Position pBxPosOffset, pBxDimOffset;
     std::map<std::string, std::string> gameObjects;
+    GuiColor pBxCol, pBxBorderCol, pHealthCol, pArmorCol, pBxHealthCol, pBxArmorCol;
+
+    bool isSkeletonActive = true, isBoxActive = true, isStatsActive = true, isGameObjectsActive = true;
+    bool showHealth = true, showArmor = true, showName = true, showDistance = true;
+    bool showHealthBar = true, showArmorBar = true;
+    bool showHealthText = true, showArmorText = true;
 };
 
 struct AimConfig : public ModuleConfig
