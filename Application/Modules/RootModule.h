@@ -95,6 +95,8 @@ class RootModule : public Module
 		player.screenBox.pStart.x -= player.screenBox.d.w * 0.5f;
 		player.screenBox.pStart.y -= player.screenBox.d.h;
 
+		player.distance = player.position - MyLocalPlayer.position;
+
 		return true;
 	};
 

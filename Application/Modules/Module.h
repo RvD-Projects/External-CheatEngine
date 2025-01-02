@@ -8,7 +8,7 @@ class Module
 {
 	void Loop()
 	{
-		this->Init(this->rootModule);
+		this->Init();
 
 		while (this->config.isActive)
 		{
@@ -20,12 +20,6 @@ class Module
 
 public:
 	virtual void Render() {}
-
-	void Init(Module *rootModule)
-	{
-		this->UpdatePointers(rootModule);
-		this->Init();
-	}
 
 protected:
 	std::thread thRead;
@@ -46,12 +40,8 @@ protected:
 
 	C4Bomb C4Bomb;
 
-	virtual void Init()
-	{
-		this->config.isReady = true;
-		this->config.isActive = true;
-	};
-
+	virtual void Init() {};
+	virtual void Init(Module *rootModule) {};
 	virtual void Execute() {};
 
 	void UpdatePointers(Module *rootModule)

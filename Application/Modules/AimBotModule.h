@@ -16,7 +16,7 @@ class AimBotModule : public Module
 		if (!config.isActive)
 			return;
 
-		Player target;
+		Player *target = nullptr;
 		for (Player &player : ENEMIES)
 		{
 			if (!player.IsValidTarget())
@@ -25,19 +25,23 @@ class AimBotModule : public Module
 			if (!InterSects(player.screenBox, config.aimCircle))
 				continue;
 
-			target = player;
+			target = &player;
 			break;
 		}
 
-		WriteClient<Vector3>(dwViewAngles, (target.position - MyLocalPlayer.position).RelativeAngle());
+		if (!target)
+			return;
 
 		// Empty the old states first (insure next check are actual)
 		GetAsyncKeyState(VK_SHIFT);
 
 		if (config.isAimActive && GetAsyncKeyState(VK_SHIFT))
 		{
-			WriteClient<Vector3>(dwViewAngles, target.distance.RelativeAngle());
+			WriteClient<Vector3>(dwViewAngles, target->distance.RelativeAngle());
 		}
+
+		if (MyLocalPlayer.crossIndex < 0)
+			return;
 
 		if (config.isClickActive && GetAsyncKeyState(VK_SHIFT))
 		{
@@ -51,11 +55,20 @@ class AimBotModule : public Module
 		if (!config.showAimCircle)
 			return;
 
+		config.aimCircle.p = ClientCenterPosition;
+
 		DrawCircle(config.aimCircle.p, config.aimCircle.radius, config.aimCircle.color);
 		DrawFilledCircle(config.aimCircle.p, config.aimCircle.radius, config.aimCircle.borderColor);
 	}
 
 public:
+	void Init(Module *rootModule) override
+	{
+		this->config.isActive = true;
+		this->UpdatePointers(rootModule);
+		this->config.isReady = true;
+	}
+
 	void Render() override
 	{
 		if (config.isHidden || !config.isActive || !config.isReady)

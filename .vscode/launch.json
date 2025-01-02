@@ -12,6 +12,18 @@
             "environment": [],
             "externalConsole": false,
             "preLaunchTask": "build"
+        },
+        {
+            "name": "Release",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/Build/Release/Application.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "preLaunchTask": "build release"
         }
     ]
 }

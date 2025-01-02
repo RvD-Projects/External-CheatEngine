@@ -63,6 +63,13 @@ class EspModule : public Module
 	}
 
 public:
+	void Init(Module *rootModule) override
+	{
+		this->config.isActive = true;
+		this->UpdatePointers(rootModule);
+		this->config.isReady = true;
+	}
+
 	void Render() override
 	{
 		if (config.isHidden || !config.isActive || !config.isReady)
@@ -78,8 +85,5 @@ public:
 			RenderPlayerBox(player);
 			RenderGameObjects(player);
 		}
-
-		DrawFilledCircle(GetClientCenterPosition(), 32, White12);
-		DrawCircle(GetClientCenterPosition(), 32, White25);
 	}
 };

@@ -9,13 +9,14 @@ using namespace Gui;
 
 struct ModuleConfig
 {
-    bool isActive, isReady, isHidden;
+    bool isActive = true;
+    bool isReady = false, isHidden = false;
     long long refreshRate = 10;
 };
 
 struct RootConfig : public ModuleConfig
 {
-    bool espActive, AimActive;
+    bool espActive = true, AimActive = true;
 };
 
 struct EspConfig : public ModuleConfig
@@ -28,6 +29,6 @@ struct EspConfig : public ModuleConfig
 
 struct AimConfig : public ModuleConfig
 {
-    bool isAimActive, isClickActive, showAimCircle;
-    Circle aimCircle = {.radius = 32};
+    bool isAimActive = true, isClickActive = true, showAimCircle = true;
+    Circle aimCircle = {.radius = 42, .color = White12, .borderColor = White25};
 };

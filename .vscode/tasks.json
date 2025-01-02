@@ -17,6 +17,23 @@
                 "$msCompile"
             ],
             "detail": "Build the entire solution"
+        },
+        {
+            "label": "build release",
+            "type": "shell",
+            "command": "msbuild",
+            "args": [
+                "Application.sln",
+                "/p:Configuration=Release"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$msCompile"
+            ],
+            "detail": "Build the entire solution"
         }
     ]
 }
