@@ -95,28 +95,36 @@ class RootModule : public Module
 		player.screenBox.pStart.x -= player.screenBox.d.w * 0.5f;
 		player.screenBox.pStart.y -= player.screenBox.d.h;
 
-		player.distance = player.position - MyLocalPlayer.position;
-
 		return true;
 	};
 
-	void SetPlayerScreenBones(Player &player) const
+	bool SetPlayerScreenBones(Player &player) const
 	{
 		for (const auto &Connection : BoneConnections)
 		{
-			Line3D boneLine3D{
+			Line3D bone3D{
 				Read<Vector3>(player.boneMatrix + Connection.bone1 * 32),
 				Read<Vector3>(player.boneMatrix + Connection.bone2 * 32)};
 
 			Position p1, p2;
-			if (!Get2DVector(boneLine3D.v1, p1, VM.matrix, ClientDimension))
-				break;
+			if (!Get2DVector(bone3D.v1, p1, VM.matrix, ClientDimension))
+				return false;
 
-			if (!Get2DVector(boneLine3D.v2, p2, VM.matrix, ClientDimension))
-				break;
+			if (!Get2DVector(bone3D.v2, p2, VM.matrix, ClientDimension))
+				return false;
+
+			// Use the head bone to calculate the distance
+			if (Connection.bone1 == Bones::head)
+			{
+				const auto boneDiff = player.position - bone3D.v2;
+				player.distance = bone3D.v2 - MyLocalPlayer.position + boneDiff;
+				player.bones.emplace_back(bone3D);
+			}
 
 			player.screenBones.emplace_back(Line{p1, p2});
 		}
+
+		return player.screenBones.size() > 0;
 	};
 
 public:
@@ -128,6 +136,6 @@ public:
 		if (this->AimBot)
 			this->AimBot->Render();
 
-		DrawTextual({2, 2}, "Overlay v 1.0.0");
+		DrawTextual({2, 2}, "Overlay v 1.0.0", isMainWindowHidden ? White : GameRed);
 	}
 };
