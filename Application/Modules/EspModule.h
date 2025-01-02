@@ -90,7 +90,8 @@ class EspModule : public Module
 		const Position textStart{boxPos.x + 4, boxPos.y + 4};
 
 		// Draw the box based on text size
-		DrawFilledRectangle(boxPos, {180, 64}, Black50);
+		DrawFilledRectangle(boxPos, {180, 64}, Black75);
+		DrawRectangle(boxPos, {180, 64}, White75);
 
 		DrawTextual(textStart, ("Time left: " + C4Bomb.FuseChrono.ToString()).data(), GetTimerColor(C4Bomb.FuseChrono));
 		DrawTextual({textStart.x, textStart.y + 16}, ("Defuse Kit: " + C4Bomb.DefuseKitChrono.ToString()).data(), GetTimerColor(C4Bomb.DefuseKitChrono));
