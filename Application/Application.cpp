@@ -105,6 +105,8 @@ INT APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	Start(L"cs2.exe", L"Counter-Strike 2", window);
 	RootModule *Modules = new RootModule();
 
+	SetWindowDisplayAffinity(window, 0);
+
 	bool running = true;
 	while (running)
 	{

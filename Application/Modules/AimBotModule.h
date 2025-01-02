@@ -16,6 +16,8 @@ class AimBotModule : public Module
 		if (!config.isActive)
 			return;
 
+		config.aimCircle.p = ClientCenterPosition;
+
 		Player *target = nullptr;
 		for (Player &player : ENEMIES)
 		{
@@ -33,20 +35,20 @@ class AimBotModule : public Module
 			return;
 
 		// Empty the old states first (insure next check are actual)
-		GetAsyncKeyState(VK_SHIFT);
+		GetAsyncKeyState(VK_RBUTTON);
 
-		if (config.isAimActive && GetAsyncKeyState(VK_SHIFT))
+		if (config.isAimActive && GetAsyncKeyState(VK_RBUTTON))
 		{
 			WriteClient<Vector3>(dwViewAngles, target->distance.RelativeAngle());
-		}
 
-		if (MyLocalPlayer.crossIndex < 0)
-			return;
+			if (MyLocalPlayer.crossIndex < 0)
+				return;
 
-		if (config.isClickActive && GetAsyncKeyState(VK_SHIFT))
-		{
-			mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
-			mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
+			if (config.isClickActive)
+			{
+				mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
+				mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
+			}
 		}
 	}
 
@@ -54,8 +56,6 @@ class AimBotModule : public Module
 	{
 		if (!config.showAimCircle)
 			return;
-
-		config.aimCircle.p = ClientCenterPosition;
 
 		DrawCircle(config.aimCircle.p, config.aimCircle.radius, config.aimCircle.color);
 		DrawFilledCircle(config.aimCircle.p, config.aimCircle.radius, config.aimCircle.borderColor);
@@ -73,7 +73,5 @@ public:
 	{
 		if (config.isHidden || !config.isActive || !config.isReady)
 			return;
-
-		this->RenderAimZone();
 	};
 };
