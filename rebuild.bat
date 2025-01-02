@@ -1,5 +1,7 @@
 cd Engine/GameDumper
-dump.bat
-cd ../../
+call dump.bat
 
-msbuild Application.sln /p:Configuration=Release /t:Rebuild
+cd ../
+cd ../
+
+call msbuild Application.sln /p:Configuration=Release /t:Rebuild
