@@ -1,5 +1,5 @@
 // Generated using https://github.com/a2x/cs2-dumper
-// 2025-01-01 01:39:13.088546800 UTC
+// 2025-01-02 05:58:45.763737500 UTC
 
 #pragma once
 
@@ -792,7 +792,7 @@ namespace cs2_dumper {
             // MPropertyCustomEditor
             // MParticleCustomFieldDefaultValue
             namespace CParticleModelInput {
-                constexpr std::ptrdiff_t m_nType = 0x10; // 
+                constexpr std::ptrdiff_t m_nType = 0x10; // ParticleModelType_t
                 constexpr std::ptrdiff_t m_NamedValue = 0x18; // CParticleNamedValueRef
                 constexpr std::ptrdiff_t m_nControlPoint = 0x58; // int32
             }
@@ -2814,7 +2814,7 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_bInfiniteBounds = 0x23C; // bool
                 constexpr std::ptrdiff_t m_bEnableNamedValues = 0x23D; // bool
                 constexpr std::ptrdiff_t m_NamedValueDomain = 0x240; // CUtlString
-                constexpr std::ptrdiff_t m_NamedValueLocals = 0x248; // 
+                constexpr std::ptrdiff_t m_NamedValueLocals = 0x248; // CUtlVector<ParticleNamedValueSource_t*>
                 constexpr std::ptrdiff_t m_ConstantColor = 0x260; // Color
                 constexpr std::ptrdiff_t m_ConstantNormal = 0x264; // Vector
                 constexpr std::ptrdiff_t m_flConstantRadius = 0x270; // float32
@@ -5774,7 +5774,7 @@ namespace cs2_dumper {
             // MParticleCustomFieldDefaultValue
             namespace CParticleFloatInput {
                 constexpr std::ptrdiff_t m_nType = 0x10; // ParticleFloatType_t
-                constexpr std::ptrdiff_t m_nMapType = 0x14; // ParticleFloatMapType_t
+                constexpr std::ptrdiff_t m_nMapType = 0x14; // 
                 constexpr std::ptrdiff_t m_flLiteralValue = 0x18; // float32
                 constexpr std::ptrdiff_t m_NamedValue = 0x20; // CParticleNamedValueRef
                 constexpr std::ptrdiff_t m_nControlPoint = 0x60; // int32
@@ -6437,7 +6437,7 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_flOutlineStart1 = 0x331C; // float32
                 constexpr std::ptrdiff_t m_flOutlineEnd0 = 0x3320; // float32
                 constexpr std::ptrdiff_t m_flOutlineEnd1 = 0x3324; // float32
-                constexpr std::ptrdiff_t m_nLightingMode = 0x3328; // ParticleLightingQuality_t
+                constexpr std::ptrdiff_t m_nLightingMode = 0x3328; // 
                 constexpr std::ptrdiff_t m_flLightingTessellation = 0x3330; // CParticleCollectionRendererFloatInput
                 constexpr std::ptrdiff_t m_flLightingDirectionality = 0x3490; // CParticleCollectionRendererFloatInput
                 constexpr std::ptrdiff_t m_bParticleShadows = 0x35F0; // bool

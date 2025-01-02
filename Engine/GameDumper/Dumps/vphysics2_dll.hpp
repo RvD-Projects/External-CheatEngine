@@ -1,5 +1,5 @@
 // Generated using https://github.com/a2x/cs2-dumper
-// 2025-01-01 01:39:13.088546800 UTC
+// 2025-01-02 05:58:45.763737500 UTC
 
 #pragma once
 
@@ -244,7 +244,7 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t nNode = 0x0; // uint16[2]
                 constexpr std::ptrdiff_t nCollisionMask = 0x4; // uint16
                 constexpr std::ptrdiff_t nDummy = 0x6; // uint16
-                constexpr std::ptrdiff_t flRadius = 0x8; // float32[2]
+                constexpr std::ptrdiff_t flRadius = 0x8; // 
             }
             // Parent: None
             // Field count: 4
@@ -309,7 +309,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace RnTriangle_t {
-                constexpr std::ptrdiff_t m_nIndex = 0x0; // 
+                constexpr std::ptrdiff_t m_nIndex = 0x0; // int32[3]
             }
             // Parent: None
             // Field count: 2
@@ -444,7 +444,7 @@ namespace cs2_dumper {
             namespace RnMesh_t {
                 constexpr std::ptrdiff_t m_vMin = 0x0; // Vector
                 constexpr std::ptrdiff_t m_vMax = 0xC; // Vector
-                constexpr std::ptrdiff_t m_Nodes = 0x18; // 
+                constexpr std::ptrdiff_t m_Nodes = 0x18; // CUtlVector<RnNode_t>
                 constexpr std::ptrdiff_t m_Vertices = 0x30; // CUtlVectorSIMDPaddedVector
                 constexpr std::ptrdiff_t m_Triangles = 0x48; // CUtlVector<RnTriangle_t>
                 constexpr std::ptrdiff_t m_Wings = 0x60; // CUtlVector<RnWing_t>
@@ -747,7 +747,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace RnWing_t {
-                constexpr std::ptrdiff_t m_nIndex = 0x0; // 
+                constexpr std::ptrdiff_t m_nIndex = 0x0; // int32[3]
             }
             // Parent: None
             // Field count: 2
@@ -950,7 +950,7 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_MassProperties = 0x34; // matrix3x4_t
                 constexpr std::ptrdiff_t m_flVolume = 0x64; // float32
                 constexpr std::ptrdiff_t m_flSurfaceArea = 0x68; // float32
-                constexpr std::ptrdiff_t m_Vertices = 0x70; // CUtlVector<RnVertex_t>
+                constexpr std::ptrdiff_t m_Vertices = 0x70; // 
                 constexpr std::ptrdiff_t m_VertexPositions = 0x88; // CUtlVector<Vector>
                 constexpr std::ptrdiff_t m_Edges = 0xA0; // 
                 constexpr std::ptrdiff_t m_Faces = 0xB8; // 
@@ -1076,7 +1076,7 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t strength = 0x0; // float32
                 constexpr std::ptrdiff_t forceLimit = 0x4; // float32
                 constexpr std::ptrdiff_t torqueLimit = 0x8; // float32
-                constexpr std::ptrdiff_t bodyMassScale = 0xC; // float32[2]
+                constexpr std::ptrdiff_t bodyMassScale = 0xC; // 
                 constexpr std::ptrdiff_t isActive = 0x14; // bool
             }
             // Parent: None

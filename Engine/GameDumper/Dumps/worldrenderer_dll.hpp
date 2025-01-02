@@ -1,5 +1,5 @@
 // Generated using https://github.com/a2x/cs2-dumper
-// 2025-01-01 01:39:13.088546800 UTC
+// 2025-01-02 05:58:45.763737500 UTC
 
 #pragma once
 
@@ -298,7 +298,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace EntityKeyValueData_t {
-                constexpr std::ptrdiff_t m_connections = 0x8; // CUtlVector<EntityIOConnectionData_t>
+                constexpr std::ptrdiff_t m_connections = 0x8; // 
                 constexpr std::ptrdiff_t m_keyValuesData = 0x20; // CUtlBinaryBlock
             }
             // Parent: None
