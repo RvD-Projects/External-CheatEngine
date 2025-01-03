@@ -41,7 +41,7 @@ class AimBotModule : public Module
 		const float doShoot = config.isClickActive && MyLocalPlayer.crossIndex >= 0 && GetAsyncKeyState(VK_XBUTTON2) && GetAsyncKeyState(VK_XBUTTON2);
 
 		if (doAim)
-			WriteClient<Vector3>(dwViewAngles, target->distance.RelativeAngle());
+			WriteClient<Vector3>(dwViewAngles, target->aimAngle);
 
 		if (doShoot)
 		{

@@ -88,12 +88,15 @@ class RootModule : public Module
 		player.screenEye = EYES;
 		player.screenFeet = FEET;
 
-		const float height = abs(EYES.y - FEET.y) * 1.1777f;
+		const float height = player.height * 1.1777f;
 		const float width = height * 0.777f;
 
 		player.screenBox = Box{FEET, Dimension{width, height}};
 		player.screenBox.pStart.x -= player.screenBox.d.w * 0.5f;
 		player.screenBox.pStart.y -= player.screenBox.d.h;
+
+		player.distance = player.position.Distance(MyLocalPlayer.position);
+		player.aimAngle = player.distance.RelativeAngle(player.height - MyLocalPlayer.height);
 
 		return true;
 	};
@@ -113,14 +116,7 @@ class RootModule : public Module
 			if (!Get2DVector(bone3D.v2, p2, VM.matrix, ClientDimension))
 				return false;
 
-			// Use the head bone to calculate the distance
-			if (Connection.bone1 == Bones::head)
-			{
-				const auto boneDiff = player.position - bone3D.v2;
-				player.distance = bone3D.v2 - MyLocalPlayer.position + boneDiff;
-				player.bones.emplace_back(bone3D);
-			}
-
+			player.bones.emplace_back(bone3D);
 			player.screenBones.emplace_back(Line{p1, p2});
 		}
 

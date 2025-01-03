@@ -10,9 +10,10 @@ class Player
 public:
 	bool isInitialized, isLocalPlayer, isTeammate, isAlive, takesDamage = false;
 	int team, health, armor, maxHealth, hammerID, crossIndex, lifeState;
+	float height, width;
 
 	std::string name;
-	Vector3 position, viewCamPos, distance;
+	Vector3 position, viewCamPos, distance, aimAngle;
 
 	std::vector<Line3D> bones;
 	std::vector<Line> screenBones;
@@ -49,6 +50,8 @@ public:
 		name = ReadString(ReadController<uintptr_t>(m_sSanitizedPlayerName));
 		position = ReadEntity<Vector3>(m_vOldOrigin);
 		viewCamPos = position + ReadEntity<Vector3>(m_vecViewOffset);
+		height = viewCamPos.z - position.z;
+		width = height * 0.777f;
 
 		team = ReadEntity<int>(m_iTeamNum);
 		health = ReadEntity<int>(m_iHealth);
