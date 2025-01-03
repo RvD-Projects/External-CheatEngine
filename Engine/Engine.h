@@ -12,6 +12,9 @@
 #include <chrono>
 
 #include "Memory.h"
+#include "Parsers/FileParser.h"
+#include "Parsers/JsonParser.h"
+
 #include "Colors/Colors.h"
 #include "Math/ViewMatrix.h"
 #include "Math/Vector.h"
