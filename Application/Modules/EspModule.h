@@ -70,6 +70,7 @@ class EspModule : public Module
 		}
 
 		DrawRectangle(BORDER_POS, BORDER_D);
+		DrawTextual(player.screenBox.pStart + Position{0, -16}, player.name.data(), White50);
 	}
 
 	void RenderPlayerBox(Player &player)
@@ -78,7 +79,6 @@ class EspModule : public Module
 			return;
 
 		DrawRectangle(player.screenBox.pStart, player.screenBox.d, White50);
-		DrawTextual(player.screenBox.pStart + Position{0, -16}, player.name.data(), White50);
 	}
 
 	void RenderGameObjects(Player &player)

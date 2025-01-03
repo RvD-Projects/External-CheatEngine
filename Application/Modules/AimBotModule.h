@@ -34,21 +34,19 @@ class AimBotModule : public Module
 		if (!target)
 			return;
 
-		// Empty the old states first (insure next check are actual)
-		GetAsyncKeyState(VK_RBUTTON);
+		// VK_XBUTTON1 (Mouse 4) only needs a 'toggle' (on/off)
+		const float doAim = config.isAimActive && GetKeyState(VK_XBUTTON1);
 
-		if (config.isAimActive && GetAsyncKeyState(VK_RBUTTON))
-		{
+		// VK_XBUTTON2 (Mouse 5) need a 'hold'
+		const float doShoot = config.isClickActive && MyLocalPlayer.crossIndex >= 0 && GetAsyncKeyState(VK_XBUTTON2) && GetAsyncKeyState(VK_XBUTTON2);
+
+		if (doAim)
 			WriteClient<Vector3>(dwViewAngles, target->distance.RelativeAngle());
 
-			if (MyLocalPlayer.crossIndex < 0)
-				return;
-
-			if (config.isClickActive)
-			{
-				mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
-				mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
-			}
+		if (doShoot)
+		{
+			mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
+			mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
 		}
 	}
 
