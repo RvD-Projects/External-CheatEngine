@@ -21,25 +21,30 @@ public:
 	Position screenFeet, screenEye;
 	Box screenBox;
 
-	uintptr_t listEntry, ctrl, pawnCtrl, entity, sceneNode, boneMatrix;
+	uintptr_t listEntry, ctrl, entity, sceneNode, boneMatrix;
+	int pawnCtrl;
 
 	Player() {};
 	Player(const uintptr_t &list, const int &index)
 	{
-		listEntry = Read<uintptr_t>(EntityEntryDiff(index) + list);
-		if (!listEntry)
+		listEntry = Read<uintptr_t>(list + 0x10);
+		if (!listEntry || listEntry == INTPTR_MAX)
 			return;
 
-		ctrl = ReadListEntry<uintptr_t>(EntityDiff(index));
-		if (!ctrl)
+		ctrl = ReadListEntry<uintptr_t>(index * 0x78);
+		if (!ctrl || ctrl == INTPTR_MAX)
 			return;
 
-		pawnCtrl = ReadController<uintptr_t>(m_hPlayerPawn);
-		if (!pawnCtrl)
+		pawnCtrl = ReadController<int>(m_hPlayerPawn);
+		if (!pawnCtrl || pawnCtrl == INT_MAX)
 			return;
 
-		entity = ReadListEntry<uintptr_t>(EntityDiff(pawnCtrl));
-		if (!entity)
+		listEntry = Read<uintptr_t>(list + (0x8 * ((pawnCtrl & 0x7FFF) >> 9) + 0x10));
+		if (!listEntry || listEntry == INTPTR_MAX)
+			return;
+
+		entity = ReadListEntry<uintptr_t>(0x78 * (pawnCtrl & 0x1FF));
+		if (!entity || entity == INTPTR_MAX)
 			return;
 
 		Init();

@@ -39,7 +39,7 @@ class RootModule : public Module
 		std::vector<Player> bF = {};
 		ENTITIES_LIST = ReadClient<uintptr_t>(dwEntityList);
 
-		for (int i = 1; i < 32; i++)
+		for (int i = 1; i < 64; i++)
 		{
 			Player player = Player(ENTITIES_LIST, i);
 

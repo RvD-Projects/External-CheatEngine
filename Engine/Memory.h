@@ -95,9 +95,8 @@ namespace Memory
 		{
 			buffer[i] = Read<char>(address + i);
 			if (buffer[i] == '\0')
-			{
 				break;
-			}
+
 			i++;
 		}
 
