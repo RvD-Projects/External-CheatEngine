@@ -88,7 +88,7 @@ class RootModule : public Module
 		player.screenEye = EYES;
 		player.screenFeet = FEET;
 
-		const float height = player.height * 1.1777f;
+		const float height = abs(EYES.y - FEET.y) * 1.1777f;
 		const float width = height * 0.777f;
 
 		player.screenBox = Box{FEET, Dimension{width, height}};
