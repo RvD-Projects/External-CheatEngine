@@ -8,7 +8,7 @@ using namespace Bones;
 class Player
 {
 public:
-	bool isInitialized, isLocalPlayer, isTeammate, isAlive, takesDamage = false;
+	bool isInitialized, isLocalPlayer, isTeammate, isAlive, takesDamage, isScreenVisible;
 	int team, health, armor, maxHealth, hammerID, crossIndex, lifeState;
 	float height, width;
 

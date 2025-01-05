@@ -20,8 +20,12 @@ class EspModule : public Module
 		if (GetAsyncKeyState(VK_F3) & 1)
 			config.isStatsActive = !config.isStatsActive;
 
-		// uses F4 to toggle esp
+		// uses F4 to toggle snap line
 		if (GetAsyncKeyState(VK_F4) & 1)
+			config.isSnapLineActive = !config.isSnapLineActive;
+
+		// uses F5 to toggle esp
+		if (GetAsyncKeyState(VK_F5) & 1)
 			config.isActive = !config.isActive;
 	}
 
@@ -81,7 +85,16 @@ class EspModule : public Module
 		DrawRectangle(player.screenBox.pStart, player.screenBox.d, White50);
 	}
 
-	void RenderGameObjects(Player &player)
+	void RenderPlayerSnapLine(Player &player)
+	{
+		if (!config.isSnapLineActive)
+			return;
+
+		const Line snapLine{{ClientDimension.w / 2, ClientDimension.h}, player.screenFeet};
+		DrawLine(snapLine.pStart, snapLine.pEnd, White50, 1.0f);
+	}
+
+	void RenderGameObjects()
 	{
 		if (!C4Bomb.FuseChrono.IsRunning())
 			return;
@@ -113,13 +126,15 @@ public:
 
 		for (Player player : ENEMIES)
 		{
-			if (!player.IsValidTarget())
+			if (!player.IsValidTarget() || !player.isScreenVisible)
 				continue;
 
 			RenderPlayerSkeleton(player);
 			RenderPlayerBoxStats(player);
 			RenderPlayerBox(player);
-			RenderGameObjects(player);
+			RenderPlayerSnapLine(player);
 		}
+
+		RenderGameObjects();
 	}
 };

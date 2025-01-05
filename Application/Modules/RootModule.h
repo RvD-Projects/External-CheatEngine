@@ -70,9 +70,7 @@ class RootModule : public Module
 		if (!player.IsEnemy())
 			return;
 
-		if (!SetPlayerScreenPosition(VM, player))
-			return;
-
+		SetPlayerScreenPosition(VM, player);
 		SetPlayerScreenBones(player);
 	};
 
@@ -80,13 +78,20 @@ class RootModule : public Module
 	{
 		Position FEET, EYES;
 		if (!Get2DVector(player.viewCamPos, EYES, VM.matrix, ClientDimension))
+		{
+			player.isScreenVisible = false;
 			return false;
+		}
 
 		if (!Get2DVector(player.position, FEET, VM.matrix, ClientDimension))
+		{
+			player.isScreenVisible = false;
 			return false;
+		}
 
 		player.screenEye = EYES;
 		player.screenFeet = FEET;
+		player.isScreenVisible = true;
 
 		const float height = abs(EYES.y - FEET.y) * 1.1777f;
 		const float width = height * 0.777f;
@@ -103,6 +108,9 @@ class RootModule : public Module
 
 	bool SetPlayerScreenBones(Player &player) const
 	{
+		if (!player.isScreenVisible)
+			return false;
+
 		for (const auto &Connection : BoneConnections)
 		{
 			Line3D bone3D{
