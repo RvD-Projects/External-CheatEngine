@@ -35,5 +35,5 @@ struct AimConfig : public ModuleConfig
 {
     bool isAimActive = true, isClickActive = true, showAimCircle = false;
     Circle aimCircle = {.radius = 64, .color = White12, .borderColor = White25};
-    float smoothness = 0.7F;
+    float smoothness = 1.7F;
 };

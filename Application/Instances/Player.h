@@ -123,7 +123,7 @@ public:
 
 	bool SetViewAngles(const Vector3 &targetAngles, float smoothValue = 1.00F)
 	{
-		smoothValue = smoothValue > 0 ? smoothValue : 1;
+		smoothValue = smoothValue > 1 ? smoothValue : 1;
 
 		Vector3 deltaAngle = targetAngles - viewAngles;
 		while (deltaAngle.y > 180.f)
