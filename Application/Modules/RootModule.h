@@ -96,7 +96,7 @@ class RootModule : public Module
 		player.screenBox.pStart.y -= player.screenBox.d.h;
 
 		player.distance = player.position.Distance(MyLocalPlayer.position);
-		player.aimAngle = player.distance.RelativeAngle(player.height - MyLocalPlayer.height);
+		player.aimAngle = player.distance.ToAngle(player.height - MyLocalPlayer.height);
 
 		return true;
 	};

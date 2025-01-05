@@ -66,5 +66,9 @@
         "forward_list": "cpp",
         "iomanip": "cpp",
         "sstream": "cpp"
-    }
+    },
+    "cSpell.words": [
+        "MOUSEEVENTF",
+        "XBUTTON"
+    ]
 }

@@ -68,6 +68,18 @@ struct Vector3
 	{
 		return {this->x - other.x, this->y - other.y, this->z - other.z};
 	}
+	Vector3 operator-(const Vector3 &other) const
+	{
+		return Vector3{x - other.x, y - other.y, z - other.z};
+	}
+	Vector3 operator*(Vector3 other)
+	{
+		return {this->x * other.x, this->y * other.y, this->z * other.z};
+	}
+	Vector3 operator/(Vector3 other)
+	{
+		return {this->x / other.x, this->y / other.y, this->z / other.z};
+	}
 
 	/**
 	 * Calculates the distance between two 3D vectors.
@@ -94,7 +106,7 @@ struct Vector3
 	 *         the horizontal plane, the angle in the XY plane, and a fixed 0.0f
 	 *         for the Z-axis.
 	 */
-	Vector3 RelativeAngle(float heightDifference = 0)
+	Vector3 ToAngle(float heightDifference = 0)
 	{
 		return {
 			std::atan2(-(z + heightDifference), std::hypot(x, y)) * (180.0f / std::numbers::pi_v<float>),

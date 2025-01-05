@@ -13,7 +13,7 @@ public:
 	float height, width;
 
 	std::string name;
-	Vector3 position, viewCamPos, distance, aimAngle;
+	Vector3 position, viewCamPos, distance, viewAngles, aimAngle;
 
 	std::vector<Line3D> bones;
 	std::vector<Line> screenBones;
@@ -55,6 +55,7 @@ public:
 		name = ReadString(ReadController<uintptr_t>(m_sSanitizedPlayerName));
 		position = ReadEntity<Vector3>(m_vOldOrigin);
 		viewCamPos = position + ReadEntity<Vector3>(m_vecViewOffset);
+		viewAngles = ReadClient<Vector3>(dwViewAngles);
 		height = viewCamPos.z - position.z;
 		width = height * 0.777f;
 
@@ -118,5 +119,25 @@ public:
 	const bool IsValidTarget()
 	{
 		return IsEnemy() && IsAlive();
+	}
+
+	bool SetViewAngles(const Vector3 &targetAngles, float smoothValue = 1.00F)
+	{
+		smoothValue = smoothValue > 0 ? smoothValue : 1;
+
+		Vector3 deltaAngle = targetAngles - viewAngles;
+		while (deltaAngle.y > 180.f)
+			deltaAngle.y -= 360.f;
+
+		while (deltaAngle.y < -180.f)
+			deltaAngle.y += 360.f;
+
+		if (viewAngles.x != targetAngles.x)
+			viewAngles.x += deltaAngle.x / smoothValue;
+
+		if (viewAngles.y != targetAngles.y)
+			viewAngles.y += deltaAngle.y / smoothValue;
+
+		return WriteClient<Vector3>(dwViewAngles, viewAngles);
 	}
 };

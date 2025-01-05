@@ -35,16 +35,17 @@ class AimBotModule : public Module
 			return;
 
 		// VK_XBUTTON1 (Mouse 4) only needs a 'toggle' (on/off)
-		const float doAim = config.isAimActive && GetKeyState(VK_XBUTTON1);
+		if (config.isAimActive && GetKeyState(VK_XBUTTON1))
+		{
+			MyLocalPlayer.SetViewAngles(target->aimAngle, config.smoothness);
+		}
 
 		// VK_XBUTTON2 (Mouse 5) need a 'hold'
-		const float doShoot = config.isClickActive && MyLocalPlayer.crossIndex >= 0 && GetAsyncKeyState(VK_XBUTTON2) && GetAsyncKeyState(VK_XBUTTON2);
-
-		if (doAim)
-			WriteClient<Vector3>(dwViewAngles, target->aimAngle);
-
-		if (doShoot)
+		if (config.isClickActive && MyLocalPlayer.crossIndex >= 0)
 		{
+			if (!GetAsyncKeyState(VK_XBUTTON2) || !GetAsyncKeyState(VK_XBUTTON2))
+				return;
+
 			mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
 			mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
 		}
@@ -71,5 +72,7 @@ public:
 	{
 		if (config.isHidden || !config.isActive || !config.isReady)
 			return;
+
+		RenderAimZone();
 	};
 };
