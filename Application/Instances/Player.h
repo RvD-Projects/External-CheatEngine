@@ -17,6 +17,7 @@ public:
 
 	std::vector<Line3D> bones;
 	std::vector<Line> screenBones;
+	Player *currentTarget;
 
 	Position screenFeet, screenEye;
 	Box screenBox;
@@ -116,9 +117,14 @@ public:
 		return isAlive && health > 0;
 	}
 
+	const bool IsScreenVisible()
+	{
+		return isScreenVisible;
+	}
+
 	const bool IsValidTarget()
 	{
-		return IsEnemy() && IsAlive();
+		return IsScreenVisible() && IsEnemy() && IsAlive();
 	}
 
 	bool SetViewAngles(const Vector3 &targetAngles, float smoothValue = 1.00F)

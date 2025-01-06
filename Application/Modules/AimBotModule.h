@@ -11,14 +11,11 @@ class AimBotModule : public Module
 {
 	AimConfig config;
 
-	void Execute() override
+	bool SetCurrentTarget()
 	{
-		if (!config.isActive)
-			return;
+		if (MyLocalPlayer.currentTarget && MyLocalPlayer.currentTarget->IsValidTarget())
+			return true;
 
-		config.aimCircle.p = ClientCenterPosition;
-
-		Player *target = nullptr;
 		for (Player &player : ENEMIES)
 		{
 			if (!player.IsValidTarget())
@@ -27,17 +24,40 @@ class AimBotModule : public Module
 			if (!InterSects(player.screenBox, config.aimCircle))
 				continue;
 
-			target = &player;
-			break;
+			MyLocalPlayer.currentTarget = &player;
+			return true;
 		}
 
-		if (!target)
+		return false;
+	}
+
+	void UpdateConfigs()
+	{
+		config.aimCircle.p = ClientCenterPosition;
+
+		// uses page up to increment smoothness
+		if (GetAsyncKeyState(SB_PAGEUP) & 1)
+			config.smoothness += 0.1F;
+
+		// uses page up to decrement smoothness
+		if (GetAsyncKeyState(SB_PAGEDOWN) & 1)
+			config.smoothness -= 0.1F;
+	}
+
+	void Execute() override
+	{
+		UpdateConfigs();
+
+		if (!config.isActive)
+			return;
+
+		if (!SetCurrentTarget())
 			return;
 
 		// VK_XBUTTON1 (Mouse 4) only needs a 'toggle' (on/off)
 		if (config.isAimActive && GetKeyState(VK_XBUTTON1))
 		{
-			MyLocalPlayer.SetViewAngles(target->aimAngle, config.smoothness);
+			MyLocalPlayer.SetViewAngles(MyLocalPlayer.currentTarget->aimAngle, config.smoothness);
 		}
 
 		// VK_XBUTTON2 (Mouse 5) need a 'hold'

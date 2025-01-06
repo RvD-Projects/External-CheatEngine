@@ -6,7 +6,7 @@ class EspModule : public Module
 {
 	EspConfig config;
 
-	void Execute()
+	void UpdateConfigs()
 	{
 		// uses F1 to toggle skeleton
 		if (GetAsyncKeyState(VK_F1) & 1)
@@ -27,6 +27,14 @@ class EspModule : public Module
 		// uses F5 to toggle esp
 		if (GetAsyncKeyState(VK_F5) & 1)
 			config.isActive = !config.isActive;
+	}
+
+	void Execute()
+	{
+		UpdateConfigs();
+
+		if (!config.isActive)
+			return;
 	}
 
 	void RenderPlayerSkeleton(Player &player)
@@ -126,7 +134,7 @@ public:
 
 		for (Player player : ENEMIES)
 		{
-			if (!player.IsValidTarget() || !player.isScreenVisible)
+			if (!player.IsValidTarget())
 				continue;
 
 			RenderPlayerSkeleton(player);
