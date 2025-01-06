@@ -65,7 +65,17 @@
         "chrono": "cpp",
         "forward_list": "cpp",
         "iomanip": "cpp",
-        "sstream": "cpp"
+        "sstream": "cpp",
+        "any": "cpp",
+        "codecvt": "cpp",
+        "filesystem": "cpp",
+        "fstream": "cpp",
+        "functional": "cpp",
+        "list": "cpp",
+        "numeric": "cpp",
+        "unordered_map": "cpp",
+        "valarray": "cpp",
+        "xhash": "cpp"
     },
     "cSpell.words": [
         "MOUSEEVENTF",

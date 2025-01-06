@@ -45,6 +45,8 @@ class AimBotModule : public Module
 
 		Player target;
 		uintptr_t ptrFound = NULL;
+		float minDistance = NULL;
+
 		for (Player &player : ENEMIES)
 		{
 			if (!player.IsValidTarget())
@@ -60,9 +62,13 @@ class AimBotModule : public Module
 				break;
 			}
 
-			ptrFound = player.entity;
-			target = player;
-			break;
+			float distance = player.position.EuclideanDistance(MyLocalPlayer.position);
+			if (!minDistance || distance < minDistance)
+			{
+				minDistance = distance;
+				ptrFound = player.entity;
+				target = player;
+			}
 		}
 
 		if (ptrFound)

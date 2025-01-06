@@ -87,11 +87,21 @@ struct Vector3
 	 * @param other The other vector to calculate the distance to.
 	 * @return A Vector3 object containing the distance between the two vectors.
 	 */
-	Vector3
-	Distance(Vector3 other)
+	Vector3 Distance(Vector3 other)
 	{
 		return {this->x - other.x, this->y - other.y, this->z - other.z};
 	};
+
+	/**
+	 * Calculates the Euclidean distance between two 3D vectors.
+	 *
+	 * @param other The other vector to calculate the distance to.
+	 * @return The Euclidean distance between the two vectors.
+	 */
+	float EuclideanDistance(Vector3 other)
+	{
+		return std::sqrt(std::pow(this->x - other.x, 2) + std::pow(this->y - other.y, 2) + std::pow(this->z - other.z, 2));
+	}
 
 	/**
 	 * Calculates the relative angle of a vector in 3D space.
@@ -106,7 +116,8 @@ struct Vector3
 	 *         the horizontal plane, the angle in the XY plane, and a fixed 0.0f
 	 *         for the Z-axis.
 	 */
-	Vector3 ToAngle(float heightDifference = 0)
+	Vector3
+	ToAngle(float heightDifference = 0)
 	{
 		return {
 			std::atan2(-(z + heightDifference), std::hypot(x, y)) * (180.0f / std::numbers::pi_v<float>),
