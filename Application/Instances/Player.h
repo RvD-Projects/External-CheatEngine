@@ -17,7 +17,6 @@ public:
 
 	std::vector<Line3D> bones;
 	std::vector<Line> screenBones;
-	Player *currentTarget;
 
 	Position screenFeet, screenEye;
 	Box screenBox;
@@ -102,27 +101,27 @@ public:
 		return Read<T>(entity + ptr_diff);
 	};
 
-	const bool IsLocalPlayer()
+	const bool IsLocalPlayer() const
 	{
 		return isLocalPlayer;
 	}
 
-	const bool IsEnemy()
+	const bool IsEnemy() const
 	{
 		return !isLocalPlayer && !isTeammate;
 	}
 
-	const bool IsAlive()
+	const bool IsAlive() const
 	{
 		return isAlive && health > 0;
 	}
 
-	const bool IsScreenVisible()
+	const bool IsScreenVisible() const
 	{
 		return isScreenVisible;
 	}
 
-	const bool IsValidTarget()
+	const bool IsValidTarget() const
 	{
 		return IsScreenVisible() && IsEnemy() && IsAlive();
 	}

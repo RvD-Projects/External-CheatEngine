@@ -10,29 +10,11 @@ struct ModulesConfig
 class AimBotModule : public Module
 {
 	AimConfig config;
-
-	bool SetCurrentTarget()
-	{
-		if (MyLocalPlayer.currentTarget && MyLocalPlayer.currentTarget->IsValidTarget())
-			return true;
-
-		for (Player &player : ENEMIES)
-		{
-			if (!player.IsValidTarget())
-				continue;
-
-			if (!InterSects(player.screenBox, config.aimCircle))
-				continue;
-
-			MyLocalPlayer.currentTarget = &player;
-			return true;
-		}
-
-		return false;
-	}
+	uintptr_t currentTargetPtr;
 
 	void UpdateConfigs()
 	{
+		config.isClickActive = 0;
 		config.aimCircle.p = ClientCenterPosition;
 
 		// uses page up to increment smoothness
@@ -42,6 +24,52 @@ class AimBotModule : public Module
 		// uses page up to decrement smoothness
 		if (GetAsyncKeyState(SB_PAGEDOWN) & 1)
 			config.smoothness -= 0.1F;
+
+		// VK_XBUTTON1 (Mouse 4) toggles aim lock
+		if (GetAsyncKeyState(VK_XBUTTON1) & 1)
+			config.isAimActive = !config.isAimActive;
+
+		// VK_XBUTTON2 (Mouse 5) hold for auto shoot on target
+		GetAsyncKeyState(VK_XBUTTON2) & 1;
+		if (GetAsyncKeyState(VK_XBUTTON2) & 1)
+			config.isClickActive = 1;
+	}
+
+	void UpdateTarget()
+	{
+		if (!config.isAimActive)
+		{
+			currentTargetPtr = NULL;
+			return;
+		}
+
+		Player target;
+		uintptr_t ptrFound = NULL;
+		for (Player &player : ENEMIES)
+		{
+			if (!player.IsValidTarget())
+				continue;
+
+			if (!InterSects(player.screenBox, config.aimCircle))
+				continue;
+
+			if (currentTargetPtr && currentTargetPtr == player.entity)
+			{
+				ptrFound = player.entity;
+				target = player;
+				break;
+			}
+
+			ptrFound = player.entity;
+			target = player;
+			break;
+		}
+
+		if (ptrFound)
+		{
+			currentTargetPtr = ptrFound;
+			MyLocalPlayer.SetViewAngles(target.aimAngle, config.smoothness);
+		}
 	}
 
 	void Execute() override
@@ -51,19 +79,11 @@ class AimBotModule : public Module
 		if (!config.isActive)
 			return;
 
-		if (!SetCurrentTarget())
-			return;
+		UpdateTarget();
 
-		// VK_XBUTTON1 (Mouse 4) only needs a 'toggle' (on/off)
-		if (config.isAimActive && GetKeyState(VK_XBUTTON1))
-		{
-			MyLocalPlayer.SetViewAngles(MyLocalPlayer.currentTarget->aimAngle, config.smoothness);
-		}
-
-		// VK_XBUTTON2 (Mouse 5) need a 'hold'
 		if (config.isClickActive && MyLocalPlayer.crossIndex >= 0)
 		{
-			if (!GetAsyncKeyState(VK_XBUTTON2) || !GetAsyncKeyState(VK_XBUTTON2))
+			if (!config.isClickActive)
 				return;
 
 			mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);

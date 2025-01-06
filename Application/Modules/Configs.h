@@ -33,7 +33,7 @@ struct EspConfig : public ModuleConfig
 
 struct AimConfig : public ModuleConfig
 {
-    bool isAimActive = true, isClickActive = true, showAimCircle = false;
-    Circle aimCircle = {.radius = 64, .color = White12, .borderColor = White25};
-    float smoothness = 1.33F;
+    bool isAimActive = false, isClickActive = false, showAimCircle = false;
+    Circle aimCircle = {.radius = 72, .color = White12, .borderColor = White25};
+    float smoothness = 1.5F;
 };
