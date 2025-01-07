@@ -12,27 +12,30 @@ class AimBotModule : public Module
 	AimConfig config;
 	uintptr_t currentTargetPtr;
 
-	void UpdateConfigs()
+	bool UpdateConfigs()
 	{
-		config.isClickActive = 0;
 		config.aimCircle.p = ClientCenterPosition;
+
+		// uses home to toggle visibility of aim circle (fov)
+		if (GetAsyncKeyState(VK_HOME) & 1)
+			config.showAimCircle = !config.showAimCircle;
 
 		// uses page up to increment smoothness
 		if (GetAsyncKeyState(SB_PAGEUP) & 1)
-			config.smoothness += 0.1F;
+			config.smoothness += 0.05F;
 
 		// uses page up to decrement smoothness
 		if (GetAsyncKeyState(SB_PAGEDOWN) & 1)
-			config.smoothness -= 0.1F;
+			config.smoothness -= 0.05F;
 
 		// VK_XBUTTON1 (Mouse 4) toggles aim lock
 		if (GetAsyncKeyState(VK_XBUTTON1) & 1)
 			config.isAimActive = !config.isAimActive;
 
 		// VK_XBUTTON2 (Mouse 5) hold for auto shoot on target
-		GetAsyncKeyState(VK_XBUTTON2) & 1;
-		if (GetAsyncKeyState(VK_XBUTTON2) & 1)
-			config.isClickActive = 1;
+		config.isClickActive = GetAsyncKeyState(VK_XBUTTON2) && GetAsyncKeyState(VK_XBUTTON2);
+
+		return config.isActive && config.isReady;
 	}
 
 	void UpdateTarget()
@@ -80,18 +83,12 @@ class AimBotModule : public Module
 
 	void Execute() override
 	{
-		UpdateConfigs();
-
-		if (!config.isActive)
+		if (!UpdateConfigs())
 			return;
 
 		UpdateTarget();
-
-		if (config.isClickActive && MyLocalPlayer.crossIndex >= 0)
+		if (MyLocalPlayer.crossIndex >= 0 && config.isClickActive)
 		{
-			if (!config.isClickActive)
-				return;
-
 			mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
 			mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
 		}
