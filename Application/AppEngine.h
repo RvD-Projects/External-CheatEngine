@@ -82,6 +82,17 @@ namespace AppEngine
         return Read<T>(GetLocalPlayer_T() + ptr_diff);
     };
 
+    namespace GlobalVars
+    {
+        template <typename T>
+        T ReadGlobalVars(const ptrdiff_t &ptr_diff)
+        {
+            uintptr_t ptr = ReadClient<uintptr_t>(dwGlobalVars);
+
+            return Read<T>(ptr + ptr_diff);
+        }
+    }
+
     namespace GameRules
     {
         template <typename T>
@@ -113,13 +124,5 @@ namespace AppEngine
 
             return ReadGameRules<bool>(m_bBombPlanted);
         };
-
-        template <typename T>
-        T ReadPlantedBomb(const ptrdiff_t &ptr_diff, uintptr_t outBombPlantPtr)
-        {
-            uintptr_t bombPlantPtr = ReadClient<uintptr_t>(m_bBombPlanted);
-
-            return Read<T>(bombPlantPtr + ptr_diff);
-        }
     }
 };
