@@ -20,12 +20,12 @@ class AimBotModule : public Module
 		if (GetAsyncKeyState(VK_HOME) & 1)
 			config.showAimCircle = !config.showAimCircle;
 
-		// uses page up to increment smoothness
-		if (GetAsyncKeyState(SB_PAGEUP) & 1)
+		// uses up to increment smoothness
+		if (GetAsyncKeyState(VK_UP) & 1)
 			config.smoothness += 0.05F;
 
-		// uses page up to decrement smoothness
-		if (GetAsyncKeyState(SB_PAGEDOWN) & 1)
+		// uses down to decrement smoothness
+		if (GetAsyncKeyState(VK_DOWN) & 1)
 			config.smoothness -= 0.05F;
 
 		// VK_XBUTTON1 (Mouse 4) toggles aim lock
