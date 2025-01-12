@@ -83,9 +83,9 @@ namespace Engine
 		TargetWindow.center = Position{TargetWindow.dimension.w / 2, TargetWindow.dimension.h / 2};
 
 		TargetClient.rect = clientRect;
-		TargetClient.dimension = Dimension{1920, 1080};
-		TargetClient.position = Position{TargetWindow.position.x, TargetWindow.position.y};
-		TargetClient.center = Position{TargetClient.dimension.w / 2, TargetClient.dimension.h / 2};
+		TargetClient.dimension = Dimension{static_cast<float>(clientRect.right - clientRect.left), static_cast<float>(clientRect.bottom - clientRect.top)};
+		TargetClient.position = Position{static_cast<float>(windowRect.left + clientRect.left), static_cast<float>(windowRect.top + clientRect.top)};
+		TargetClient.center = Position{TargetClient.position.x + TargetClient.dimension.w / 2, TargetClient.position.y + TargetClient.dimension.h / 2};
 
 		return true;
 	}
