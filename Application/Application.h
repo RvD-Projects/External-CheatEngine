@@ -44,12 +44,6 @@ bool ToggleWindowAffinity(const HWND &window = NULL)
 
 void UpdateOverlayPosition(HWND window)
 {
-    APP_INFO TargetClient = Engine::TargetClient;
-    auto pos = TargetClient.position;
-    auto dim = TargetClient.dimension;
-
-    SetWindowPos(window, HWND_TOPMOST, pos.x, pos.y, dim.w, dim.h, SWP_NOZORDER | SWP_NOACTIVATE);
-
     if (GetAsyncKeyState(VK_F8))
     {
         ToggleWindowAffinity(window);
@@ -58,10 +52,22 @@ void UpdateOverlayPosition(HWND window)
     if (GetAsyncKeyState(VK_F9))
     {
         ::isRunning = false;
+        return;
     }
 
+    APP_INFO TargetClient = Engine::TargetClient;
+    auto pos = TargetClient.position;
+    auto dim = TargetClient.dimension;
+
+    SetWindowPos(window, HWND_TOPMOST, pos.x, pos.y, dim.w, dim.h, SWP_NOZORDER | SWP_NOACTIVATE);
+
+    ImGui::GetIO().DisplaySize.x = dim.w;
+    ImGui::GetIO().DisplaySize.y = dim.h;
+    ImGui::SetNextWindowSize({dim.w, dim.h});
+    ImGui::SetNextWindowPos({pos.x, pos.y});
+
     // Apply the DPI scale factor to the ImGui context
-    // ImGui::GetIO().FontGlobalScale = ImGui_ImplWin32_GetDpiScaleForHwnd(window);
+    ImGui::GetIO().FontGlobalScale = ImGui_ImplWin32_GetDpiScaleForHwnd(window);
 }
 
 /**

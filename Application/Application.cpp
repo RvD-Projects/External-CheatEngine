@@ -143,9 +143,6 @@ INT APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		if (::isReady)
 			continue;
 
-		SetWindowPos(window, HWND_TOP, TargetClient.position.x, TargetClient.position.y, TargetClient.dimension.w, TargetClient.dimension.h, SWP_SHOWWINDOW);
-		ImGui::SetNextWindowSize({TargetClient.dimension.w, TargetClient.dimension.h});
-		ImGui::SetNextWindowPos({TargetClient.position.x, TargetClient.position.y});
 		ToggleWindowAffinity(window);
 		::isReady = true;
 	}
