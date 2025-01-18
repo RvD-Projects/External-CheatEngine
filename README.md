@@ -8,8 +8,7 @@ Met le dumper dans le projet github dans `/Engine/GameDumper/`
 
 Après tu pars le jeu et tu `cd` à la racine du projet pis tu call
 `rebuilt.bat`
-
-(ca reviens a caller le dumper et faire un build)
+(ca call le dumper et fait un build requiert msbuild dans le path systeme)
 
 Après trouve tes bonnes résolutions et met les dans dans: `/Engine/Engine.h L:86` :
 ```cpp
