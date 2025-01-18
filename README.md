@@ -9,6 +9,8 @@ Met le dumper dans le projet github dans `/Engine/GameDumper/`
 Après tu pars le jeu et tu `cd` à la racine du projet pis tu call
 `rebuilt.bat`
 
+(ca reviens a caller le dumper et faire un build)
+
 Après trouve tes bonnes résolutions et met les dans dans: `/Engine/Engine.h L:86` :
 ```cpp
 TargetClient.dimension = Dimension{192,1080};
