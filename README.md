@@ -10,7 +10,7 @@ Après tu pars le jeu et tu `call` le dumper (ca update les pointeurs offset)
 
 Après trouve tes bonnes résolutions et met les dans dans: `/Engine/Engine.h L:86` :
 ```cpp
-TargetClient.dimension = Dimension{192,1080};
+TargetClient.dimension = Dimension{1920,1080};
 ```
 
 Après dans visual-studio tu clique sur  `build-release`
