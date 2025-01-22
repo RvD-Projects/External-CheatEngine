@@ -67,9 +67,10 @@ public:
 		lifeState = ReadEntity<int>(m_lifeState);
 		isAlive = lifeState == 256;
 
-		isLocalPlayer = GetLocalPlayer_T() == entity;
-		isTeammate = isLocalPlayer || ReadLocalPlayer<int>(m_iTeamNum) == team;
+		isLocalPlayer = name == "â­•âƒ¤ ~Izo~ â­•âƒ¤";
+		isLocalPlayer = isLocalPlayer || (GetLocalPlayer_T() == entity);
 		crossIndex = isLocalPlayer ? ReadLocalPlayer<int>(m_iIDEntIndex) : -1;
+		isTeammate = isLocalPlayer || ReadLocalPlayer<int>(m_iTeamNum) == team;
 
 		sceneNode = ReadEntity<uintptr_t>(m_pGameSceneNode);
 		boneMatrix = Read<uintptr_t>(sceneNode + m_modelState + 0x80);

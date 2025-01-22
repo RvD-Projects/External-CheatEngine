@@ -8,6 +8,7 @@ class RootModule : public Module
 {
 	EspModule *Esp;
 	AimBotModule *AimBot;
+	int MY_TEAM = 1;
 
 	void Init() override
 	{
@@ -24,6 +25,12 @@ class RootModule : public Module
 
 	void Execute() override
 	{
+		// uses numpad-0 to toggle teams
+		if (GetAsyncKeyState(VK_NUMPAD0) & 1)
+		{
+			MY_TEAM = MY_TEAM + 1 > 3 ? 1 : MY_TEAM + 1;
+		}
+
 		ClientDimension = GetClientDimension();
 		ClientCenterPosition = GetClientCenterPosition();
 		VM = ReadClient<ViewMatrix>(dwViewMatrix);
@@ -45,6 +52,8 @@ class RootModule : public Module
 
 			if (!player.isInitialized)
 				continue;
+
+			player.isTeammate = player.isTeammate || player.team == MY_TEAM;
 
 			if (player.isLocalPlayer)
 				MyLocalPlayer = player;
