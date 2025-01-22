@@ -67,7 +67,6 @@ public:
 		lifeState = ReadEntity<int>(m_lifeState);
 		isAlive = lifeState == 256;
 
-		isLocalPlayer = name == "â­•âƒ¤ ~Izo~ â­•âƒ¤";
 		isLocalPlayer = isLocalPlayer || (GetLocalPlayer_T() == entity);
 		crossIndex = isLocalPlayer ? ReadLocalPlayer<int>(m_iIDEntIndex) : -1;
 		isTeammate = isLocalPlayer || ReadLocalPlayer<int>(m_iTeamNum) == team;
