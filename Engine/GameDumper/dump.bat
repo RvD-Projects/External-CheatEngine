@@ -1,1 +1,0 @@
-CALL cs2-dumper.exe -f hpp -o Dumps -vvv

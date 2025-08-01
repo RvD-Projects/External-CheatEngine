@@ -366,4 +366,4 @@ DvlErrLog.txt
 imgui.ini
 
 # GameDumper files
-Engine/GameDumper/
+#Engine/GameDumper/

@@ -1,1 +1,0 @@
-sv_cheats 1; mp_roundtime 60; mp_roundtime_defuse 60; mp_restartgame 1; bot_stop 0; bot_dont_shoot 1;
