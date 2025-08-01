@@ -25,7 +25,7 @@ struct EspConfig : public ModuleConfig
     std::map<std::string, std::string> gameObjects;
     GuiColor pBxCol, pBxBorderCol, pHealthCol, pArmorCol, pBxHealthCol, pBxArmorCol;
 
-    bool isSkeletonActive = true, isBoxActive = true, isStatsActive = true, isGameObjectsActive = true, isSnapLineActive = true;
+    bool isSkeletonActive = true, isBoxActive = false, isStatsActive = true, isGameObjectsActive = true, isSnapLineActive = true;
     bool showHealth = true, showArmor = true, showName = true, showDistance = true;
     bool showHealthBar = true, showArmorBar = true;
     bool showHealthText = true, showArmorText = true;
