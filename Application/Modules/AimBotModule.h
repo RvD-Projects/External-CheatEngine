@@ -2,120 +2,201 @@
 
 #include "Module.h"
 
-struct ModulesConfig
-{
-	bool aimAssist, clickAssist;
-};
+/**
+ * @brief AimBot module for automated target acquisition and assistance
+ *
+ * Features:
+ * - Aim assist with configurable smoothness
+ * - Auto-click when target is in crosshair
+ * - Visual aim circle (FOV indicator)
+ * - Dynamic target selection based on distance
+ */
+class AimBotModule : public Module {
+private:
+  AimConfig config;
+  uintptr_t currentTargetPtr;
 
-class AimBotModule : public Module
-{
-	AimConfig config;
-	uintptr_t currentTargetPtr;
+  // Configuration constants
+  static constexpr float SMOOTHNESS_INCREMENT = 0.05f;
+  static constexpr float MIN_SMOOTHNESS = 0.1f;
+  static constexpr float MAX_SMOOTHNESS = 5.0f;
 
-	bool UpdateConfigs()
-	{
-		config.aimCircle.p = ClientCenterPosition;
+  /**
+   * @brief Updates configuration based on user input
+   * @return true if module should continue execution, false otherwise
+   */
+  bool UpdateConfigs() {
+    config.aimCircle.p = ClientCenterPosition;
 
-		// uses home to toggle visibility of aim circle (fov)
-		if (GetAsyncKeyState(VK_HOME) & 1)
-			config.showAimCircle = !config.showAimCircle;
+    // Toggle aim circle visibility (HOME key)
+    if (GetAsyncKeyState(VK_HOME) & 1)
+      config.showAimCircle = !config.showAimCircle;
 
-		// uses up to increment smoothness
-		if (GetAsyncKeyState(VK_UP) & 1)
-			config.smoothness += 0.05F;
+    // Adjust smoothness (UP/DOWN keys)
+    if (GetAsyncKeyState(VK_UP) & 1) {
+      config.smoothness += SMOOTHNESS_INCREMENT;
+      if (config.smoothness > MAX_SMOOTHNESS)
+        config.smoothness = MAX_SMOOTHNESS;
+    }
 
-		// uses down to decrement smoothness
-		if (GetAsyncKeyState(VK_DOWN) & 1)
-			config.smoothness -= 0.05F;
+    if (GetAsyncKeyState(VK_DOWN) & 1) {
+      config.smoothness -= SMOOTHNESS_INCREMENT;
+      if (config.smoothness < MIN_SMOOTHNESS)
+        config.smoothness = MIN_SMOOTHNESS;
+    }
 
-		// VK_XBUTTON1 (Mouse 4) toggles aim lock
-		if (GetAsyncKeyState(VK_XBUTTON1) & 1)
-			config.isAimActive = !config.isAimActive;
+    // Toggle aim assist (Mouse 4)
+    if (GetAsyncKeyState(VK_XBUTTON1) & 1)
+      config.isAimActive = !config.isAimActive;
 
-		// VK_XBUTTON2 (Mouse 5) hold for auto shoot on target
-		config.isClickActive = GetAsyncKeyState(VK_XBUTTON2) && GetAsyncKeyState(VK_XBUTTON2);
+    // Auto-click when holding Mouse 5
+    config.isClickActive = GetAsyncKeyState(VK_XBUTTON2) != 0;
 
-		return config.isActive && config.isReady;
-	}
+    return config.isActive && config.isReady;
+  }
 
-	void UpdateTarget()
-	{
-		if (!config.isAimActive)
-		{
-			currentTargetPtr = NULL;
-			return;
-		}
+  /**
+   * @brief Finds and selects the best target within aim circle
+   * Prioritizes current target if still valid, otherwise selects closest enemy
+   */
+  void UpdateTarget() {
+    if (!config.isAimActive) {
+      ResetTarget();
+      return;
+    }
 
-		Player target;
-		uintptr_t ptrFound = NULL;
-		float minDistance = NULL;
+    Player bestTarget;
+    uintptr_t bestTargetPtr = NULL;
+    float minDistance = FLT_MAX;
+    bool foundCurrentTarget = false;
 
-		for (Player &player : ENEMIES)
-		{
-			if (!player.IsValidTarget())
-				continue;
+    // Iterate through all enemies to find the best target
+    for (const Player &player : ENEMIES) {
+      if (!IsValidTarget(player))
+        continue;
 
-			if (!InterSects(player.screenBox, config.aimCircle))
-				continue;
+      if (!IsWithinAimCircle(player))
+        continue;
 
-			if (currentTargetPtr && currentTargetPtr == player.entity)
-			{
-				ptrFound = player.entity;
-				target = player;
-				break;
-			}
+      // Prioritize current target if it's still valid
+      if (currentTargetPtr && currentTargetPtr == player.entity) {
+        bestTargetPtr = player.entity;
+        foundCurrentTarget = true;
+        ApplyAimAssist(player);
+        break;
+      }
 
-			float distance = player.position.EuclideanDistance(MyLocalPlayer.position);
-			if (!minDistance || distance < minDistance)
-			{
-				minDistance = distance;
-				ptrFound = player.entity;
-				target = player;
-			}
-		}
+      // Find closest target
+      float distance = CalculateDistance(player);
+      if (distance < minDistance) {
+        minDistance = distance;
+        bestTargetPtr = player.entity;
+        bestTarget = player;
+      }
+    }
 
-		if (ptrFound)
-		{
-			currentTargetPtr = ptrFound;
-			MyLocalPlayer.SetViewAngles(target.aimAngle, config.smoothness);
-		}
-	}
+    // Apply aim to selected target if no current target was found
+    if (bestTargetPtr && !foundCurrentTarget) {
+      currentTargetPtr = bestTargetPtr;
+      ApplyAimAssist(bestTarget);
+    }
+  }
 
-	void Execute() override
-	{
-		if (!UpdateConfigs())
-			return;
+  /**
+   * @brief Resets current target
+   */
+  void ResetTarget() { currentTargetPtr = NULL; }
 
-		UpdateTarget();
-		if (MyLocalPlayer.crossIndex >= 0 && config.isClickActive)
-		{
-			mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
-			mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
-		}
-	}
+  /**
+   * @brief Checks if a player is a valid target
+   * @param player The player to check
+   * @return true if player is a valid target
+   */
+  bool IsValidTarget(const Player &player) const {
+    return player.IsValidTarget();
+  }
 
-	void RenderAimZone()
-	{
-		if (!config.showAimCircle)
-			return;
+  /**
+   * @brief Checks if player is within the aim circle
+   * @param player The player to check
+   * @return true if player intersects with aim circle
+   */
+  bool IsWithinAimCircle(const Player &player) const {
+    return InterSects(player.screenBox, config.aimCircle);
+  }
 
-		DrawCircle(config.aimCircle.p, config.aimCircle.radius, config.aimCircle.color);
-		DrawFilledCircle(config.aimCircle.p, config.aimCircle.radius, config.aimCircle.borderColor);
-	}
+  /**
+   * @brief Calculates distance from local player to target
+   * @param player The target player
+   * @return Euclidean distance
+   */
+  float CalculateDistance(const Player &player) const {
+    return player.position.EuclideanDistance(MyLocalPlayer.position);
+  }
+
+  /**
+   * @brief Applies aim assistance to target
+   * @param target The target to aim at
+   */
+  void ApplyAimAssist(const Player &target) {
+    MyLocalPlayer.SetViewAngles(target.aimAngle, config.smoothness);
+  }
+
+  /**
+   * @brief Performs auto-click if target is in crosshair
+   */
+  void HandleAutoClick() {
+    if (MyLocalPlayer.crossIndex >= 0 && config.isClickActive) {
+      mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
+      mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
+    }
+  }
+
+  /**
+   * @brief Renders the aim circle (FOV indicator)
+   */
+  void RenderAimZone() {
+    if (!config.showAimCircle)
+      return;
+
+    DrawCircle(config.aimCircle.p, config.aimCircle.radius,
+               config.aimCircle.color);
+    DrawFilledCircle(config.aimCircle.p, config.aimCircle.radius,
+                     config.aimCircle.borderColor);
+  }
 
 public:
-	void Init(Module *rootModule) override
-	{
-		this->config.isActive = true;
-		this->UpdatePointers(rootModule);
-		this->config.isReady = true;
-	}
+  /**
+   * @brief Main execution method called by the module framework
+   */
+  void Execute() override {
+    if (!UpdateConfigs())
+      return;
 
-	void Render() override
-	{
-		if (config.isHidden || !config.isActive || !config.isReady)
-			return;
+    UpdateTarget();
+    HandleAutoClick();
+  }
 
-		RenderAimZone();
-	};
+  /**
+   * @brief Initialize the aimbot module
+   * @param rootModule Pointer to the root module for shared data access
+   */
+  void Init(Module *rootModule) override {
+    config.isActive = true;
+    // Initialize module data from root module
+    if (rootModule) {
+      this->rootModule = rootModule;
+    }
+    config.isReady = true;
+  }
+
+  /**
+   * @brief Render method called by the module framework
+   */
+  void Render() override {
+    if (config.isHidden || !config.isActive || !config.isReady)
+      return;
+
+    RenderAimZone();
+  }
 };

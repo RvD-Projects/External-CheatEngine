@@ -98,7 +98,7 @@ struct Vector3
 	 * @param other The other vector to calculate the distance to.
 	 * @return The Euclidean distance between the two vectors.
 	 */
-	float EuclideanDistance(Vector3 other)
+	float EuclideanDistance(Vector3 other) const
 	{
 		return std::sqrt(std::pow(this->x - other.x, 2) + std::pow(this->y - other.y, 2) + std::pow(this->z - other.z, 2));
 	}
