@@ -365,4 +365,5 @@ FodyWeavers.xsd
 DvlErrLog.txt
 imgui.ini
 
-Engine/GameDumper/Dumps/*
+# GameDumper files
+Engine/GameDumper/
