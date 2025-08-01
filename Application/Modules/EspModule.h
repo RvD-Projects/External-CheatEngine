@@ -2,157 +2,246 @@
 
 #include "Module.h"
 
+/**
+ * @brief ESP (Extra Sensory Perception) module for visual player information
+ *
+ * Features:
+ * - Player skeleton rendering
+ * - Bounding boxes with health-based coloring
+ * - Player information display (name, health, distance)
+ * - Snap lines to players
+ * - Bomb timer information
+ * - Configurable visibility toggles
+ */
 class EspModule : public Module {
+private:
   EspConfig config;
 
+  // Display configuration constants
+  static constexpr float HEAD_RADIUS_DIVISOR = 14.0f;
+  static constexpr float NAME_CHAR_WIDTH = 8.0f;
+  static constexpr float HEALTH_CHAR_WIDTH = 8.0f;
+  static constexpr int TEXT_BACKGROUND_PADDING = 6;
+  static constexpr int TEXT_LINE_HEIGHT = 16;
+  static constexpr int BOMB_INFO_BOX_WIDTH = 180;
+  static constexpr int BOMB_INFO_BOX_HEIGHT = 64;
+
+  /**
+   * @brief Gets appropriate color for player based on health and state
+   * @param player The player to get color for
+   * @param isTransparent Whether to return a transparent version
+   * @return GuiColor based on player health
+   */
+  GuiColor GetPlayerColor(const Player &player,
+                          bool isTransparent = true) const {
+    GuiColor baseColor;
+
+    if (player.health > 75) {
+      baseColor = isTransparent ? White75 : White;
+    } else if (player.health > 50) {
+      baseColor = isTransparent ? Yellow75 : Yellow;
+    } else if (player.health > 25) {
+      baseColor = isTransparent ? Orange75 : Orange;
+    } else {
+      baseColor = isTransparent ? Red75 : Red;
+    }
+
+    return baseColor;
+  }
+
+  /**
+   * @brief Calculates optimal text positioning for player info
+   * @param player The player to calculate position for
+   * @return Calculated position for text placement
+   */
+  Position CalculateTextPosition(const Player &player) const {
+    const Position ESP_P = player.screenBox.pStart;
+    const Dimension ESP_D = player.screenBox.d;
+
+    return {ESP_P.x + ESP_D.w / 2 - (player.name.length() * 3.0f),
+            ESP_P.y + ESP_D.h + 18};
+  }
   void UpdateConfigs() {
-    // uses F1 to toggle skeleton
+    // Toggle skeleton rendering (F1)
     if (GetAsyncKeyState(VK_F1) & 1)
       config.isSkeletonActive = !config.isSkeletonActive;
 
-    // uses F2 to toggle box
+    // Toggle bounding boxes (F2)
     if (GetAsyncKeyState(VK_F2) & 1)
       config.isBoxActive = !config.isBoxActive;
 
-    // uses F3 to toggle stats
+    // Toggle player information (F3)
     if (GetAsyncKeyState(VK_F3) & 1)
       config.isStatsActive = !config.isStatsActive;
 
-    // uses F4 to toggle snap line
+    // Toggle snap lines (F4)
     if (GetAsyncKeyState(VK_F4) & 1)
       config.isSnapLineActive = !config.isSnapLineActive;
 
-    // uses F5 to toggle esp
+    // Toggle entire ESP system (F5)
     if (GetAsyncKeyState(VK_F5) & 1)
       config.isActive = !config.isActive;
+
+    // Toggle game objects display (F6)
+    if (GetAsyncKeyState(VK_F6) & 1)
+      config.isGameObjectsActive = !config.isGameObjectsActive;
   }
 
-  void Execute() {
+  /**
+   * @brief Main execution method for ESP module
+   */
+  void Execute() override {
     UpdateConfigs();
 
     if (!config.isActive)
       return;
   }
 
-  void RenderPlayerSkeleton(Player &player) {
-    if (!player.screenBones.size())
+  /**
+   * @brief Renders player skeleton and head indicator
+   * @param player The player to render skeleton for
+   */
+  void RenderPlayerSkeleton(const Player &player) {
+    if (!player.screenBones.size() || !config.isSkeletonActive)
       return;
 
-    if (config.isSkeletonActive) {
-      for (const auto &line : player.screenBones)
-        DrawLine(line.pStart, line.pEnd, White50, 2.5f);
+    // Draw skeleton bones
+    for (const auto &line : player.screenBones) {
+      DrawLine(line.pStart, line.pEnd, GetPlayerColor(player), 1.0f);
     }
 
-    const float headRadius = player.screenBox.d.h / 14;
+    // Draw head circle
+    const float headRadius = player.screenBox.d.h / HEAD_RADIUS_DIVISOR;
     const Position headPos = player.screenBones[0].pStart;
 
     DrawFilledCircle(headPos, headRadius, White25);
-    DrawCircle(headPos, headRadius, White50, 2);
+    DrawCircle(headPos, headRadius, GetPlayerColor(player), 1.0f);
   }
 
-  void RenderPlayerBoxStats(Player &player) {
+  /**
+   * @brief Renders player information stats
+   * @param player The player to render stats for
+   */
+  void RenderPlayerBoxStats(const Player &player) {
     if (!config.isStatsActive)
       return;
 
     RenderPlayerInfo(player);
   }
 
-  void RenderPlayerInfo(Player &player) {
+  /**
+   * @brief Renders comprehensive player information display
+   * @param player The player to render information for
+   */
+  void RenderPlayerInfo(const Player &player) {
     if (player.name.empty())
       return;
 
-    Position ESP_P = player.screenBox.pStart;
-    Dimension ESP_D = player.screenBox.d;
+    const Position namePos = CalculateTextPosition(player);
 
-    // Determine name color based on health
-    GuiColor healthColor;
-    if (player.health > 75) {
-      healthColor = Green75;
-    } else if (player.health > 50) {
-      healthColor = Yellow75;
-    } else if (player.health > 25) {
-      healthColor = Orange75;
-    } else {
-      healthColor = Red75;
-    }
-
+    // Prepare text strings
     const std::string nameText = player.name;
-    const std::string healthText = std::to_string(player.health) + " HP";
-    const std::string fullText = nameText + healthText;
+    const std::string healthText = std::to_string(player.health) + "hp";
 
-    // Calculate name position (centered below the ESP box)
-    // This ensures the name appears centered below the ESP box
-    const Position namePos = {ESP_P.x + ESP_D.w / 2 -
-                                  (float)nameText.length() * 3,
-                              ESP_P.y + ESP_D.h + 18};
+    // Calculate positions for different text elements
+    const Position healthPos = {
+        namePos.x + nameText.length() * NAME_CHAR_WIDTH + 4, namePos.y};
 
-    // Calculate health position based on name length
-    // This ensures the health text appears right after the name
-    const Position healthPos = {namePos.x + (float)nameText.length() * 8 + 4,
-                                namePos.y};
+    // Calculate background dimensions
+    const float nameWidth = nameText.length() * NAME_CHAR_WIDTH;
+    const float healthWidth = healthText.length() * NAME_CHAR_WIDTH;
+    const float totalWidth = nameWidth + healthWidth + 4; // 4 for spacing
 
-    // Draw background rectangle for better readability
-    const Dimension bgSize = {(float)fullText.length() * 9, 20};
-    const Position bgPos = {namePos.x - 6, namePos.y - 3};
-    Gui::DrawFilledRectangle(bgPos, bgSize, Black50);
-    Gui::DrawRectangle(bgPos, bgSize, White25);
+    const Dimension bgSize = {totalWidth + TEXT_BACKGROUND_PADDING * 2,
+                              TEXT_LINE_HEIGHT + TEXT_BACKGROUND_PADDING};
+    const Position bgPos = {namePos.x - TEXT_BACKGROUND_PADDING,
+                            namePos.y - TEXT_BACKGROUND_PADDING / 2.0f};
 
-    // Draw the player name with health
-    Gui::DrawTextual(namePos, nameText.data(), White75);
-    Gui::DrawTextual(healthPos, healthText.data(), healthColor);
+    // Draw background for better readability
+    DrawFilledRectangle(bgPos, bgSize, Black50);
+    DrawRectangle(bgPos, bgSize, White75);
+
+    // Draw player information
+    DrawTextual(namePos, nameText.data(), White75);
+    DrawTextual(healthPos, healthText.data(), GetPlayerColor(player));
   }
 
-  void RenderPlayerBox(Player &player) {
+  /**
+   * @brief Renders player bounding box with health-based coloring
+   * @param player The player to render box for
+   */
+  void RenderPlayerBox(const Player &player) {
     if (!config.isBoxActive)
       return;
 
-    DrawRectangle(player.screenBox.pStart, player.screenBox.d, White50);
+    const GuiColor boxColor = GetPlayerColor(player);
+    DrawRectangle(player.screenBox.pStart, player.screenBox.d, boxColor);
   }
 
-  void RenderPlayerSnapLine(Player &player) {
+  /**
+   * @brief Renders snap line from screen bottom to player
+   * @param player The player to draw snap line to
+   */
+  void RenderPlayerSnapLine(const Player &player) {
     if (!config.isSnapLineActive)
       return;
 
+    const GuiColor lineColor = White75;
     const Line snapLine{{ClientDimension.w / 2, ClientDimension.h},
                         player.screenFeet};
-    DrawLine(snapLine.pStart, snapLine.pEnd, White50, 1.0f);
+    DrawLine(snapLine.pStart, snapLine.pEnd, lineColor, 1.0f);
   }
 
+  /**
+   * @brief Renders game object information (bomb timers, etc.)
+   */
   void RenderGameObjects() {
-    if (!C4Bomb.FuseChrono.IsRunning())
+    if (!config.isGameObjectsActive || !C4Bomb.FuseChrono.IsRunning())
       return;
 
-    const Position boxPos{8, ClientDimension.h - 80};
+    const Position boxPos{8, ClientDimension.h - BOMB_INFO_BOX_HEIGHT - 8};
     const Position textStart{boxPos.x + 8, boxPos.y + 8};
 
-    // Draw the box based on text size
-    DrawFilledRectangle(boxPos, {180, 64}, Black75);
-    DrawRectangle(boxPos, {180, 64}, White75);
+    // Draw container box with enhanced styling
+    DrawFilledRectangle(boxPos, {BOMB_INFO_BOX_WIDTH, BOMB_INFO_BOX_HEIGHT},
+                        Black75);
+    DrawRectangle(boxPos, {BOMB_INFO_BOX_WIDTH, BOMB_INFO_BOX_HEIGHT}, Red75);
 
-    DrawTextual(textStart,
-                ("Time left: " + C4Bomb.FuseChrono.ToString()).data(),
+    // Draw bomb timer information with color coding
+    DrawTextual(textStart, ("Bomb: " + C4Bomb.FuseChrono.ToString()).data(),
                 GetTimerColor(C4Bomb.FuseChrono));
-    DrawTextual({textStart.x, textStart.y + 16},
+
+    DrawTextual({textStart.x, textStart.y + TEXT_LINE_HEIGHT},
                 ("Defuse Kit: " + C4Bomb.DefuseKitChrono.ToString()).data(),
                 GetTimerColor(C4Bomb.DefuseKitChrono));
-    DrawTextual({textStart.x, textStart.y + 32},
+
+    DrawTextual({textStart.x, textStart.y + TEXT_LINE_HEIGHT * 2},
                 ("Defuse: " + C4Bomb.DefuseChrono.ToString()).data(),
                 GetTimerColor(C4Bomb.DefuseChrono));
   }
 
 public:
+  /**
+   * @brief Initialize the ESP module
+   * @param rootModule Pointer to the root module for shared data access
+   */
   void Init(Module *rootModule) override {
-    this->config.isActive = true;
-    this->UpdatePointers(rootModule);
-    this->config.isReady = true;
+    config.isActive = true;
+    this->rootModule = rootModule;
+    config.isReady = true;
   }
 
+  /**
+   * @brief Main render method for all ESP elements
+   * Renders all enabled ESP features for valid targets
+   */
   void Render() override {
     if (config.isHidden || !config.isActive || !config.isReady)
       return;
 
-    for (Player player : ENEMIES) {
-      if (!player.IsValidTarget())
+    // Render ESP for all valid enemy players
+    for (const Player &player : ENEMIES) {
+      if (!player.IsValidTarget() || !player.isScreenVisible)
         continue;
 
       RenderPlayerSkeleton(player);
@@ -161,6 +250,7 @@ public:
       RenderPlayerSnapLine(player);
     }
 
+    // Render game objects (bomb info, etc.)
     RenderGameObjects();
   }
 };
