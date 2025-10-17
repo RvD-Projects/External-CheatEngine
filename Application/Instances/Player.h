@@ -31,7 +31,7 @@ public:
 		if (!listEntry || listEntry == INTPTR_MAX)
 			return;
 
-		ctrl = ReadListEntry<uintptr_t>(index * 0x78);
+		ctrl = ReadListEntry<uintptr_t>(index * 0x70);
 		if (!ctrl || ctrl == INTPTR_MAX)
 			return;
 
@@ -43,7 +43,7 @@ public:
 		if (!listEntry || listEntry == INTPTR_MAX)
 			return;
 
-		entity = ReadListEntry<uintptr_t>(0x78 * (pawnCtrl & 0x1FF));
+		entity = ReadListEntry<uintptr_t>(0x70 * (pawnCtrl & 0x1FF));
 		if (!entity || entity == INTPTR_MAX)
 			return;
 
