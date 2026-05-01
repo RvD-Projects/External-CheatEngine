@@ -113,9 +113,9 @@ private:
     // Draw head circle
     const float headRadius = player.screenBox.d.h / HEAD_RADIUS_DIVISOR;
     const Position headPos = player.screenBones[0].pStart;
-
+    
     DrawFilledCircle(headPos, headRadius, White25);
-    DrawCircle(headPos, headRadius, GetPlayerColor(player), 1.0f);
+    DrawCircle(headPos, headRadius, Orange, 1.0f);
   }
 
   /**

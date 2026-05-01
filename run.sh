@@ -13,7 +13,7 @@ echo "🚀 CS2 External Cheat Pipeline"
 # ========================================
 
 FORCE_BUILD=false
-SKIP_DUMPER=true
+SKIP_DUMPER=false
 LAUNCH_APP=true
 
 case "$1" in
