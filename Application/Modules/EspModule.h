@@ -102,7 +102,7 @@ private:
    * @param player The player to render skeleton for
    */
   void RenderPlayerSkeleton(const Player &player) {
-    if (!player.screenBones.size() || !config.isSkeletonActive)
+    if (player.screenBones.size() <= 4  || !config.isSkeletonActive)
       return;
 
     // Draw skeleton bones
@@ -110,13 +110,11 @@ private:
       DrawLine(line.pStart, line.pEnd, GetPlayerColor(player), 1.0f);
     }
 
-    // Draw head circle (safe access)
-    if (player.screenBones.size() > 4) {
-      const float headRadius = player.screenBox.d.h / HEAD_RADIUS_DIVISOR;
-      const Position headPos = player.screenBones[4].pEnd;
-      DrawFilledCircle(headPos, headRadius, White25);
-      DrawCircle(headPos, headRadius, Orange50, 1.2f);
-    }
+    // Draw head circle 
+    const float headRadius = player.screenBox.d.h / HEAD_RADIUS_DIVISOR;
+    const Position headPos = player.screenBones[4].pEnd;
+    DrawFilledCircle(headPos, headRadius, White25);
+    DrawCircle(headPos, headRadius, Orange50, 1.2f);
   }
 
   /**
